@@ -47,10 +47,84 @@ class Game extends \Table
 
         self::$CARD_TYPES = [
             1 => [
-                "card_name" => clienttranslate('Troll'), // ...
+                "name" => clienttranslate('Rice'),
+                "type" => clienttranslate('Street'),
             ],
             2 => [
-                "card_name" => clienttranslate('Goblin'), // ...
+                "name" => clienttranslate('Sugar'), // ...
+                "type" => clienttranslate('Street'),
+            ],
+            3 => [
+                "name" => clienttranslate('Camphor'), // ...
+                "type" => clienttranslate('Street'),
+            ],
+            4 => [
+                "name" => clienttranslate('Tea'), // ...
+                "type" => clienttranslate('Street'),
+            ],
+            5 => [
+                "name" => clienttranslate('Groceries'), // ...
+                "type" => clienttranslate('Street'),
+            ],
+            6 => [
+                "name" => clienttranslate('Fabric'), // ...
+                "type" => clienttranslate('Street'),
+            ],
+            7 => [
+                "name" => clienttranslate('Ginseng'), // ...
+                "type" => clienttranslate('Street'),
+            ],
+            8 => [
+                "name" => clienttranslate('Export'), // ...
+                "type" => clienttranslate('Street'),
+            ],
+            9 => [
+                "name" => clienttranslate('Retail'), // ...
+                "type" => clienttranslate('Street'),
+            ],
+            10 => [
+                "name" => clienttranslate('Wholesale'), // ...
+                "type" => clienttranslate('Street'),
+            ],
+            11 => [
+                "name" => clienttranslate('Exchange'), // ...
+                "type" => clienttranslate('Street'),
+            ],
+            12 => [
+                "name" => clienttranslate('Stroll'), // ...
+                "type" => clienttranslate('Street'),
+            ],
+            13 => [
+                "name" => clienttranslate('Dispatch'), // ...
+                "type" => clienttranslate('Street'),
+            ],
+            14 => [
+                "name" => clienttranslate('Wish'), // ...
+                "type" => clienttranslate('Street'),
+            ],
+            1908 => [
+                "name" => clienttranslate('1908'), // ...
+                "type" => clienttranslate('Event'),
+            ],
+            1920 => [
+                "name" => clienttranslate('1920'), // ...
+                "type" => clienttranslate('Event'),
+            ],
+            1923 => [
+                "name" => clienttranslate('1923'), // ...
+                "type" => clienttranslate('Event'),
+            ],
+            1931 => [
+                "name" => clienttranslate('1931'), // ...
+                "type" => clienttranslate('Event'),
+            ],
+            1945 => [
+                "name" => clienttranslate('1945'), // ...
+                "type" => clienttranslate('Event'),
+            ],
+            1947 => [
+                "name" => clienttranslate('1947'), // ...
+                "type" => clienttranslate('Event'),
             ],
             // ...
         ];
@@ -77,7 +151,7 @@ class Game extends \Table
         }
 
         // Add your game logic to play a card here.
-        $card_name = self::$CARD_TYPES[$card_id]['card_name'];
+        $card_name = self::$CARD_TYPES[$card_id]['name'];
 
         // Notify all players about the card played.
         $this->notifyAllPlayers("cardPlayed", clienttranslate('${player_name} plays ${card_name}'), [

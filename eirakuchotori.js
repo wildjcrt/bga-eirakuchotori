@@ -50,52 +50,54 @@ function (dojo, declare) {
 
             // Example to add a div on the game area
             document.getElementById('game_play_area').insertAdjacentHTML('beforeend', `
-                <div id="player-tables" class="mx-auto w-[900px]">
-                  <!-- 1st Row -->
-                  <div class="grid grid-cols-7 mb-10">
-                    <div class="bg-gray-200 items-center justify-center col-start-3 col-span-2"></div>
-                  </div>
-
-                  <!-- 2nd Row -->
-                  <div class="grid grid-cols-7 gap-2 mb-10">
-                    <div class="bg-gray-200 items-center justify-center col-span-2"></div>
-                    <div class="bg-gray-200 items-center justify-center col-span-2"></div>
-                    <div class="bg-gray-200 items-center justify-center"></div>
-                    <div class="bg-gray-200 items-center justify-center"></div>
-                  </div>
-
-                  <!-- 3rd Row -->
-                  <div class="grid mb-2">
-                    <div class="bg-gray-200 items-center justify-center"><img src="img/scores.png"></div>
-                  </div>
-
-                  <!-- 4th Row -->
-                  <div class="grid grid-cols-7 gap-2 mb-2">
-                    <div class="bg-gray-200 items-center justify-center"></div>
-                    <div class="bg-gray-200 items-center justify-center"></div>
-                    <div class="bg-gray-200 items-center justify-center"></div>
-                    <div class="bg-gray-200 items-center justify-center"></div>
-                    <div class="bg-gray-200 items-center justify-center"></div>
-                    <div class="bg-gray-200 items-center justify-center"></div>
-                    <div class="bg-gray-200 items-center justify-center"></div>
-                  </div>
-
-                  <!-- 5th Row -->
-                  <div class="grid grid-cols-7 gap-2 mb-10">
-                    <div class="bg-gray-200 items-center justify-center"></div>
-                    <div class="bg-gray-200 items-center justify-center"></div>
-                    <div class="bg-gray-200 items-center justify-center"></div>
-                    <div class="bg-gray-200 items-center justify-center"></div>
-                    <div class="bg-gray-200 items-center justify-center"></div>
-                    <div class="bg-gray-200 items-center justify-center"></div>
-                    <div class="bg-gray-200 items-center justify-center"></div>
-                  </div>
-
-                  <!-- 6th Row -->
-                  <div class="grid grid-cols-7 mb-10">
-                    <div class="bg-gray-200 items-center justify-center col-start-3 col-span-2"></div>
-                  </div>
+              <div id="player-tables" class="mx-auto w-[900px]">
+                <!-- 1st Row -->
+                <div class="flex justify-center gap-2 mb-5">
+                  <div class="w-[120px] flex items-center justify-center"></div>
+                  <div class="w-[120px] flex items-center justify-center"></div>
+                  <div id="warehouse-1" class="resource tapped w-[248px] h-[163px] bg-gray-200 items-center justify-center"></div>
+                  <div class="w-[120px] flex items-center justify-center"></div>
+                  <div class="w-[120px] flex items-center justify-center"></div>
+                  <div class="w-[120px] flex items-center justify-center"></div>
                 </div>
+
+                <!-- 2nd Row -->
+                <div class="grid grid-cols-7 gap-2 mb-2">
+                  <div id="street-1" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
+                  <div id="street-2" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
+                  <div id="street-3" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
+                  <div id="street-4" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
+                  <div id="street-5" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
+                  <div id="street-6" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
+                  <div id="street-7" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
+                </div>
+
+                <!-- 3rd Row -->
+                <div class="grid grid-cols-7 gap-2 mb-5">
+                  <div id="street-8" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
+                  <div id="street-9" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
+                  <div id="street-10" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
+                  <div id="street-11" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
+                  <div id="street-12" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
+                  <div id="street-13" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
+                  <div id="street-14" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
+                </div>
+
+                <!-- 4th Row -->
+                <div class="grid mb-5">
+                  <div id="scores-goals-rest" class="resource h-[338px] bg-gray-200 items-center justify-center"></div>
+                </div>
+
+                <!-- 5th Row -->
+                <div class="flex justify-center gap-2">
+                  <div class="w-[120px] flex items-center justify-center"></div>
+                  <div class="w-[120px] flex items-center justify-center"></div>
+                  <div id="warehouse-2" class="resource tapped w-[248px] h-[163px] bg-gray-200 items-center justify-center"></div>
+                  <div class="w-[120px] flex items-center justify-center"></div>
+                  <div class="w-[120px] flex items-center justify-center"></div>
+                  <div class="w-[120px] flex items-center justify-center"></div>
+                </div>
+              </div>
             `);
 
             // Setting up player boards

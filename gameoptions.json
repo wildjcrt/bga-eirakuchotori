@@ -1,1 +1,15 @@
-{}
+{
+  "100": {
+    "name": "Expansion: Event cards",
+    "values": {
+      "0": {
+        "name": "Off",
+      },
+      "1": {
+        "name": "On",
+        "tmdisplay": "Expansion: Event cards"
+      }
+    },
+    "default": 0
+  }
+}

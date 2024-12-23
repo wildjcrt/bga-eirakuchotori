@@ -294,6 +294,36 @@ class Game extends \Table
     }
 
     /**
+     * @param $card_id is in 1-14 and 1908, 1920, 1923, 1931, 1945, 1947
+     * @param $yellow_tokens
+     * @param $blue_tokens
+     * @param $merchant should be a player_id
+     */
+    function updateCardRecord($card_id, $yellow_tokens = null, $blue_tokens = null, $merchant = 0)
+    {
+      if ($yellow_tokens !== null) {
+        $sql = "UPDATE cards
+                SET yellow_tokens = $yellow_tokens
+                WHERE card_id = $card_id";
+        self::DbQuery($sql);
+      }
+
+      if ($blue_tokens !== null) {
+        $sql = "UPDATE cards
+                SET blue_tokens = $blue_tokens
+                WHERE card_id = $card_id";
+        self::DbQuery($sql);
+      }
+
+      if ($merchant != 0) {
+        $sql = "UPDATE cards
+                SET merchant = $merchant
+                WHERE card_id = $card_id";
+        self::DbQuery($sql);
+      }
+    }
+
+    /**
      * Migrate database.
      *
      * You don't have to care about this until your game has been published on BGA. Once your game is on BGA, this

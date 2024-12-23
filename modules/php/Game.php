@@ -248,6 +248,40 @@ class Game extends \Table
     }
 
     /**
+     * $card_id1 and $card_id2 must be different.
+     * @param $card_id1 is a street card
+     * @param $card_id2 is another street card.
+     */
+    function exchangeBoardRecord($card_id1, $card_id2)
+    {
+      if (!is_numeric($card_id1) || !is_numeric($card_id2)) {
+        return false;
+      }
+
+      if ($card_id1 >= 1 && $card_id1 <= 13 &&
+          $card_id2 >= 1 && $card_id2 <= 13 &&
+          $card_id1 !== $card_id2) {
+        $sql = "SELECT grid_id FROM board
+                WHERE card_id=$card_id1 LIMIT 1";
+        $grid_id1 = self::getUniqueValueFromDB($sql);
+
+        $sql = "SELECT grid_id FROM board
+                WHERE card_id=$card_id2 LIMIT 1";
+        $grid_id2 = self::getUniqueValueFromDB($sql);
+
+        $sql = "UPDATE board
+                SET card_id = $card_id2
+                WHERE grid_id=$grid_id1 AND card_id=$card_id1";
+        self::DbQuery($sql);
+
+        $sql = "UPDATE board
+                SET card_id = $card_id1
+                WHERE grid_id=$grid_id2 AND card_id=$card_id2";
+        self::DbQuery($sql);
+      }
+    }
+
+    /**
      * @param $card_id is in 1-14 and 1908, 1920, 1923, 1931, 1945, 1947
      * @param $name is card name in English
      * @param $card_type is street or event

@@ -234,6 +234,31 @@ class Game extends \Table
         $this->gamestate->nextState("nextPlayer");
     }
 
+    /* functions for DB query */
+
+    /**
+     * @param $grid_id is 1-14 for street and 15 for event
+     * @param $card_id
+     */
+    function createBoardRecord($grid_id, $card_id)
+    {
+      $sql = "INSERT INTO board (grid_id, card_id)
+              VALUES ($grid_id, $card_id);";
+      self::DbQuery($sql);
+    }
+
+    /**
+     * @param $card_id is in 1-14 and 1908, 1920, 1923, 1931, 1945, 1947
+     * @param $name is card name in English
+     * @param $card_type is street or event
+     */
+    function createCardRecord($card_id, $name, $card_type)
+    {
+      $sql = "INSERT INTO cards (card_id, name, card_type)
+              VALUES ($card_id, '$name', '$card_type');";
+      self::DbQuery($sql);
+    }
+
     /**
      * Migrate database.
      *
@@ -320,6 +345,19 @@ class Game extends \Table
                 addslashes($player["player_name"]),
                 addslashes($player["player_avatar"]),
             ]);
+
+            // Create player_info table records
+            $sql = "INSERT INTO player_info (player_id)
+                    VALUES ($player_id);";
+            self::DbQuery($sql);
+
+            // Create 20 tokens records for player in tokens table
+            $tokens = range(1, 20);
+            foreach ($tokens as $token_id) {
+              $sql = "INSERT INTO tokens (player_id, token_id, position_type, position_uid)
+                      VALUES ($player_id, $token_id, 'reserve', 0);";
+              self::DbQuery($sql);
+            }
         }
 
         // Create players based on generic information.
@@ -337,6 +375,44 @@ class Game extends \Table
         $this->reloadPlayersBasicInfos();
 
         // Init global values with their initial values.
+
+        // Create cards table, including streets, events
+        // @params: $card_id, $name, $card_type
+        self::createCardRecord(   1, 'Rice',      'street');
+        self::createCardRecord(   2, 'Sugar',     'street');
+        self::createCardRecord(   3, 'Camphor',   'street');
+        self::createCardRecord(   4, 'Tea',       'street');
+        self::createCardRecord(   5, 'Groceries', 'street');
+        self::createCardRecord(   6, 'Fabric',    'street');
+        self::createCardRecord(   7, 'Ginseng',   'street');
+        self::createCardRecord(   8, 'Export',    'street');
+        self::createCardRecord(   9, 'Retail',    'street');
+        self::createCardRecord(  10, 'Wholesale', 'street');
+        self::createCardRecord(  11, 'Exchange',  'street');
+        self::createCardRecord(  12, 'Stroll',    'street');
+        self::createCardRecord(  13, 'Dispatch',  'street');
+        self::createCardRecord(  14, 'Wish',      'street');
+        self::createCardRecord(1908, '1908',      'event');
+        self::createCardRecord(1920, '1920',      'event');
+        self::createCardRecord(1923, '1923',      'event');
+        self::createCardRecord(1931, '1931',      'event');
+        self::createCardRecord(1945, '1945',      'event');
+        self::createCardRecord(1947, '1947',      'event');
+
+        // Create board table
+        // @params: $grid_id, $card_id
+        self::createBoardRecord( 6, 14);
+        self::createBoardRecord( 7, 5);
+        self::createBoardRecord( 8, 1);
+        self::createBoardRecord( 9, 13);
+        self::createBoardRecord(15, 0);
+
+        $grids = array_diff(range(1, 14), [6, 7, 8, 9]);
+        $cards = array_diff(range(1, 14), [1, 5, 13, 14]);
+        shuffle($cards);
+        foreach ($grids as $grid_id) {
+          self::createBoardRecord($grid_id, array_shift($cards));
+        }
 
         // Dummy content.
         $this->setGameStateInitialValue("my_first_global_variable", 0);

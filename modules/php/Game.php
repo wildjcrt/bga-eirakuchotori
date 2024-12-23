@@ -374,6 +374,18 @@ class Game extends \Table
             "SELECT `player_id` `id`, `player_score` `score` FROM `player`"
         );
 
+        $sql = "SELECT * FROM board";
+        $result['board'] = self::getObjectListFromDB($sql);
+
+        $sql = "SELECT * FROM cards";
+        $result['cards'] = self::getObjectListFromDB($sql);
+
+        $sql = "SELECT * FROM tokens";
+        $result['tokens'] = self::getObjectListFromDB($sql);
+
+        $sql = "SELECT * FROM player_info";
+        $result['player_info'] = self::getObjectListFromDB($sql);
+
         // TODO: Gather all information about current game situation (visible by player $current_player_id).
 
         return $result;

@@ -52,53 +52,157 @@ function (dojo, declare) {
             document.getElementById('game_play_area').insertAdjacentHTML('beforeend', `
               <div id="player-tables" class="mx-auto w-[900px]">
                 <!-- 1st Row -->
-                <div class="flex justify-center gap-2 mb-5">
-                  <div class="w-[120px] flex items-center justify-center"></div>
-                  <div class="w-[120px] flex items-center justify-center"></div>
-                  <div id="warehouse-1" class="resource tapped w-[248px] h-[163px] bg-gray-200 items-center justify-center"></div>
-                  <div class="w-[120px] flex items-center justify-center"></div>
-                  <div class="w-[120px] flex items-center justify-center"></div>
-                  <div class="w-[120px] flex items-center justify-center"></div>
+                <div class="grid grid-cols-7 gap-2 mb-5">
+                  <div class="w-[120px] items-center justify-center"></div>
+                  <div class="w-[120px] items-center justify-center"></div>
+                  <div id="warehouse-1" class="resource w-[248px] h-[163px] bg-gray-200 col-span-2 items-center justify-center"></div>
+                  <div class="w-[150px] items-center justify-center pt-2">
+                    <div class="yellow cube float-left"></div>
+                    <div class="yellow cube float-left"></div>
+                    <div class="yellow cube float-left"></div>
+                    <div class="yellow cube float-left"></div>
+                    <div class="yellow cube float-left"></div>
+                    <div class="yellow cube float-left"></div>
+                    <div class="yellow cube float-left"></div>
+                    <div class="yellow cube float-left"></div>
+                    <div class="yellow cube float-left"></div>
+                    <div class="yellow cube float-left"></div>
+                    <div class="yellow cube float-left"></div>
+                    <div class="yellow cube float-left"></div>
+                    <div class="yellow cube float-left"></div>
+                    <div class="yellow cube float-left"></div>
+                    <div class="yellow cube float-left"></div>
+                    <div class="yellow cube float-left"></div>
+                    <div class="yellow cube float-left"></div>
+                    <div class="yellow cube float-left"></div>
+                    <div class="yellow cube float-left"></div>
+                    <div class="yellow cube float-left"></div>
+                  </div>
+                  <div class="w-[120px] items-center justify-center"></div>
                 </div>
 
                 <!-- 2nd Row -->
                 <div class="grid grid-cols-7 gap-2 mb-2">
-                  <div id="street-1" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
-                  <div id="street-2" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
-                  <div id="street-3" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
-                  <div id="street-4" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
-                  <div id="street-5" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
-                  <div id="street-6" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
-                  <div id="street-7" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
+                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-28">
+                    <div class="merchant1 absolute"></div>
+                  </div>
+                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
+                    <div class="merchant2 absolute"></div>
+                  </div>
+                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
+                    <div class="merchant3 absolute"></div>
+                  </div>
+                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
+                    <div class="merchant4 absolute"></div>
+                  </div>
+                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
+                    <div class="merchant5 absolute"></div>
+                  </div>
+                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
+                    <div class="merchant6 absolute"></div>
+                  </div>
+                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
+                    <div class="merchant7 absolute"></div>
+                  </div>
                 </div>
 
                 <!-- 3rd Row -->
                 <div class="grid grid-cols-7 gap-2 mb-5">
-                  <div id="street-8" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
-                  <div id="street-9" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
-                  <div id="street-10" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
-                  <div id="street-11" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
-                  <div id="street-12" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
-                  <div id="street-13" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
-                  <div id="street-14" class="resource card w-[120px] h-[182px] bg-gray-200 items-center justify-center"></div>
+                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
+                    <div class="merchant8 absolute"></div>
+                  </div>
+                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
+                    <div class="merchant9 absolute"></div>
+                  </div>
+                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
+                    <div class="merchant10 absolute"></div>
+                  </div>
+                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
+                    <div class="merchant11 absolute"></div>
+                  </div>
+                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
+                    <div class="merchant12 absolute"></div>
+                  </div>
+                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
+                    <div class="merchant13 absolute"></div>
+                  </div>
+                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
+                    <div class="merchant14 absolute"></div>
+                  </div>
                 </div>
 
                 <!-- 4th Row -->
-                <div class="grid mb-5">
-                  <div id="scores-goals-rest" class="resource h-[338px] bg-gray-200 items-center justify-center"></div>
+                <div class="grid grid-cols-7 gap-2 mb-5">
+                  <div class="items-center justify-center"></div>
+                  <div class="event w-[120px] items-center justify-center px-3 py-10"></div>
+                  <div id="scores-goals-rest" class="resource w-[468px] h-[156px] bg-gray-200 items-center justify-center">
+                    <div class="score0 yellow cube absolute"></div>
+                    <div class="score0 blue cube absolute"></div>
+                    <div class="rest-area">
+                      <div class="rest1 absolute"></div>
+                      <div class="rest2 absolute"></div>
+                      <div class="rest3 absolute"></div>
+                      <div class="rest4 absolute"></div>
+                      <div class="rest5 absolute"></div>
+                    </div>
+                    <div class="goal-area">
+                      <div class="Merchants3 absolute"></div>
+                      <div class="Warehouse24 absolute"></div>
+                      <div class="Export6 absolute"></div>
+                    </div>
+                  </div>
                 </div>
 
                 <!-- 5th Row -->
-                <div class="flex justify-center gap-2">
-                  <div class="w-[120px] flex items-center justify-center"></div>
-                  <div class="w-[120px] flex items-center justify-center"></div>
-                  <div id="warehouse-2" class="resource tapped w-[248px] h-[163px] bg-gray-200 items-center justify-center"></div>
-                  <div class="w-[120px] flex items-center justify-center"></div>
-                  <div class="w-[120px] flex items-center justify-center"></div>
-                  <div class="w-[120px] flex items-center justify-center"></div>
+                <div class="grid grid-cols-7 gap-2 mb-5">
+                  <div class="w-[120px] items-center justify-center"></div>
+                  <div class="w-[120px] items-center justify-center"></div>
+                  <div id="warehouse-2" class="resource w-[248px] h-[163px] bg-gray-200 col-span-2 items-center justify-center"></div>
+                  <div class="w-[150px] items-center justify-center pt-2">
+                    <div class="blue cube float-left"></div>
+                    <div class="blue cube float-left"></div>
+                    <div class="blue cube float-left"></div>
+                    <div class="blue cube float-left"></div>
+                    <div class="blue cube float-left"></div>
+                    <div class="blue cube float-left"></div>
+                    <div class="blue cube float-left"></div>
+                    <div class="blue cube float-left"></div>
+                    <div class="blue cube float-left"></div>
+                    <div class="blue cube float-left"></div>
+                    <div class="blue cube float-left"></div>
+                    <div class="blue cube float-left"></div>
+                    <div class="blue cube float-left"></div>
+                    <div class="blue cube float-left"></div>
+                    <div class="blue cube float-left"></div>
+                    <div class="blue cube float-left"></div>
+                    <div class="blue cube float-left"></div>
+                    <div class="blue cube float-left"></div>
+                    <div class="blue cube float-left"></div>
+                    <div class="blue cube float-left"></div>
+                  </div>
+                  <div class="w-[120px] items-center justify-center"></div>
                 </div>
+
+                <!-- dice area -->
+                <div id="dice-area" class="w-24"></div>
               </div>
             `);
+
+            streetElements = document.getElementsByClassName('street');
+            Object.values(gamedatas.board).forEach(grid => {
+                const index = parseInt(grid.grid_id) - 1,
+                      streetElement = streetElements[index];
+                if (streetElement && (index !== 14)) {
+                    streetElement.id = `street-${grid.card_id}`;
+                }
+
+                if ((index === 14) && grid.card_id !== '0') {
+                    const eventElement = document.getElementsByClassName('event')[0];
+                    if (eventElement) {
+                        eventElement.id = `event-${grid.card_id}`;
+                    }
+                }
+            });
 
             // Setting up player boards
             Object.values(gamedatas.players).forEach(player => {

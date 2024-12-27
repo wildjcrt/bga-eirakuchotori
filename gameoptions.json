@@ -3,10 +3,11 @@
     "name": "Expansion: Event cards",
     "values": {
       "0": {
-        "name": "Off",
+        "name": "Off"
       },
       "1": {
         "name": "On",
+        "description": "Play with historical events!",
         "tmdisplay": "Expansion: Event cards"
       }
     },

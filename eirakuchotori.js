@@ -108,25 +108,25 @@ function (dojo, declare) {
 
                 <!-- 3rd Row -->
                 <div class="grid grid-cols-7 gap-2 mb-5">
-                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
+                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20 rotate-180">
                     <div class="merchant8 absolute"></div>
                   </div>
-                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
+                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20 rotate-180">
                     <div class="merchant9 absolute"></div>
                   </div>
-                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
+                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20 rotate-180">
                     <div class="merchant10 absolute"></div>
                   </div>
-                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
+                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20 rotate-180">
                     <div class="merchant11 absolute"></div>
                   </div>
-                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
+                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20 rotate-180">
                     <div class="merchant12 absolute"></div>
                   </div>
-                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
+                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20 rotate-180">
                     <div class="merchant13 absolute"></div>
                   </div>
-                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
+                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20 rotate-180">
                     <div class="merchant14 absolute"></div>
                   </div>
                 </div>

@@ -238,7 +238,7 @@ function (dojo, declare) {
         //
         onEnteringState: function( stateName, args )
         {
-            console.log( 'Entering state: '+stateName, args );
+            console.log( `Entering state: $stateName`, args );
 
             switch( stateName )
             {
@@ -264,7 +264,7 @@ function (dojo, declare) {
         //
         onLeavingState: function( stateName )
         {
-            console.log( 'Leaving state: '+stateName );
+            console.log( `Leaving state: $stateName` );
 
             switch( stateName )
             {

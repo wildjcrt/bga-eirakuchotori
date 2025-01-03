@@ -240,19 +240,46 @@ function (dojo, declare) {
         {
             console.log( `Entering state: $stateName`, args );
 
+            this.updatePageTitle();
+
             switch( stateName )
             {
 
-            /* Example:
+            case 'Player1InitialCubes':
+            case 'Player2InitialCubes':
 
-            case 'myGameState':
+                if( this.isCurrentPlayerActive() ) {
+                    dojo.query('.street').forEach(function(node) {
+                        // opacity-40 all streets
+                        dojo.addClass(node, 'available');
 
-                // Show some HTML block at this game state
-                dojo.style( 'my_html_block_id', 'display', 'block' );
+                        // bind click event on all streets
+                        dojo.connect(node, 'onclick', function(e) {
+                            const selectedCount = dojo.query('.street.border-red-500.border-4').length;
+
+                            if(dojo.hasClass(node, 'available')) {
+                                if(selectedCount < 3) {
+                                    dojo.addClass(node, 'border-4');
+                                    dojo.addClass(node, 'border-red-500');
+                                    dojo.removeClass(node, 'available');
+                                }
+                            } else {
+                                const availableNodes = dojo.query('.street.available').map(n => n);
+                                dojo.removeClass(node, 'border-4');
+                                dojo.removeClass(node, 'border-red-500');
+
+                                // Here is for syncing css keyframes animation.
+                                availableNodes.forEach(n => n.classList.remove('available'));
+                                availableNodes.push(node);
+                                setTimeout(() => {
+                                    availableNodes.forEach(n => n.classList.add('available'));
+                                }, 1);
+                            }
+                        });
+                    });
+                }
 
                 break;
-           */
-
 
             case 'dummy':
                 break;

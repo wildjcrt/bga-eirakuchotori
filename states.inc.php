@@ -54,37 +54,123 @@ $machinestates = [
 
     // The initial state. Please do not modify.
 
-    1 => array(
+    1 => [
         "name" => "gameSetup",
         "description" => "",
         "type" => "manager",
         "action" => "stGameSetup",
         "transitions" => ["" => 2]
-    ),
-
-    // Note: ID=2 => your first state
+    ],
 
     2 => [
-        "name" => "playerTurn",
-        "description" => clienttranslate('${actplayer} must play a card or pass'),
-        "descriptionmyturn" => clienttranslate('${you} must play a card or pass'),
-        "type" => "activeplayer",
-        "args" => "argPlayerTurn",
-        "possibleactions" => [
-            // these actions are called from the front with bgaPerformAction, and matched to the function on the game.php file
-            "actPlayCard", 
-            "actPass",
-        ],
-        "transitions" => ["playCard" => 3, "pass" => 3]
+      "name" => "Player1InitialCubes",
+      "description" => clienttranslate('${actplayer} puts 3 initial cubes.'),
+      "descriptionmyturn" => clienttranslate('Your turn. Click 3 different streets to put your cubes.'),
+      "type" => "activeplayer",
+      "possibleactions" => [ "actInitialCubes" ],
+      "transitions" => [ "" => 3 ]
     ],
 
     3 => [
-        "name" => "nextPlayer",
-        "description" => '',
+      "name" => "Player2InitialCubes",
+      "description" => clienttranslate('${actplayer} puts 3 initial cubes.'),
+      "descriptionmyturn" => clienttranslate('Your turn. Click 3 different streets to put your cubes.'),
+      "type" => "activeplayer",
+      "possibleactions" => [ "actInitialCubes" ],
+      "transitions" => [ "" => 10 ]
+    ],
+
+    10 => [
+        "name" => "NextPlayer",
+        "description" => clienttranslate('It\'s ${actplayer}\'s turn.'),
+        "descriptionmyturn" => clienttranslate('It\'s your turn.'),
         "type" => "game",
-        "action" => "stNextPlayer",
+        "action" => [ "stNextPlayer" ],
         "updateGameProgression" => true,
-        "transitions" => ["endGame" => 99, "nextPlayer" => 2]
+        "transitions" => [ "" => 20 ]
+    ],
+
+    20 => [
+        "name" => "ChooseAction",
+        "description" => clienttranslate('It\'s ${actplayer}\'s turn.'),
+        "descriptionmyturn" => clienttranslate('Choose to recruit or operate.'),
+        "type" => "activeplayer",
+        "possibleactions" => [ "actChooseAction" ],
+        "transitions" => [ "recruit" => 21, "operate" => 22 ]
+    ],
+
+    21 => [
+        "name" => "SelectEastOrWest",
+        "description" => clienttranslate('It\'s ${actplayer}\'s turn.'),
+        "descriptionmyturn" => clienttranslate('You\'ve get a rice. Select a east/west way to sow 3 cubes.'),
+        "type" => "activeplayer",
+        "possibleactions" => [ "actSelectEastOrWest" ],
+        "transitions" => [ "" => 30 ]
+    ],
+
+    22 => [
+        "name" => "SelectStreet",
+        "description" => clienttranslate('It\'s ${actplayer}\'s turn.'),
+        "descriptionmyturn" => clienttranslate('Select a street.'),
+        "type" => "activeplayer",
+        "possibleactions" => [ "actSelectStreet" ],
+        "transitions" => [ "" => 23 ]
+    ],
+
+    23 => [
+        "name" => "SowCubes",
+        "description" => clienttranslate('It\'s ${actplayer}\'s turn.'),
+        "descriptionmyturn" => clienttranslate('Sow cubes.'),
+        "type" => "activeplayer",
+        "possibleactions" => [ "actSowCubes" ],
+        "transitions" => [ "" => 30 ]
+    ],
+
+    30 => [
+        "name" => "TurnEnd",
+        "description" => clienttranslate('Turn end.'),
+        "descriptionmyturn" => clienttranslate('Turn end.'),
+        "type" => "game",
+        "action" => [ "stTurnEnd" ],
+        "updateGameProgression" => true,
+        "transitions" => [
+          "next" => 10,
+          "triggerEvent" => 31,
+          "end" => 99
+        ]
+    ],
+
+    31 => [
+        "name" => "HistoryEvent",
+        "description" => clienttranslate('History event phase.'),
+        "descriptionmyturn" => clienttranslate('History event phase.'),
+        "type" => "game",
+        "action" => [ "stHistoryEvent" ],
+        "transitions" => [
+          "next" => 10,
+          "eventTriggerPlayer" => 32
+        ]
+    ],
+
+    32 => [
+        "name" => "Player1Event",
+        "description" => clienttranslate('It\'s ${actplayer}\'s event turn.'),
+        "descriptionmyturn" => clienttranslate('Event phase.'),
+        "type" => "activeplayer",
+        "possibleactions" => [ "actPlayerEvent" ],
+        "transitions" => [
+          "next" => 10,
+          "eventNextPlayer" => 33
+        ]
+    ],
+
+    33 => [
+        "name" => "Player2Event",
+        "description" => clienttranslate('It\'s ${actplayer}\'s event turn.'),
+        "descriptionmyturn" => clienttranslate('Event phase.'),
+        "type" => "activeplayer",
+        "possibleactions" => [ "actPlayerEvent" ],
+        "transitions" => [ "" => 10 ]
     ],
 
     // Final state.
@@ -98,6 +184,3 @@ $machinestates = [
     ],
 
 ];
-
-
-

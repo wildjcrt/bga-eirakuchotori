@@ -34,6 +34,8 @@ function print_msg($txt, $color = 'black')
   }
 }
 
+use \Bga\GameFramework\Actions\Types\IntArrayParam;
+
 class Game extends \Table
 {
     private static array $CARD_TYPES;
@@ -177,9 +179,10 @@ class Game extends \Table
     //     $this->gamestate->nextState("playCard");
     // }
 
-    public function actInitialCubes(): void
+    // @param streetIds, array with 3 elements.
+    public function actInitialCubes(#[IntArrayParam(min: 3, max: 3)] array $streetIds): void
     {
-
+      print_msg($streetIds);
     }
 
     public function actChooseAction(): void

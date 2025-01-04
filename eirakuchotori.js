@@ -255,13 +255,18 @@ function (dojo, declare) {
 
                         // bind click event on all streets
                         dojo.connect(node, 'onclick', function(e) {
-                            const selectedCount = dojo.query('.street.border-red-500.border-4').length;
+                            let selectedCount = dojo.query('.street.border-red-500.border-4').length;
 
-                            if(dojo.hasClass(node, 'available')) {
-                                if(selectedCount < 3) {
+                            if (dojo.hasClass(node, 'available')) {
+                                if (selectedCount < 3) {
                                     dojo.addClass(node, 'border-4');
                                     dojo.addClass(node, 'border-red-500');
                                     dojo.removeClass(node, 'available');
+
+                                    selectedCount = dojo.query('.street.border-red-500.border-4').length;
+                                    if (selectedCount === 3) {
+                                        dojo.removeClass('confirm-btn', 'disabled');
+                                    }
                                 }
                             } else {
                                 const availableNodes = dojo.query('.street.available').map(n => n);
@@ -323,15 +328,10 @@ function (dojo, declare) {
             {
                 switch( stateName )
                 {
-                 case 'playerTurn':
-                    const playableCardsIds = args.playableCardsIds; // returned by the argPlayerTurn
-
-                    // Add test action buttons in the action status bar, simulating a card click:
-                    playableCardsIds.forEach(
-                        cardId => this.addActionButton(`actPlayCard${cardId}-btn`, _('Play card with id ${card_id}').replace('${card_id}', cardId), () => this.onCardClick(cardId))
-                    );
-
-                    this.addActionButton('actPass-btn', _('Pass'), () => this.bgaPerformAction("actPass"), null, null, 'gray');
+                case 'Player1InitialCubes':
+                case 'Player2InitialCubes':
+                    this.addActionButton('confirm-btn', _('Confirm'), () => this.bgaPerformAction("onConfirm"));
+                    dojo.addClass('confirm-btn', 'disabled');
                     break;
                 }
             }

@@ -330,7 +330,7 @@ function (dojo, declare) {
                 {
                 case 'Player1InitialCubes':
                 case 'Player2InitialCubes':
-                    this.addActionButton('confirm-btn', _('Confirm'), () => this.bgaPerformAction("onConfirm"));
+                    this.addActionButton('confirm-btn', _('Confirm'), () => this.onConfirm(stateName));
                     dojo.addClass('confirm-btn', 'disabled');
                     break;
                 }
@@ -364,16 +364,31 @@ function (dojo, declare) {
 
         // Example:
 
-        onCardClick: function( card_id )
+        onConfirm: function(stateName)
         {
-            console.log( 'onCardClick', card_id );
+            console.log( `onConfirm: ${stateName}` );
 
-            this.bgaPerformAction("actPlayCard", {
-                card_id,
-            }).then(() =>  {
-                // What to do after the server call if it succeeded
-                // (most of the time, nothing, as the game will react to notifs / change of state instead)
-            });
+            if( this.isCurrentPlayerActive() )
+            {
+                switch( stateName )
+                {
+                case 'Player1InitialCubes':
+                case 'Player2InitialCubes':
+                    try {
+                        const streetIds = dojo.query('.border-red-500.border-4').map(n => n.id.replace('street-', ''));
+
+                        if (streetIds.length !== 3) {
+                            throw new Error('Please select exactly 3 streets.');
+                        }
+
+                        this.bgaPerformAction("actInitialCubes", { streetIds: streetIds.join(',') });
+                    } catch (error) {
+                        this.showMessage(_('Please select exactly 3 streets.') , 'error');
+                        console.error(error.message);
+                    }
+                    break;
+                }
+            }
         },
 
 

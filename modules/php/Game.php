@@ -398,7 +398,7 @@ class Game extends \Table
      * - when the game starts
      * - when a player refreshes the game page (F5)
      */
-    protected function getAllDatas()
+    protected function getAllDatas(): array
     {
         $result = [];
 

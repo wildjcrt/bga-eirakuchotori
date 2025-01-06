@@ -332,32 +332,86 @@ class Game extends \Table
 
     /**
      * @param $card_id is in 1-14 and 1908, 1920, 1923, 1931, 1945, 1947
-     * @param $yellow_tokens
-     * @param $blue_tokens
      * @param $merchant should be a player_id
      */
-    function updateCardRecord($card_id, $yellow_tokens = null, $blue_tokens = null, $merchant = 0)
+    function updateCardRecord($card_id, $merchant = 0) 
     {
-      if ($yellow_tokens !== null) {
-        $sql = "UPDATE cards
-                SET yellow_tokens = $yellow_tokens
-                WHERE card_id = $card_id";
-        self::DbQuery($sql);
-      }
+        $valid_card_ids = [
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+            1908, 1920, 1923, 1931, 1945, 1947
+        ];
+        
+        if (!in_array($card_id, $valid_card_ids)) {
+            throw new \BgaVisibleSystemException("Invalid param card_id: $card_id in updateCardRecord()");
+            return;
+        }
 
-      if ($blue_tokens !== null) {
+        $sql = "SELECT player_id, player_color FROM player";
+        $players = self::getObjectListFromDB($sql);
+        
+        $yellow_player_id = null;
+        $blue_player_id = null;
+        foreach ($players as $player) {
+            if ($player['player_color'] == 'ffff00') {
+                $yellow_player_id = $player['player_id'];
+            }
+            if ($player['player_color'] == '2323ff') {
+                $blue_player_id = $player['player_id'];
+            }
+        }
+    
         $sql = "UPDATE cards
-                SET blue_tokens = $blue_tokens
-                WHERE card_id = $card_id";
+                SET yellow_tokens = (
+                    SELECT COUNT(tokens.token_id) FROM tokens
+                    WHERE tokens.position_uid = $card_id 
+                      AND tokens.player_id = $yellow_player_id)
+                WHERE cards.card_id = $card_id";
         self::DbQuery($sql);
-      }
+    
+        $sql = "UPDATE cards
+                SET blue_tokens = (
+                    SELECT COUNT(tokens.token_id) FROM tokens
+                    WHERE tokens.position_type = 'street'
+                      AND tokens.player_id = $blue_player_id)
+                WHERE cards.card_id = $card_id";
+        self::DbQuery($sql);
+    
+        if ($merchant != 0) {
+            $sql = "UPDATE cards 
+                    SET merchant = $merchant 
+                    WHERE card_id = $card_id";
+            self::DbQuery($sql);
+        }
+    }
 
-      if ($merchant != 0) {
-        $sql = "UPDATE cards
-                SET merchant = $merchant
-                WHERE card_id = $card_id";
+    /**
+     * @param $player_id
+     * @param $token_id
+     * @param $position_type
+     * @param $position_uid
+     */
+    function updateTokenRecord($player_id, $token_id, $position_type, $position_uid)
+    {
+        $sql = "UPDATE tokens
+                SET position_type = '$position_type',
+                    position_uid = '$position_uid'
+                WHERE token_id = $token_id
+                  AND player_id = $player_id";
         self::DbQuery($sql);
-      }
+    }
+
+    /**
+     * @param $player_id
+     * Return the smallest available token_id
+     */
+    function getAvailableTokenId($player_id)
+    {
+        $sql = "SELECT MIN(token_id) FROM tokens 
+                WHERE player_id = $player_id 
+                  AND position_type = 'reserve'";
+        $token_id = self::getUniqueValueFromDb($sql);
+        
+        return $token_id;
     }
 
     /**

@@ -182,7 +182,15 @@ class Game extends \Table
     // @param streetIds, array with 3 elements.
     public function actInitialCubes(#[IntArrayParam(min: 3, max: 3)] array $streetIds): void
     {
-      print_msg($streetIds);
+        $player_id = (int)$this->getActivePlayerId();
+
+        foreach ($streetIds as $streetId) {
+            $token_id = self::getAvailableTokenId($player_id);
+            self::updateTokenRecord($player_id, $token_id, 'street', $streetId);
+            self::updateCardRecord($streetId);
+        }
+
+        $this->gamestate->nextState();
     }
 
     public function actChooseAction(): void
@@ -260,7 +268,7 @@ class Game extends \Table
 
         // Go to another gamestate
         // Here, we would detect if the game is over, and in this case use "endGame" transition instead
-        $this->gamestate->nextState("nextPlayer");
+        $this->gamestate->nextState();
     }
 
     public function stTurnEnd(): void {

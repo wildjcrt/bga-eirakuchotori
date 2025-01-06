@@ -72,6 +72,15 @@ $machinestates = [
     ],
 
     3 => [
+        "name" => "SetupNextPlayer",
+        "description" => "",
+        "type" => "game",
+        "action" => [ "stNextPlayer" ],
+        "updateGameProgression" => true,
+        "transitions" => [ "" => 4 ]
+    ],
+
+    4 => [
       "name" => "Player2InitialCubes",
       "description" => clienttranslate('${actplayer} puts 3 initial cubes.'),
       "descriptionmyturn" => clienttranslate('Your turn. Click 3 different streets to put your cubes.'),

@@ -400,283 +400,283 @@
 /* score END */
 
 /* warehouse START */
-.yellow.cube.Rice1 {
+#warehouse-1 .cube.rice1 {
   top: 88px;
   left: 306px;
 }
 
-.yellow.cube.Rice2 {
+#warehouse-1 .cube.rice2 {
   top: 60px;
   left: 306px;
 }
 
-.yellow.cube.Rice3 {
+#warehouse-1 .cube.rice3 {
   top: 32px;
   left: 306px;
 }
 
-.yellow.cube.Rice4 {
+#warehouse-1 .cube.rice4 {
   top: 4px;
   left: 306px;
 }
 
-.yellow.cube.Sugar1 {
+#warehouse-1 .cube.sugar1 {
   top: 88px;
   left: 339px;
 }
 
-.yellow.cube.Sugar2 {
+#warehouse-1 .cube.sugar2 {
   top: 60px;
   left: 339px;
 }
 
-.yellow.cube.Sugar3 {
+#warehouse-1 .cube.sugar3 {
   top: 32px;
   left: 339px;
 }
 
-.yellow.cube.Sugar4 {
+#warehouse-1 .cube.sugar4 {
   top: 4px;
   left: 339px;
 }
 
-.yellow.cube.Camphor1 {
+#warehouse-1 .cube.camphor1 {
   top: 88px;
   left: 372px;
 }
 
-.yellow.cube.Camphor2 {
+#warehouse-1 .cube.camphor2 {
   top: 60px;
   left: 372px;
 }
 
-.yellow.cube.Camphor3 {
+#warehouse-1 .cube.camphor3 {
   top: 32px;
   left: 372px;
 }
 
-.yellow.cube.Camphor4 {
+#warehouse-1 .cube.camphor4 {
   top: 4px;
   left: 372px;
 }
 
-.yellow.cube.Tea1 {
+#warehouse-1 .cube.tea1 {
   top: 88px;
   left: 405px;
 }
 
-.yellow.cube.Tea2 {
+#warehouse-1 .cube.tea2 {
   top: 60px;
   left: 405px;
 }
 
-.yellow.cube.Tea3 {
+#warehouse-1 .cube.tea3 {
   top: 32px;
   left: 405px;
 }
 
-.yellow.cube.Tea4 {
+#warehouse-1 .cube.tea4 {
   top: 4px;
   left: 405px;
 }
 
-.yellow.cube.Groceries1 {
+#warehouse-1 .cube.groceries1 {
   top: 88px;
   left: 443px;
 }
 
-.yellow.cube.Groceries2 {
+#warehouse-1 .cube.groceries2 {
   top: 60px;
   left: 443px;
 }
 
-.yellow.cube.Groceries3 {
+#warehouse-1 .cube.groceries3 {
   top: 32px;
   left: 443px;
 }
 
-.yellow.cube.Groceries4 {
+#warehouse-1 .cube.groceries4 {
   top: 4px;
   left: 443px;
 }
 
-.yellow.cube.Fabric1 {
+#warehouse-1 .cube.fabric1 {
   top: 88px;
   left: 473px;
 }
 
-.yellow.cube.Fabric2 {
+#warehouse-1 .cube.fabric2 {
   top: 60px;
   left: 473px;
 }
 
-.yellow.cube.Fabric3 {
+#warehouse-1 .cube.fabric3 {
   top: 32px;
   left: 473px;
 }
 
-.yellow.cube.Fabric4 {
+#warehouse-1 .cube.fabric4 {
   top: 4px;
   left: 473px;
 }
 
-.yellow.cube.Ginseng1 {
+#warehouse-1 .cube.ginseng1 {
   top: 88px;
   left: 503px;
 }
 
-.yellow.cube.Ginseng2 {
+#warehouse-1 .cube.ginseng2 {
   top: 60px;
   left: 503px;
 }
 
-.yellow.cube.Ginseng3 {
+#warehouse-1 .cube.ginseng3 {
   top: 32px;
   left: 503px;
 }
 
-.yellow.cube.Ginseng4 {
+#warehouse-1 .cube.ginseng4 {
   top: 4px;
   left: 503px;
 }
 
-.blue.cube.Rice1 {
-  top: 838px;
+#warehouse-2 .cube.rice1 {
+  top: 854px;
   left: 306px;
 }
 
-.blue.cube.Rice2 {
-  top: 810px;
+#warehouse-2 .cube.rice2 {
+  top: 826px;
   left: 306px;
 }
 
-.blue.cube.Rice3 {
-  top: 782px;
+#warehouse-2 .cube.rice3 {
+  top: 798px;
   left: 306px;
 }
 
-.blue.cube.Rice4 {
-  top: 754px;
+#warehouse-2 .cube.rice4 {
+  top: 770px;
   left: 306px;
 }
 
-.blue.cube.Sugar1 {
-  top: 838px;
+#warehouse-2 .cube.sugar1 {
+  top: 854px;
   left: 339px;
 }
 
-.blue.cube.Sugar2 {
-  top: 810px;
+#warehouse-2 .cube.sugar2 {
+  top: 826px;
   left: 339px;
 }
 
-.blue.cube.Sugar3 {
-  top: 782px;
+#warehouse-2 .cube.sugar3 {
+  top: 798px;
   left: 339px;
 }
 
-.blue.cube.Sugar4 {
-  top: 754px;
+#warehouse-2 .cube.sugar4 {
+  top: 770px;
   left: 339px;
 }
 
-.blue.cube.Camphor1 {
-  top: 838px;
+#warehouse-2 .cube.camphor1 {
+  top: 854px;
   left: 372px;
 }
 
-.blue.cube.Camphor2 {
-  top: 810px;
+#warehouse-2 .cube.camphor2 {
+  top: 826px;
   left: 372px;
 }
 
-.blue.cube.Camphor3 {
-  top: 782px;
+#warehouse-2 .cube.camphor3 {
+  top: 798px;
   left: 372px;
 }
 
-.blue.cube.Camphor4 {
-  top: 754px;
+#warehouse-2 .cube.camphor4 {
+  top: 770px;
   left: 372px;
 }
 
-.blue.cube.Tea1 {
-  top: 838px;
+#warehouse-2 .cube.tea1 {
+  top: 854px;
   left: 405px;
 }
 
-.blue.cube.Tea2 {
-  top: 810px;
+#warehouse-2 .cube.tea2 {
+  top: 826px;
   left: 405px;
 }
 
-.blue.cube.Tea3 {
-  top: 782px;
+#warehouse-2 .cube.tea3 {
+  top: 798px;
   left: 405px;
 }
 
-.blue.cube.Tea4 {
-  top: 754px;
+#warehouse-2 .cube.tea4 {
+  top: 770px;
   left: 405px;
 }
 
-.blue.cube.Groceries1 {
-  top: 838px;
+#warehouse-2 .cube.groceries1 {
+  top: 854px;
   left: 443px;
 }
 
-.blue.cube.Groceries2 {
-  top: 810px;
+#warehouse-2 .cube.groceries2 {
+  top: 826px;
   left: 443px;
 }
 
-.blue.cube.Groceries3 {
-  top: 782px;
+#warehouse-2 .cube.groceries3 {
+  top: 798px;
   left: 443px;
 }
 
-.blue.cube.Groceries4 {
-  top: 754px;
+#warehouse-2 .cube.groceries4 {
+  top: 770px;
   left: 443px;
 }
 
-.blue.cube.Fabric1 {
-  top: 838px;
+#warehouse-2 .cube.fabric1 {
+  top: 854px;
   left: 473px;
 }
 
-.blue.cube.Fabric2 {
-  top: 810px;
+#warehouse-2 .cube.fabric2 {
+  top: 826px;
   left: 473px;
 }
 
-.blue.cube.Fabric3 {
-  top: 782px;
+#warehouse-2 .cube.fabric3 {
+  top: 798px;
   left: 473px;
 }
 
-.blue.cube.Fabric4 {
-  top: 754px;
+#warehouse-2 .cube.fabric4 {
+  top: 770px;
   left: 473px;
 }
 
-.blue.cube.Ginseng1 {
-  top: 838px;
+#warehouse-2 .cube.ginseng1 {
+  top: 854px;
   left: 503px;
 }
 
-.blue.cube.Ginseng2 {
-  top: 810px;
+#warehouse-2 .cube.ginseng2 {
+  top: 826px;
   left: 503px;
 }
 
-.blue.cube.Ginseng3 {
-  top: 782px;
+#warehouse-2 .cube.ginseng3 {
+  top: 798px;
   left: 503px;
 }
 
-.blue.cube.Ginseng4 {
-  top: 754px;
+#warehouse-2 .cube.ginseng4 {
+  top: 770px;
   left: 503px;
 }
 /* warehouse END */

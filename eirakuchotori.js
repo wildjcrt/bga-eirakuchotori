@@ -60,7 +60,7 @@ function (dojo, declare) {
                   <div class="w-[120px] items-center justify-center"></div>
                   <div class="w-[120px] items-center justify-center"></div>
                   <div id="warehouse-1" class="resource w-[248px] h-[163px] bg-gray-200 col-span-2 items-center justify-center"></div>
-                  <div class="w-[150px] items-center justify-center pt-2">
+                  <div id="reserve-1" class="w-[150px] items-center justify-center pt-2">
                     <div class="yellow cube float-left"></div>
                     <div class="yellow cube float-left"></div>
                     <div class="yellow cube float-left"></div>
@@ -88,51 +88,79 @@ function (dojo, declare) {
                 <div class="bg-white p-2 mb-5">
                   <!-- 2nd Row -->
                   <div class="grid grid-cols-7 gap-2 mb-2">
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-28">
-                      <div class="merchant1 absolute"></div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
-                      <div class="merchant2 absolute"></div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
-                      <div class="merchant3 absolute"></div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
-                      <div class="merchant4 absolute"></div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
-                      <div class="merchant5 absolute"></div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
-                      <div class="merchant6 absolute"></div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
-                      <div class="merchant7 absolute"></div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
                   </div>
 
                   <!-- 3rd Row -->
                   <div class="grid grid-cols-7 gap-2">
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20 rotate-180">
-                      <div class="merchant8 absolute"></div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20 rotate-180">
-                      <div class="merchant9 absolute"></div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20 rotate-180">
-                      <div class="merchant10 absolute"></div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20 rotate-180">
-                      <div class="merchant11 absolute"></div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20 rotate-180">
-                      <div class="merchant12 absolute"></div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20 rotate-180">
-                      <div class="merchant13 absolute"></div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20 rotate-180">
-                      <div class="merchant14 absolute"></div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
                   </div>
                 </div>
@@ -141,7 +169,7 @@ function (dojo, declare) {
                 <div class="grid grid-cols-7 gap-2 mb-5">
                   <div class="items-center justify-center"></div>
                   <div class="event-area w-[120px] items-center justify-center px-3 py-10"></div>
-                  <div id="scores-goals-rest" class="resource w-[468px] h-[156px] bg-gray-200 items-center justify-center">
+                  <div id="scores-goals-rest" class="resource w-[468px] h-[156px] bg-gray-200 justify-center flex flex-col">
                     <div class="score0 yellow cube absolute"></div>
                     <div class="score0 blue cube absolute"></div>
                     <div class="rest-area">
@@ -164,7 +192,7 @@ function (dojo, declare) {
                   <div class="w-[120px] items-center justify-center"></div>
                   <div class="w-[120px] items-center justify-center"></div>
                   <div id="warehouse-2" class="resource w-[248px] h-[163px] bg-gray-200 col-span-2 items-center justify-center"></div>
-                  <div class="w-[150px] items-center justify-center pt-2">
+                  <div id="reserve-2" class="w-[150px] items-center justify-center pt-2">
                     <div class="blue cube float-left"></div>
                     <div class="blue cube float-left"></div>
                     <div class="blue cube float-left"></div>

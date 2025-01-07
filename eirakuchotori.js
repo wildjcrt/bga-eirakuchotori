@@ -60,28 +60,7 @@ function (dojo, declare) {
                   <div class="w-[120px] items-center justify-center"></div>
                   <div class="w-[120px] items-center justify-center"></div>
                   <div id="warehouse-1" class="resource w-[248px] h-[163px] bg-gray-200 col-span-2 items-center justify-center"></div>
-                  <div id="reserve-1" class="w-[150px] items-center justify-center pt-2">
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                  </div>
+                  <div id="reserve-1" class="w-[150px] items-center justify-center pt-2"></div>
                   <div class="w-[120px] items-center justify-center"></div>
                 </div>
 
@@ -192,28 +171,7 @@ function (dojo, declare) {
                   <div class="w-[120px] items-center justify-center"></div>
                   <div class="w-[120px] items-center justify-center"></div>
                   <div id="warehouse-2" class="resource w-[248px] h-[163px] bg-gray-200 col-span-2 items-center justify-center"></div>
-                  <div id="reserve-2" class="w-[150px] items-center justify-center pt-2">
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                  </div>
+                  <div id="reserve-2" class="w-[150px] items-center justify-center pt-2"></div>
                   <div class="w-[120px] items-center justify-center"></div>
                 </div>
 
@@ -240,6 +198,8 @@ function (dojo, declare) {
 
             // Setting up player boards
             Object.values(gamedatas.players).forEach(player => {
+                player.color_name = player.color === 'ffff00' ? 'yellow' : 'blue';
+
                 // example of setting up players boards
                 this.getPlayerPanelElement(player.id).insertAdjacentHTML('beforeend', `
                     <div id="player-counter-${player.id}">A player counter</div>
@@ -254,8 +214,249 @@ function (dojo, declare) {
                 `);
             });
 
-            // TODO: Set up your game interface here, according to "gamedatas"
-
+            let tokens = [
+              {
+                  "player_id": "2370542",
+                  "token_id": "1",
+                  "position_type": "street",
+                  "position_uid": "2"
+              },
+              {
+                  "player_id": "2370542",
+                  "token_id": "2",
+                  "position_type": "street",
+                  "position_uid": "4"
+              },
+              {
+                  "player_id": "2370542",
+                  "token_id": "3",
+                  "position_type": "street",
+                  "position_uid": "7"
+              },
+              {
+                  "player_id": "2370542",
+                  "token_id": "4",
+                  "position_type": "merchat",
+                  "position_uid": "8"
+              },
+              {
+                  "player_id": "2370542",
+                  "token_id": "5",
+                  "position_type": "event",
+                  "position_uid": "1945"
+              },
+              {
+                  "player_id": "2370542",
+                  "token_id": "6",
+                  "position_type": "event",
+                  "position_uid": "1945"
+              },
+              {
+                  "player_id": "2370542",
+                  "token_id": "7",
+                  "position_type": "event",
+                  "position_uid": "1945"
+              },
+              {
+                  "player_id": "2370542",
+                  "token_id": "8",
+                  "position_type": "rice",
+                  "position_uid": "2"
+              },
+              {
+                  "player_id": "2370542",
+                  "token_id": "9",
+                  "position_type": "sugar",
+                  "position_uid": "3"
+              },
+              {
+                  "player_id": "2370542",
+                  "token_id": "10",
+                  "position_type": "camphor",
+                  "position_uid": "1"
+              },
+              {
+                  "player_id": "2370542",
+                  "token_id": "11",
+                  "position_type": "tea",
+                  "position_uid": "1"
+              },
+              {
+                  "player_id": "2370542",
+                  "token_id": "12",
+                  "position_type": "groceries",
+                  "position_uid": "4"
+              },
+              {
+                  "player_id": "2370542",
+                  "token_id": "13",
+                  "position_type": "fabric",
+                  "position_uid": "3"
+              },
+              {
+                  "player_id": "2370542",
+                  "token_id": "14",
+                  "position_type": "ginseng",
+                  "position_uid": "4"
+              },
+              {
+                  "player_id": "2370542",
+                  "token_id": "15",
+                  "position_type": "rest",
+                  "position_uid": "3"
+              },
+              {
+                  "player_id": "2370542",
+                  "token_id": "16",
+                  "position_type": "rest",
+                  "position_uid": "2"
+              },
+              {
+                  "player_id": "2370542",
+                  "token_id": "17",
+                  "position_type": "goals",
+                  "position_uid": "warehouse24"
+              },
+              {
+                  "player_id": "2370542",
+                  "token_id": "18",
+                  "position_type": "goals",
+                  "position_uid": "export6"
+              },
+              {
+                  "player_id": "2370542",
+                  "token_id": "19",
+                  "position_type": "reserve",
+                  "position_uid": "0"
+              },
+              {
+                  "player_id": "2370542",
+                  "token_id": "20",
+                  "position_type": "reserve",
+                  "position_uid": "0"
+              },
+              {
+                  "player_id": "2370543",
+                  "token_id": "1",
+                  "position_type": "rest",
+                  "position_uid": "1"
+              },
+              {
+                  "player_id": "2370543",
+                  "token_id": "2",
+                  "position_type": "goals",
+                  "position_uid": "merchants3"
+              },
+              {
+                  "player_id": "2370543",
+                  "token_id": "3",
+                  "position_type": "event",
+                  "position_uid": "1945"
+              },
+              {
+                  "player_id": "2370543",
+                  "token_id": "4",
+                  "position_type": "event",
+                  "position_uid": "1945"
+              },
+              {
+                  "player_id": "2370543",
+                  "token_id": "5",
+                  "position_type": "event",
+                  "position_uid": "1945"
+              },
+              {
+                  "player_id": "2370543",
+                  "token_id": "6",
+                  "position_type": "reserve",
+                  "position_uid": "0"
+              },
+              {
+                  "player_id": "2370543",
+                  "token_id": "7",
+                  "position_type": "reserve",
+                  "position_uid": "0"
+              },
+              {
+                  "player_id": "2370543",
+                  "token_id": "8",
+                  "position_type": "reserve",
+                  "position_uid": "0"
+              },
+              {
+                  "player_id": "2370543",
+                  "token_id": "9",
+                  "position_type": "reserve",
+                  "position_uid": "0"
+              },
+              {
+                  "player_id": "2370543",
+                  "token_id": "10",
+                  "position_type": "reserve",
+                  "position_uid": "0"
+              },
+              {
+                  "player_id": "2370543",
+                  "token_id": "11",
+                  "position_type": "reserve",
+                  "position_uid": "0"
+              },
+              {
+                  "player_id": "2370543",
+                  "token_id": "12",
+                  "position_type": "reserve",
+                  "position_uid": "0"
+              },
+              {
+                  "player_id": "2370543",
+                  "token_id": "13",
+                  "position_type": "reserve",
+                  "position_uid": "0"
+              },
+              {
+                  "player_id": "2370543",
+                  "token_id": "14",
+                  "position_type": "reserve",
+                  "position_uid": "0"
+              },
+              {
+                  "player_id": "2370543",
+                  "token_id": "15",
+                  "position_type": "reserve",
+                  "position_uid": "0"
+              },
+              {
+                  "player_id": "2370543",
+                  "token_id": "16",
+                  "position_type": "reserve",
+                  "position_uid": "0"
+              },
+              {
+                  "player_id": "2370543",
+                  "token_id": "17",
+                  "position_type": "reserve",
+                  "position_uid": "0"
+              },
+              {
+                  "player_id": "2370543",
+                  "token_id": "18",
+                  "position_type": "reserve",
+                  "position_uid": "0"
+              },
+              {
+                  "player_id": "2370543",
+                  "token_id": "19",
+                  "position_type": "reserve",
+                  "position_uid": "0"
+              },
+              {
+                  "player_id": "2370543",
+                  "token_id": "20",
+                  "position_type": "reserve",
+                  "position_uid": "0"
+              }
+            ];
+            this.updatePlayerTables(tokens);
 
             // Setup game notifications to handle (see "setupNotifications" method below)
             this.setupNotifications();
@@ -378,7 +579,87 @@ function (dojo, declare) {
             script.
 
         */
+        updatePlayerTables: function(tokens) {
+            tokens.forEach(token => {
+                const cubeElement = document.createElement('div');
+                cubeElement.id = `${token.player_id}-${token.token_id}`;
+                cubeElement.classList.add('cube', this.gamedatas.players[token.player_id].color_name);
 
+                switch (token.position_type) {
+                    case 'street':
+                        const streetElement = document.getElementById(`street-${token.position_uid}`);
+                        if (streetElement) {
+                              const cubesArea = streetElement.querySelector('.cubes-area');
+                              cubeElement.classList.add('float-left');
+                              if (cubesArea) cubesArea.appendChild(cubeElement);
+                        }
+                        break;
+
+                    case 'merchat':
+                        const merchantStreet = document.getElementById(`street-${token.position_uid}`);
+                        if (merchantStreet) {
+                            const merchantArea = merchantStreet.querySelector('.merchant');
+                            if (merchantArea) merchantArea.appendChild(cubeElement);
+                        }
+                        break;
+
+                    case 'event':
+                        const eventArea = document.getElementById(`event-${token.position_uid}`);
+                        if (eventArea) {
+                            cubeElement.classList.add('float-left');
+                            eventArea.appendChild(cubeElement);
+                        }
+                        break;
+
+                    case 'rest':
+                        const restElement = document.querySelector(`.rest${token.position_uid}`);
+                        if (restElement) {
+                            cubeElement.classList.add('absolute');
+                            restElement.appendChild(cubeElement);
+                        }
+                        break;
+
+                    case 'goals':
+                        const goalElement = document.querySelector(`.${token.position_uid}`);
+                        if (goalElement) {
+                            cubeElement.classList.add('absolute');
+                            goalElement.appendChild(cubeElement);
+                        }
+                        break;
+
+                    case 'reserve':
+                        if (token.player_id === `${this.player_id}`) {
+                            const reserve1 = document.getElementById('reserve-1');
+                            if (reserve1) {
+                                cubeElement.classList.add('float-left');
+                                reserve1.appendChild(cubeElement);
+                            }
+                        } else {
+                            const reserve2 = document.getElementById('reserve-2');
+                            if (reserve2) {
+                                cubeElement.classList.add('float-left');
+                                reserve2.appendChild(cubeElement);
+                            }
+                        }
+                        break;
+
+                    case 'rice':
+                    case 'sugar':
+                    case 'camphor':
+                    case 'tea':
+                    case 'groceries':
+                    case 'fabric':
+                    case 'ginseng':
+                        const warehouseId = token.player_id === `${this.player_id}` ? 'warehouse-1' : 'warehouse-2';
+                        const warehouse = document.getElementById(warehouseId);
+                        if (warehouse) {
+                            cubeElement.classList.add('absolute', `${token.position_type}${token.position_uid}`);
+                            warehouse.appendChild(cubeElement);
+                        }
+                        break;
+                }
+           });
+        },
 
         ///////////////////////////////////////////////////
         //// Player's action

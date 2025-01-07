@@ -180,9 +180,9 @@ function (dojo, declare) {
                       <div class="rest5 absolute"></div>
                     </div>
                     <div class="goal-area">
-                      <div class="Merchants3 absolute"></div>
-                      <div class="Warehouse24 absolute"></div>
-                      <div class="Export6 absolute"></div>
+                      <div class="merchants3 absolute"></div>
+                      <div class="warehouse24 absolute"></div>
+                      <div class="export6 absolute"></div>
                     </div>
                   </div>
                 </div>

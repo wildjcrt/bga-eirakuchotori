@@ -15,6 +15,10 @@
  *
  */
 
+const AVAILABLE_STREET_CLASS = 'available border-4 border-amber-300';
+const SELECTED_STREET_CLASS = 'border-4 border-red-500';
+const DISABLED_STREET_CLASS = 'opacity-40';
+
 define([
     "dojo","dojo/_base/declare",
     "ebg/core/gamegui",
@@ -252,8 +256,7 @@ function (dojo, declare) {
 
                 if( this.isCurrentPlayerActive() ) {
                     dojo.query('.street').forEach(function(node) {
-                        // opacity-40 all streets
-                        dojo.addClass(node, 'available');
+                        dojo.addClass(node, AVAILABLE_STREET_CLASS);
 
                         // bind click event on all streets
                         dojo.connect(node, 'onclick', function(e) {
@@ -261,9 +264,8 @@ function (dojo, declare) {
 
                             if (dojo.hasClass(node, 'available')) {
                                 if (selectedCount < 3) {
-                                    dojo.addClass(node, 'border-4');
-                                    dojo.addClass(node, 'border-red-500');
-                                    dojo.removeClass(node, 'available');
+                                    dojo.removeClass(node, AVAILABLE_STREET_CLASS);
+                                    dojo.addClass(node, SELECTED_STREET_CLASS);
 
                                     selectedCount = dojo.query('.street.border-red-500.border-4').length;
                                     if (selectedCount === 3) {
@@ -272,8 +274,8 @@ function (dojo, declare) {
                                 }
                             } else {
                                 const availableNodes = dojo.query('.street.available').map(n => n);
-                                dojo.removeClass(node, 'border-4');
-                                dojo.removeClass(node, 'border-red-500');
+                                dojo.removeClass(node, SELECTED_STREET_CLASS);
+                                dojo.addClass(node, AVAILABLE_STREET_CLASS);
 
                                 // Here is for syncing css keyframes animation.
                                 availableNodes.forEach(n => n.classList.remove('available'));

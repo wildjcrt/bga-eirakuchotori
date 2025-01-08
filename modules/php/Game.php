@@ -182,6 +182,8 @@ class Game extends \Table
     // @param streetIds, array with 3 elements.
     public function actInitialCubes(#[IntArrayParam(min: 3, max: 3)] array $streetIds): void
     {
+        self::checkAction( 'actInitialCubes' );
+
         $player_id = (int)$this->getActivePlayerId();
 
         foreach ($streetIds as $streetId) {
@@ -195,26 +197,31 @@ class Game extends \Table
 
     public function actChooseAction(): void
     {
+        self::checkAction( 'actChooseAction' );
 
     }
 
     public function actSelectEastOrWest(): void
     {
+        self::checkAction( 'actSelectEastOrWest' );
 
     }
 
     public function actSelectStreet(): void
     {
+        self::checkAction( 'actSelectStreet' );
 
     }
 
     public function actSowCubes(): void
     {
+        self::checkAction( 'actSowCubes' );
 
     }
 
     public function actPlayerEvent(): void
     {
+        self::checkAction( 'actPlayerEvent' );
 
     }
 

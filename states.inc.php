@@ -75,7 +75,7 @@ $machinestates = [
         "name" => "SetupNextPlayer",
         "description" => "",
         "type" => "game",
-        "action" => [ "stNextPlayer" ],
+        "action" => "stNextPlayer",
         "updateGameProgression" => true,
         "transitions" => [ "" => 4 ]
     ],
@@ -94,7 +94,7 @@ $machinestates = [
         "description" => clienttranslate('It\'s ${actplayer}\'s turn.'),
         "descriptionmyturn" => clienttranslate('It\'s your turn.'),
         "type" => "game",
-        "action" => [ "stNextPlayer" ],
+        "action" => "stNextPlayer",
         "updateGameProgression" => true,
         "transitions" => [ "" => 20 ]
     ],
@@ -140,7 +140,7 @@ $machinestates = [
         "description" => clienttranslate('Turn end.'),
         "descriptionmyturn" => clienttranslate('Turn end.'),
         "type" => "game",
-        "action" => [ "stTurnEnd" ],
+        "action" => "stTurnEnd",
         "updateGameProgression" => true,
         "transitions" => [
           "next" => 10,
@@ -154,7 +154,7 @@ $machinestates = [
         "description" => clienttranslate('History event phase.'),
         "descriptionmyturn" => clienttranslate('History event phase.'),
         "type" => "game",
-        "action" => [ "stHistoryEvent" ],
+        "action" => "stHistoryEvent",
         "transitions" => [
           "next" => 10,
           "eventTriggerPlayer" => 32

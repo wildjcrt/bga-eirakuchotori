@@ -191,8 +191,13 @@ class Game extends \Table
             self::updateTokenRecord($player_id, $token_id, 'street', $streetId);
             self::updateCardRecord($streetId);
         }
-
-        $this->gamestate->nextState();
+        
+        $state = $this->gamestate->state();
+        if ($state['name'] == 'Player1InitialCubes') {
+            $this->gamestate->nextState( 'setupNext' );
+        } else {
+            $this->gamestate->nextState( 'setupComplete' );
+        }
     }
 
     public function actChooseAction(): void

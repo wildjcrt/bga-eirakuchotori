@@ -490,6 +490,8 @@ function (dojo, declare) {
             // dojo.subscribe( 'cardPlayed', this, "notif_cardPlayed" );
             // this.notifqueue.setSynchronous( 'cardPlayed', 3000 );
             //
+
+            dojo.subscribe( 'moveTokens', this, "notif_moveTokens" );
         },
 
         // TODO: from this point and below, you can write your game notifications handling methods
@@ -508,5 +510,9 @@ function (dojo, declare) {
         },
 
         */
+        notif_moveTokens: function( notif )
+        {
+            console.log( notif );
+        }
    });
 });

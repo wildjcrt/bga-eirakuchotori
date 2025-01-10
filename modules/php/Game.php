@@ -185,13 +185,26 @@ class Game extends \Table
         self::checkAction( 'actInitialCubes' );
 
         $player_id = (int)$this->getActivePlayerId();
+        $player_name = self::getActivePlayerName();
+        $sql = "SELECT player_color FROM player
+                WHERE player_id=$player_id";
 
         foreach ($streetIds as $streetId) {
-            $token_id = self::getAvailableTokenId($player_id);
-            self::updateTokenRecord($player_id, $token_id, 'street', $streetId);
+            $token = self::getAvailableToken($player_id);
+            self::updateTokenRecord($player_id, $token['token_id'], 'street', $streetId);
             self::updateCardRecord($streetId);
-        }
         
+            self::notifyAllPlayers(
+                "moveTokens",
+                clienttranslate( '${player_name} move cube ${cube_id} from reserve to ${after_move}.' ),
+                [
+                    'player_name' => $player_name,
+                    'cube_id' => $token['token_id'],
+                    'after_move' => 'street-' . $streetId
+                ]
+            );  
+        }
+
         $state = $this->gamestate->state();
         if ($state['name'] == 'Player1InitialCubes') {
             $this->gamestate->nextState( 'setupNext' );
@@ -422,16 +435,18 @@ class Game extends \Table
 
     /**
      * @param $player_id
-     * Return the smallest available token_id
+     * Return the smallest available token record
      */
-    function getAvailableTokenId($player_id)
+    function getAvailableToken($player_id)
     {
-        $sql = "SELECT MIN(token_id) FROM tokens 
+        $sql = "SELECT * FROM tokens 
                 WHERE player_id = $player_id 
-                  AND position_type = 'reserve'";
-        $token_id = self::getUniqueValueFromDb($sql);
+                  AND position_type = 'reserve'
+                ORDER BY token_id
+                LIMIT 1";
+        $result = self::getObjectFromDB($sql);
         
-        return $token_id;
+        return $result;
     }
 
     /**

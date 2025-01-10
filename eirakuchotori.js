@@ -338,6 +338,8 @@ function (dojo, declare) {
 
         */
         updatePlayerTables: function(cubes) {
+            document.querySelectorAll('.cube').forEach(element => element.remove());
+
             cubes.forEach(cube => {
                 const cubeElement = document.createElement('div');
                 cubeElement.id = `${cube.player_id}-${cube.cube_id}`;

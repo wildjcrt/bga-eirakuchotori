@@ -251,12 +251,14 @@ class Game extends \Table
      * @return array
      * @see ./states.inc.php
      */
-    public function argPlayerTurn(): array
+    public function argInitialCubes(): array
     {
-        // Get some values from the current game situation from the database.
+
+        $sql = "SELECT * FROM cubes";
+        $cubes = self::getObjectListFromDB($sql);
 
         return [
-            "playableCardsIds" => [1, 2],
+            "cubes" => $cubes
         ];
     }
 
@@ -505,9 +507,6 @@ class Game extends \Table
 
         $sql = "SELECT * FROM cards";
         $result['cards'] = self::getObjectListFromDB($sql);
-
-        $sql = "SELECT * FROM cubes";
-        $result['cubes'] = self::getObjectListFromDB($sql);
 
         $sql = "SELECT * FROM player_info";
         $result['player_info'] = self::getObjectListFromDB($sql);

@@ -214,8 +214,6 @@ function (dojo, declare) {
                 `);
             });
 
-            this.updatePlayerTables(gamedatas.tokens);
-
             // Setup game notifications to handle (see "setupNotifications" method below)
             this.setupNotifications();
 
@@ -231,7 +229,7 @@ function (dojo, declare) {
         //
         onEnteringState: function( stateName, args )
         {
-            console.log( `Entering state: $stateName`, args );
+            console.log( `Entering state: ${stateName}`, args );
 
             this.updatePageTitle();
 
@@ -240,6 +238,7 @@ function (dojo, declare) {
 
             case 'Player1InitialCubes':
             case 'Player2InitialCubes':
+                this.updatePlayerTables(args.args.cubes);
 
                 if( this.isCurrentPlayerActive() ) {
                     dojo.query('.street').forEach(function(node) {
@@ -287,7 +286,7 @@ function (dojo, declare) {
         //
         onLeavingState: function( stateName )
         {
-            console.log( `Leaving state: $stateName` );
+            console.log( `Leaving state: ${stateName}` );
 
             switch( stateName )
             {
@@ -313,7 +312,7 @@ function (dojo, declare) {
         //
         onUpdateActionButtons: function( stateName, args )
         {
-            console.log( 'onUpdateActionButtons: '+stateName, args );
+            console.log( `onUpdateActionButtons: ${stateName}`, args );
 
             if( this.isCurrentPlayerActive() )
             {

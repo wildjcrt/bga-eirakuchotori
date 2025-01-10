@@ -67,6 +67,7 @@ $machinestates = [
       "description" => clienttranslate('${actplayer} puts 3 initial cubes.'),
       "descriptionmyturn" => clienttranslate('Your turn. Click 3 different streets to put your cubes.'),
       "type" => "activeplayer",
+      "args" => "argInitialCubes",
       "possibleactions" => [ "actInitialCubes" ],
       "transitions" => [ "setupNext" => 3 ]
     ],
@@ -85,6 +86,7 @@ $machinestates = [
       "description" => clienttranslate('${actplayer} puts 3 initial cubes.'),
       "descriptionmyturn" => clienttranslate('Your turn. Click 3 different streets to put your cubes.'),
       "type" => "activeplayer",
+      "args" => "argInitialCubes",
       "possibleactions" => [ "actInitialCubes" ],
       "transitions" => [ "setupComplete" => 10 ]
     ],

@@ -18,6 +18,7 @@
 const AVAILABLE_STREET_CLASS = 'available border-4 border-amber-300';
 const SELECTED_STREET_CLASS = 'border-4 border-red-500';
 const DISABLED_STREET_CLASS = 'opacity-40';
+const CLEAR_STREET_CLASS = 'street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col';
 
 define([
     "dojo","dojo/_base/declare",
@@ -461,6 +462,15 @@ function (dojo, declare) {
                     break;
                 }
             }
+
+            document.querySelectorAll('.street').forEach(streetElement => {
+                streetElement.className = '';
+                streetElement.className = CLEAR_STREET_CLASS;
+
+                if (streetElement.closest('.grid-cols-7:last-child')) {
+                    streetElement.classList.add('rotate-180');
+                }
+            });
         },
 
 
@@ -514,6 +524,7 @@ function (dojo, declare) {
         notif_moveCubes: function( notif )
         {
             console.log( notif );
+
         }
    });
 });

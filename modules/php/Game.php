@@ -190,16 +190,16 @@ class Game extends \Table
                 WHERE player_id=$player_id";
 
         foreach ($streetIds as $streetId) {
-            $token = self::getAvailableToken($player_id);
-            self::updateTokenRecord($player_id, $token['token_id'], 'street', $streetId);
+            $cube = self::getAvailableCube($player_id);
+            self::updateCubeRecord($player_id, $cube['cube_id'], 'street', $streetId);
             self::updateCardRecord($streetId);
         
             self::notifyAllPlayers(
-                "moveTokens",
+                "moveCubes",
                 clienttranslate( '${player_name} move cube ${cube_id} from reserve to ${after_move}.' ),
                 [
                     'player_name' => $player_name,
-                    'cube_id' => $token['token_id'],
+                    'cube_id' => $cube['cube_id'],
                     'after_move' => 'street-' . $streetId
                 ]
             );  
@@ -394,18 +394,18 @@ class Game extends \Table
         }
     
         $sql = "UPDATE cards
-                SET yellow_tokens = (
-                    SELECT COUNT(tokens.token_id) FROM tokens
-                    WHERE tokens.position_uid = $card_id 
-                      AND tokens.player_id = $yellow_player_id)
+                SET yellow_cubes = (
+                    SELECT COUNT(cubes.cube_id) FROM cubes
+                    WHERE cubes.position_uid = $card_id 
+                      AND cubes.player_id = $yellow_player_id)
                 WHERE cards.card_id = $card_id";
         self::DbQuery($sql);
     
         $sql = "UPDATE cards
-                SET blue_tokens = (
-                    SELECT COUNT(tokens.token_id) FROM tokens
-                    WHERE tokens.position_type = 'street'
-                      AND tokens.player_id = $blue_player_id)
+                SET blue_cubes = (
+                    SELECT COUNT(cubes.cube_id) FROM cubes
+                    WHERE cubes.position_type = 'street'
+                      AND cubes.player_id = $blue_player_id)
                 WHERE cards.card_id = $card_id";
         self::DbQuery($sql);
     
@@ -419,30 +419,30 @@ class Game extends \Table
 
     /**
      * @param $player_id
-     * @param $token_id
+     * @param $cube_id
      * @param $position_type
      * @param $position_uid
      */
-    function updateTokenRecord($player_id, $token_id, $position_type, $position_uid)
+    function updateCubeRecord($player_id, $cube_id, $position_type, $position_uid)
     {
-        $sql = "UPDATE tokens
+        $sql = "UPDATE cubes
                 SET position_type = '$position_type',
                     position_uid = '$position_uid'
-                WHERE token_id = $token_id
+                WHERE cube_id = $cube_id
                   AND player_id = $player_id";
         self::DbQuery($sql);
     }
 
     /**
      * @param $player_id
-     * Return the smallest available token record
+     * Return the smallest available cube record
      */
-    function getAvailableToken($player_id)
+    function getAvailableCube($player_id)
     {
-        $sql = "SELECT * FROM tokens 
+        $sql = "SELECT * FROM cubes 
                 WHERE player_id = $player_id 
                   AND position_type = 'reserve'
-                ORDER BY token_id
+                ORDER BY cube_id
                 LIMIT 1";
         $result = self::getObjectFromDB($sql);
         
@@ -506,8 +506,8 @@ class Game extends \Table
         $sql = "SELECT * FROM cards";
         $result['cards'] = self::getObjectListFromDB($sql);
 
-        $sql = "SELECT * FROM tokens";
-        $result['tokens'] = self::getObjectListFromDB($sql);
+        $sql = "SELECT * FROM cubes";
+        $result['cubes'] = self::getObjectListFromDB($sql);
 
         $sql = "SELECT * FROM player_info";
         $result['player_info'] = self::getObjectListFromDB($sql);
@@ -553,11 +553,11 @@ class Game extends \Table
                     VALUES ($player_id);";
             self::DbQuery($sql);
 
-            // Create 20 tokens records for player in tokens table
-            $tokens = range(1, 20);
-            foreach ($tokens as $token_id) {
-              $sql = "INSERT INTO tokens (player_id, token_id, position_type, position_uid)
-                      VALUES ($player_id, $token_id, 'reserve', 0);";
+            // Create 20 cubes records for player in cubes table
+            $cubes = range(1, 20);
+            foreach ($cubes as $cube_id) {
+              $sql = "INSERT INTO cubes (player_id, cube_id, position_type, position_uid)
+                      VALUES ($player_id, $cube_id, 'reserve', 0);";
               self::DbQuery($sql);
             }
         }

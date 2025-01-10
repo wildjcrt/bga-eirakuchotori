@@ -149,8 +149,8 @@ function (dojo, declare) {
                   <div class="items-center justify-center"></div>
                   <div class="event-area w-[120px] items-center justify-center px-3 py-10"></div>
                   <div id="scores-goals-rest" class="resource w-[468px] h-[156px] bg-gray-200 justify-center flex flex-col">
-                    <div class="score0 yellow cube absolute"></div>
-                    <div class="score0 blue cube absolute"></div>
+                    <div class="score0 yellow marker absolute"></div>
+                    <div class="score0 blue marker absolute"></div>
                     <div class="rest-area">
                       <div class="rest1 absolute"></div>
                       <div class="rest2 absolute"></div>
@@ -337,15 +337,15 @@ function (dojo, declare) {
             script.
 
         */
-        updatePlayerTables: function(tokens) {
-            tokens.forEach(token => {
+        updatePlayerTables: function(cubes) {
+            cubes.forEach(cube => {
                 const cubeElement = document.createElement('div');
-                cubeElement.id = `${token.player_id}-${token.token_id}`;
-                cubeElement.classList.add('cube', this.gamedatas.players[token.player_id].color_name);
+                cubeElement.id = `${cube.player_id}-${cube.cube_id}`;
+                cubeElement.classList.add('cube', this.gamedatas.players[cube.player_id].color_name);
 
-                switch (token.position_type) {
+                switch (cube.position_type) {
                     case 'street':
-                        const streetElement = document.getElementById(`street-${token.position_uid}`);
+                        const streetElement = document.getElementById(`street-${cube.position_uid}`);
                         if (streetElement) {
                               const cubesArea = streetElement.querySelector('.cubes-area');
                               cubeElement.classList.add('float-left');
@@ -354,7 +354,7 @@ function (dojo, declare) {
                         break;
 
                     case 'merchat':
-                        const merchantStreet = document.getElementById(`street-${token.position_uid}`);
+                        const merchantStreet = document.getElementById(`street-${cube.position_uid}`);
                         if (merchantStreet) {
                             const merchantArea = merchantStreet.querySelector('.merchant');
                             if (merchantArea) merchantArea.appendChild(cubeElement);
@@ -362,7 +362,7 @@ function (dojo, declare) {
                         break;
 
                     case 'event':
-                        const eventArea = document.getElementById(`event-${token.position_uid}`);
+                        const eventArea = document.getElementById(`event-${cube.position_uid}`);
                         if (eventArea) {
                             cubeElement.classList.add('float-left');
                             eventArea.appendChild(cubeElement);
@@ -370,7 +370,7 @@ function (dojo, declare) {
                         break;
 
                     case 'rest':
-                        const restElement = document.querySelector(`.rest${token.position_uid}`);
+                        const restElement = document.querySelector(`.rest${cube.position_uid}`);
                         if (restElement) {
                             cubeElement.classList.add('absolute');
                             restElement.appendChild(cubeElement);
@@ -378,7 +378,7 @@ function (dojo, declare) {
                         break;
 
                     case 'goals':
-                        const goalElement = document.querySelector(`.${token.position_uid}`);
+                        const goalElement = document.querySelector(`.${cube.position_uid}`);
                         if (goalElement) {
                             cubeElement.classList.add('absolute');
                             goalElement.appendChild(cubeElement);
@@ -386,7 +386,7 @@ function (dojo, declare) {
                         break;
 
                     case 'reserve':
-                        if (token.player_id === `${this.player_id}`) {
+                        if (cube.player_id === `${this.player_id}`) {
                             const reserve1 = document.getElementById('reserve-1');
                             if (reserve1) {
                                 cubeElement.classList.add('float-left');
@@ -408,10 +408,10 @@ function (dojo, declare) {
                     case 'groceries':
                     case 'fabric':
                     case 'ginseng':
-                        const warehouseId = token.player_id === `${this.player_id}` ? 'warehouse-1' : 'warehouse-2';
+                        const warehouseId = cube.player_id === `${this.player_id}` ? 'warehouse-1' : 'warehouse-2';
                         const warehouse = document.getElementById(warehouseId);
                         if (warehouse) {
-                            cubeElement.classList.add('absolute', `${token.position_type}${token.position_uid}`);
+                            cubeElement.classList.add('absolute', `${cube.position_type}${cube.position_uid}`);
                             warehouse.appendChild(cubeElement);
                         }
                         break;
@@ -491,7 +491,7 @@ function (dojo, declare) {
             // this.notifqueue.setSynchronous( 'cardPlayed', 3000 );
             //
 
-            dojo.subscribe( 'moveTokens', this, "notif_moveTokens" );
+            dojo.subscribe( 'moveCubes', this, "notif_moveCubes" );
         },
 
         // TODO: from this point and below, you can write your game notifications handling methods
@@ -510,7 +510,7 @@ function (dojo, declare) {
         },
 
         */
-        notif_moveTokens: function( notif )
+        notif_moveCubes: function( notif )
         {
             console.log( notif );
         }

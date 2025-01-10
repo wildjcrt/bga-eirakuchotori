@@ -15,6 +15,11 @@
  *
  */
 
+const AVAILABLE_STREET_CLASS = 'available border-4 border-amber-300';
+const SELECTED_STREET_CLASS = 'border-4 border-red-500';
+const DISABLED_STREET_CLASS = 'opacity-40';
+const CLEAR_STREET_CLASS = 'street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col';
+
 define([
     "dojo","dojo/_base/declare",
     "ebg/core/gamegui",
@@ -56,78 +61,87 @@ function (dojo, declare) {
                   <div class="w-[120px] items-center justify-center"></div>
                   <div class="w-[120px] items-center justify-center"></div>
                   <div id="warehouse-1" class="resource w-[248px] h-[163px] bg-gray-200 col-span-2 items-center justify-center"></div>
-                  <div class="w-[150px] items-center justify-center pt-2">
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                    <div class="yellow cube float-left"></div>
-                  </div>
+                  <div id="reserve-1" class="w-[150px] items-center justify-center pt-2"></div>
                   <div class="w-[120px] items-center justify-center"></div>
                 </div>
 
-                <!-- 2nd Row -->
-                <div class="grid grid-cols-7 gap-2 mb-2">
-                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-28">
-                    <div class="merchant1 absolute"></div>
+                <div class="bg-white p-2 mb-5">
+                  <!-- 2nd Row -->
+                  <div class="grid grid-cols-7 gap-2 mb-2">
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
+                    </div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
+                    </div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
+                    </div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
+                    </div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
+                    </div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
+                    </div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
+                    </div>
                   </div>
-                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
-                    <div class="merchant2 absolute"></div>
-                  </div>
-                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
-                    <div class="merchant3 absolute"></div>
-                  </div>
-                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
-                    <div class="merchant4 absolute"></div>
-                  </div>
-                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
-                    <div class="merchant5 absolute"></div>
-                  </div>
-                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
-                    <div class="merchant6 absolute"></div>
-                  </div>
-                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
-                    <div class="merchant7 absolute"></div>
-                  </div>
-                </div>
 
-                <!-- 3rd Row -->
-                <div class="grid grid-cols-7 gap-2 mb-5">
-                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
-                    <div class="merchant8 absolute"></div>
-                  </div>
-                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
-                    <div class="merchant9 absolute"></div>
-                  </div>
-                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
-                    <div class="merchant10 absolute"></div>
-                  </div>
-                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
-                    <div class="merchant11 absolute"></div>
-                  </div>
-                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
-                    <div class="merchant12 absolute"></div>
-                  </div>
-                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
-                    <div class="merchant13 absolute"></div>
-                  </div>
-                  <div class="street resource w-[120px] h-[182px] bg-gray-200 items-center justify-center pt-20">
-                    <div class="merchant14 absolute"></div>
+                  <!-- 3rd Row -->
+                  <div class="grid grid-cols-7 gap-2">
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
+                    </div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
+                    </div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
+                    </div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
+                    </div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
+                    </div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
+                    </div>
+                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="flex-grow"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
+                    </div>
                   </div>
                 </div>
 
@@ -135,9 +149,9 @@ function (dojo, declare) {
                 <div class="grid grid-cols-7 gap-2 mb-5">
                   <div class="items-center justify-center"></div>
                   <div class="event-area w-[120px] items-center justify-center px-3 py-10"></div>
-                  <div id="scores-goals-rest" class="resource w-[468px] h-[156px] bg-gray-200 items-center justify-center">
-                    <div class="score0 yellow cube absolute"></div>
-                    <div class="score0 blue cube absolute"></div>
+                  <div id="scores-goals-rest" class="resource w-[468px] h-[156px] bg-gray-200 justify-center flex flex-col">
+                    <div class="score0 yellow marker absolute"></div>
+                    <div class="score0 blue marker absolute"></div>
                     <div class="rest-area">
                       <div class="rest1 absolute"></div>
                       <div class="rest2 absolute"></div>
@@ -146,9 +160,9 @@ function (dojo, declare) {
                       <div class="rest5 absolute"></div>
                     </div>
                     <div class="goal-area">
-                      <div class="Merchants3 absolute"></div>
-                      <div class="Warehouse24 absolute"></div>
-                      <div class="Export6 absolute"></div>
+                      <div class="merchants3 absolute"></div>
+                      <div class="warehouse24 absolute"></div>
+                      <div class="export6 absolute"></div>
                     </div>
                   </div>
                 </div>
@@ -158,28 +172,7 @@ function (dojo, declare) {
                   <div class="w-[120px] items-center justify-center"></div>
                   <div class="w-[120px] items-center justify-center"></div>
                   <div id="warehouse-2" class="resource w-[248px] h-[163px] bg-gray-200 col-span-2 items-center justify-center"></div>
-                  <div class="w-[150px] items-center justify-center pt-2">
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                    <div class="blue cube float-left"></div>
-                  </div>
+                  <div id="reserve-2" class="w-[150px] items-center justify-center pt-2"></div>
                   <div class="w-[120px] items-center justify-center"></div>
                 </div>
 
@@ -206,6 +199,8 @@ function (dojo, declare) {
 
             // Setting up player boards
             Object.values(gamedatas.players).forEach(player => {
+                player.color_name = player.color === 'ffff00' ? 'yellow' : 'blue';
+
                 // example of setting up players boards
                 this.getPlayerPanelElement(player.id).insertAdjacentHTML('beforeend', `
                     <div id="player-counter-${player.id}">A player counter</div>
@@ -219,9 +214,6 @@ function (dojo, declare) {
                     </div>
                 `);
             });
-
-            // TODO: Set up your game interface here, according to "gamedatas"
-
 
             // Setup game notifications to handle (see "setupNotifications" method below)
             this.setupNotifications();
@@ -238,21 +230,52 @@ function (dojo, declare) {
         //
         onEnteringState: function( stateName, args )
         {
-            console.log( 'Entering state: '+stateName, args );
+            console.log( `Entering state: ${stateName}`, args );
+
+            this.updatePageTitle();
 
             switch( stateName )
             {
 
-            /* Example:
+            case 'Player1InitialCubes':
+            case 'Player2InitialCubes':
+                this.updatePlayerTables(args.args.cubes);
 
-            case 'myGameState':
+                if( this.isCurrentPlayerActive() ) {
+                    dojo.query('.street').forEach(function(node) {
+                        dojo.addClass(node, AVAILABLE_STREET_CLASS);
 
-                // Show some HTML block at this game state
-                dojo.style( 'my_html_block_id', 'display', 'block' );
+                        // bind click event on all streets
+                        dojo.connect(node, 'onclick', function(e) {
+                            let selectedCount = dojo.query('.street.border-red-500.border-4').length;
+
+                            if (dojo.hasClass(node, 'available')) {
+                                if (selectedCount < 3) {
+                                    dojo.removeClass(node, AVAILABLE_STREET_CLASS);
+                                    dojo.addClass(node, SELECTED_STREET_CLASS);
+
+                                    selectedCount = dojo.query('.street.border-red-500.border-4').length;
+                                    if (selectedCount === 3) {
+                                        dojo.removeClass('confirm-btn', 'disabled');
+                                    }
+                                }
+                            } else {
+                                const availableNodes = dojo.query('.street.available').map(n => n);
+                                dojo.removeClass(node, SELECTED_STREET_CLASS);
+                                dojo.addClass(node, AVAILABLE_STREET_CLASS);
+
+                                // Here is for syncing css keyframes animation.
+                                availableNodes.forEach(n => n.classList.remove('available'));
+                                availableNodes.push(node);
+                                setTimeout(() => {
+                                    availableNodes.forEach(n => n.classList.add('available'));
+                                }, 1);
+                            }
+                        });
+                    });
+                }
 
                 break;
-           */
-
 
             case 'dummy':
                 break;
@@ -264,7 +287,7 @@ function (dojo, declare) {
         //
         onLeavingState: function( stateName )
         {
-            console.log( 'Leaving state: '+stateName );
+            console.log( `Leaving state: ${stateName}` );
 
             switch( stateName )
             {
@@ -290,21 +313,16 @@ function (dojo, declare) {
         //
         onUpdateActionButtons: function( stateName, args )
         {
-            console.log( 'onUpdateActionButtons: '+stateName, args );
+            console.log( `onUpdateActionButtons: ${stateName}`, args );
 
             if( this.isCurrentPlayerActive() )
             {
                 switch( stateName )
                 {
-                 case 'playerTurn':
-                    const playableCardsIds = args.playableCardsIds; // returned by the argPlayerTurn
-
-                    // Add test action buttons in the action status bar, simulating a card click:
-                    playableCardsIds.forEach(
-                        cardId => this.addActionButton(`actPlayCard${cardId}-btn`, _('Play card with id ${card_id}').replace('${card_id}', cardId), () => this.onCardClick(cardId))
-                    );
-
-                    this.addActionButton('actPass-btn', _('Pass'), () => this.bgaPerformAction("actPass"), null, null, 'gray');
+                case 'Player1InitialCubes':
+                case 'Player2InitialCubes':
+                    this.addActionButton('confirm-btn', _('Confirm'), () => this.onConfirm(stateName));
+                    dojo.addClass('confirm-btn', 'disabled');
                     break;
                 }
             }
@@ -319,7 +337,89 @@ function (dojo, declare) {
             script.
 
         */
+        updatePlayerTables: function(cubes) {
+            document.querySelectorAll('.cube').forEach(element => element.remove());
 
+            cubes.forEach(cube => {
+                const cubeElement = document.createElement('div');
+                cubeElement.id = `${cube.player_id}-${cube.cube_id}`;
+                cubeElement.classList.add('cube', this.gamedatas.players[cube.player_id].color_name);
+
+                switch (cube.position_type) {
+                    case 'street':
+                        const streetElement = document.getElementById(`street-${cube.position_uid}`);
+                        if (streetElement) {
+                              const cubesArea = streetElement.querySelector('.cubes-area');
+                              cubeElement.classList.add('float-left');
+                              if (cubesArea) cubesArea.appendChild(cubeElement);
+                        }
+                        break;
+
+                    case 'merchat':
+                        const merchantStreet = document.getElementById(`street-${cube.position_uid}`);
+                        if (merchantStreet) {
+                            const merchantArea = merchantStreet.querySelector('.merchant');
+                            if (merchantArea) merchantArea.appendChild(cubeElement);
+                        }
+                        break;
+
+                    case 'event':
+                        const eventArea = document.getElementById(`event-${cube.position_uid}`);
+                        if (eventArea) {
+                            cubeElement.classList.add('float-left');
+                            eventArea.appendChild(cubeElement);
+                        }
+                        break;
+
+                    case 'rest':
+                        const restElement = document.querySelector(`.rest${cube.position_uid}`);
+                        if (restElement) {
+                            cubeElement.classList.add('absolute');
+                            restElement.appendChild(cubeElement);
+                        }
+                        break;
+
+                    case 'goals':
+                        const goalElement = document.querySelector(`.${cube.position_uid}`);
+                        if (goalElement) {
+                            cubeElement.classList.add('absolute');
+                            goalElement.appendChild(cubeElement);
+                        }
+                        break;
+
+                    case 'reserve':
+                        if (cube.player_id === `${this.player_id}`) {
+                            const reserve1 = document.getElementById('reserve-1');
+                            if (reserve1) {
+                                cubeElement.classList.add('float-left');
+                                reserve1.appendChild(cubeElement);
+                            }
+                        } else {
+                            const reserve2 = document.getElementById('reserve-2');
+                            if (reserve2) {
+                                cubeElement.classList.add('float-left');
+                                reserve2.appendChild(cubeElement);
+                            }
+                        }
+                        break;
+
+                    case 'rice':
+                    case 'sugar':
+                    case 'camphor':
+                    case 'tea':
+                    case 'groceries':
+                    case 'fabric':
+                    case 'ginseng':
+                        const warehouseId = cube.player_id === `${this.player_id}` ? 'warehouse-1' : 'warehouse-2';
+                        const warehouse = document.getElementById(warehouseId);
+                        if (warehouse) {
+                            cubeElement.classList.add('absolute', `${cube.position_type}${cube.position_uid}`);
+                            warehouse.appendChild(cubeElement);
+                        }
+                        break;
+                }
+           });
+        },
 
         ///////////////////////////////////////////////////
         //// Player's action
@@ -337,15 +437,39 @@ function (dojo, declare) {
 
         // Example:
 
-        onCardClick: function( card_id )
+        onConfirm: function(stateName)
         {
-            console.log( 'onCardClick', card_id );
+            console.log( `onConfirm: ${stateName}` );
 
-            this.bgaPerformAction("actPlayCard", {
-                card_id,
-            }).then(() =>  {
-                // What to do after the server call if it succeeded
-                // (most of the time, nothing, as the game will react to notifs / change of state instead)
+            if( this.isCurrentPlayerActive() )
+            {
+                switch( stateName )
+                {
+                case 'Player1InitialCubes':
+                case 'Player2InitialCubes':
+                    try {
+                        const streetIds = dojo.query('.border-red-500.border-4').map(n => n.id.replace('street-', ''));
+
+                        if (streetIds.length !== 3) {
+                            throw new Error('Please select exactly 3 streets.');
+                        }
+
+                        this.bgaPerformAction("actInitialCubes", { streetIds: streetIds.join(',') });
+                    } catch (error) {
+                        this.showMessage(_('Please select exactly 3 streets.') , 'error');
+                        console.error(error.message);
+                    }
+                    break;
+                }
+            }
+
+            document.querySelectorAll('.street').forEach(streetElement => {
+                streetElement.className = '';
+                streetElement.className = CLEAR_STREET_CLASS;
+
+                if (streetElement.closest('.grid-cols-7:last-child')) {
+                    streetElement.classList.add('rotate-180');
+                }
             });
         },
 
@@ -377,6 +501,9 @@ function (dojo, declare) {
             // dojo.subscribe( 'cardPlayed', this, "notif_cardPlayed" );
             // this.notifqueue.setSynchronous( 'cardPlayed', 3000 );
             //
+
+            dojo.subscribe( 'moveCubes', this, "notif_moveCubes" );
+            this.notifqueue.setSynchronous( 'moveCubes', 1000 );
         },
 
         // TODO: from this point and below, you can write your game notifications handling methods
@@ -395,5 +522,23 @@ function (dojo, declare) {
         },
 
         */
+        notif_moveCubes: function( notif )
+        {
+            console.log( notif );
+
+            const cubeId = `${notif.args.player_id}-${notif.args.cube_id}`;
+            const cubeElement = document.getElementById(cubeId);
+
+            if (!cubeElement) {
+                console.error('Cube element not found:', cubeId);
+                return;
+            }
+
+            const targetStreet = document.getElementById(notif.args.after_move);
+            const cubesArea = targetStreet.querySelector('.cubes-area');
+
+            debugger
+            this.slideToObject(cubeElement, cubesArea).play();
+        }
    });
 });

@@ -20,6 +20,22 @@ namespace Bga\Games\EirakuchoTori;
 
 require_once(APP_GAMEMODULE_PATH . "module/table/table.game.php");
 
+function print_msg($txt, $color = 'black')
+{
+
+  if (is_array($txt)) {
+    echo "<textarea style='color: $color; width:50%; height:100px;background-color: #f3f3f3 '>";
+    print_r($txt);
+    echo "</textarea><br>";
+  } else {
+    echo "<pre style='color: $color'>";
+    print_r($txt);
+    echo "</pre>";
+  }
+}
+
+use \Bga\GameFramework\Actions\Types\IntArrayParam;
+
 class Game extends \Table
 {
     private static array $CARD_TYPES;
@@ -39,10 +55,7 @@ class Game extends \Table
         parent::__construct();
 
         $this->initGameStateLabels([
-            "my_first_global_variable" => 10,
-            "my_second_global_variable" => 11,
-            "my_first_game_variant" => 100,
-            "my_second_game_variant" => 101,
+            "expansion" => 100
         ]);
 
         self::$CARD_TYPES = [
@@ -138,47 +151,97 @@ class Game extends \Table
      *
      * @throws BgaUserException
      */
-    public function actPlayCard(int $card_id): void
-    {
-        // Retrieve the active player ID.
-        $player_id = (int)$this->getActivePlayerId();
+    // public function actPlayCard(int $card_id): void
+    // {
+    //     // Retrieve the active player ID.
+    //     $player_id = (int)$this->getActivePlayerId();
+    //
+    //     // check input values
+    //     $args = $this->argPlayerTurn();
+    //     $playableCardsIds = $args['playableCardsIds'];
+    //     if (!in_array($card_id, $playableCardsIds)) {
+    //         throw new \BgaUserException('Invalid card choice');
+    //     }
+    //
+    //     // Add your game logic to play a card here.
+    //     $card_name = self::$CARD_TYPES[$card_id]['name'];
+    //
+    //     // Notify all players about the card played.
+    //     $this->notifyAllPlayers("cardPlayed", clienttranslate('${player_name} plays ${card_name}'), [
+    //         "player_id" => $player_id,
+    //         "player_name" => $this->getActivePlayerName(),
+    //         "card_name" => $card_name,
+    //         "card_id" => $card_id,
+    //         "i18n" => ['card_name'],
+    //     ]);
+    //
+    //     // at the end of the action, move to the next state
+    //     $this->gamestate->nextState("playCard");
+    // }
 
-        // check input values
-        $args = $this->argPlayerTurn();
-        $playableCardsIds = $args['playableCardsIds'];
-        if (!in_array($card_id, $playableCardsIds)) {
-            throw new \BgaUserException('Invalid card choice');
+    // @param streetIds, array with 3 elements.
+    public function actInitialCubes(#[IntArrayParam(min: 3, max: 3)] array $streetIds): void
+    {
+        self::checkAction( 'actInitialCubes' );
+
+        $player_id = (int)$this->getActivePlayerId();
+        $player_name = self::getActivePlayerName();
+        $sql = "SELECT player_color FROM player
+                WHERE player_id=$player_id";
+
+        foreach ($streetIds as $streetId) {
+            $cube = self::getAvailableCube($player_id);
+            self::updateCubeRecord($player_id, $cube['cube_id'], 'street', $streetId);
+            self::updateCardRecord($streetId);
+        
+            self::notifyAllPlayers(
+                "moveCubes",
+                clienttranslate( '${player_name} move cube ${cube_id} from reserve to ${after_move}.' ),
+                [
+                    'player_id' => $player_id,
+                    'player_name' => $player_name,
+                    'cube_id' => $cube['cube_id'],
+                    'after_move' => 'street-' . $streetId
+                ]
+            );  
         }
 
-        // Add your game logic to play a card here.
-        $card_name = self::$CARD_TYPES[$card_id]['name'];
-
-        // Notify all players about the card played.
-        $this->notifyAllPlayers("cardPlayed", clienttranslate('${player_name} plays ${card_name}'), [
-            "player_id" => $player_id,
-            "player_name" => $this->getActivePlayerName(),
-            "card_name" => $card_name,
-            "card_id" => $card_id,
-            "i18n" => ['card_name'],
-        ]);
-
-        // at the end of the action, move to the next state
-        $this->gamestate->nextState("playCard");
+        $state = $this->gamestate->state();
+        if ($state['name'] == 'Player1InitialCubes') {
+            $this->gamestate->nextState( 'setupNext' );
+        } else {
+            $this->gamestate->nextState( 'setupComplete' );
+        }
     }
 
-    public function actPass(): void
+    public function actChooseAction(): void
     {
-        // Retrieve the active player ID.
-        $player_id = (int)$this->getActivePlayerId();
+        self::checkAction( 'actChooseAction' );
 
-        // Notify all players about the choice to pass.
-        $this->notifyAllPlayers("cardPlayed", clienttranslate('${player_name} passes'), [
-            "player_id" => $player_id,
-            "player_name" => $this->getActivePlayerName(),
-        ]);
+    }
 
-        // at the end of the action, move to the next state
-        $this->gamestate->nextState("pass");
+    public function actSelectEastOrWest(): void
+    {
+        self::checkAction( 'actSelectEastOrWest' );
+
+    }
+
+    public function actSelectStreet(): void
+    {
+        self::checkAction( 'actSelectStreet' );
+
+    }
+
+    public function actSowCubes(): void
+    {
+        self::checkAction( 'actSowCubes' );
+
+    }
+
+    public function actPlayerEvent(): void
+    {
+        self::checkAction( 'actPlayerEvent' );
+
     }
 
     /**
@@ -189,12 +252,14 @@ class Game extends \Table
      * @return array
      * @see ./states.inc.php
      */
-    public function argPlayerTurn(): array
+    public function argInitialCubes(): array
     {
-        // Get some values from the current game situation from the database.
+
+        $sql = "SELECT * FROM cubes";
+        $cubes = self::getObjectListFromDB($sql);
 
         return [
-            "playableCardsIds" => [1, 2],
+            "cubes" => $cubes
         ];
     }
 
@@ -231,7 +296,15 @@ class Game extends \Table
 
         // Go to another gamestate
         // Here, we would detect if the game is over, and in this case use "endGame" transition instead
-        $this->gamestate->nextState("nextPlayer");
+        $this->gamestate->nextState();
+    }
+
+    public function stTurnEnd(): void {
+
+    }
+
+    public function stHistoryEvent(): void {
+
     }
 
     /* functions for DB query */
@@ -295,32 +368,88 @@ class Game extends \Table
 
     /**
      * @param $card_id is in 1-14 and 1908, 1920, 1923, 1931, 1945, 1947
-     * @param $yellow_tokens
-     * @param $blue_tokens
      * @param $merchant should be a player_id
      */
-    function updateCardRecord($card_id, $yellow_tokens = null, $blue_tokens = null, $merchant = 0)
+    function updateCardRecord($card_id, $merchant = 0) 
     {
-      if ($yellow_tokens !== null) {
-        $sql = "UPDATE cards
-                SET yellow_tokens = $yellow_tokens
-                WHERE card_id = $card_id";
-        self::DbQuery($sql);
-      }
+        $valid_card_ids = [
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+            1908, 1920, 1923, 1931, 1945, 1947
+        ];
+        
+        if (!in_array($card_id, $valid_card_ids)) {
+            throw new \BgaVisibleSystemException("Invalid param card_id: $card_id in updateCardRecord()");
+            return;
+        }
 
-      if ($blue_tokens !== null) {
+        $sql = "SELECT player_id, player_color FROM player";
+        $players = self::getObjectListFromDB($sql);
+        
+        $yellow_player_id = null;
+        $blue_player_id = null;
+        foreach ($players as $player) {
+            if ($player['player_color'] == 'ffff00') {
+                $yellow_player_id = $player['player_id'];
+            }
+            if ($player['player_color'] == '2323ff') {
+                $blue_player_id = $player['player_id'];
+            }
+        }
+    
         $sql = "UPDATE cards
-                SET blue_tokens = $blue_tokens
-                WHERE card_id = $card_id";
+                SET yellow_cubes = (
+                    SELECT COUNT(cubes.cube_id) FROM cubes
+                    WHERE cubes.position_uid = $card_id 
+                      AND cubes.player_id = $yellow_player_id)
+                WHERE cards.card_id = $card_id";
         self::DbQuery($sql);
-      }
+    
+        $sql = "UPDATE cards
+                SET blue_cubes = (
+                    SELECT COUNT(cubes.cube_id) FROM cubes
+                    WHERE cubes.position_type = 'street'
+                      AND cubes.player_id = $blue_player_id)
+                WHERE cards.card_id = $card_id";
+        self::DbQuery($sql);
+    
+        if ($merchant != 0) {
+            $sql = "UPDATE cards 
+                    SET merchant = $merchant 
+                    WHERE card_id = $card_id";
+            self::DbQuery($sql);
+        }
+    }
 
-      if ($merchant != 0) {
-        $sql = "UPDATE cards
-                SET merchant = $merchant
-                WHERE card_id = $card_id";
+    /**
+     * @param $player_id
+     * @param $cube_id
+     * @param $position_type
+     * @param $position_uid
+     */
+    function updateCubeRecord($player_id, $cube_id, $position_type, $position_uid)
+    {
+        $sql = "UPDATE cubes
+                SET position_type = '$position_type',
+                    position_uid = '$position_uid'
+                WHERE cube_id = $cube_id
+                  AND player_id = $player_id";
         self::DbQuery($sql);
-      }
+    }
+
+    /**
+     * @param $player_id
+     * Return the smallest available cube record
+     */
+    function getAvailableCube($player_id)
+    {
+        $sql = "SELECT * FROM cubes 
+                WHERE player_id = $player_id 
+                  AND position_type = 'reserve'
+                ORDER BY cube_id
+                LIMIT 1";
+        $result = self::getObjectFromDB($sql);
+        
+        return $result;
     }
 
     /**
@@ -361,7 +490,7 @@ class Game extends \Table
      * - when the game starts
      * - when a player refreshes the game page (F5)
      */
-    protected function getAllDatas()
+    protected function getAllDatas(): array
     {
         $result = [];
 
@@ -379,9 +508,6 @@ class Game extends \Table
 
         $sql = "SELECT * FROM cards";
         $result['cards'] = self::getObjectListFromDB($sql);
-
-        $sql = "SELECT * FROM tokens";
-        $result['tokens'] = self::getObjectListFromDB($sql);
 
         $sql = "SELECT * FROM player_info";
         $result['player_info'] = self::getObjectListFromDB($sql);
@@ -427,11 +553,11 @@ class Game extends \Table
                     VALUES ($player_id);";
             self::DbQuery($sql);
 
-            // Create 20 tokens records for player in tokens table
-            $tokens = range(1, 20);
-            foreach ($tokens as $token_id) {
-              $sql = "INSERT INTO tokens (player_id, token_id, position_type, position_uid)
-                      VALUES ($player_id, $token_id, 'reserve', 0);";
+            // Create 20 cubes records for player in cubes table
+            $cubes = range(1, 20);
+            foreach ($cubes as $cube_id) {
+              $sql = "INSERT INTO cubes (player_id, cube_id, position_type, position_uid)
+                      VALUES ($player_id, $cube_id, 'reserve', 0);";
               self::DbQuery($sql);
             }
         }
@@ -489,9 +615,6 @@ class Game extends \Table
         foreach ($grids as $grid_id) {
           self::createBoardRecord($grid_id, array_shift($cards));
         }
-
-        // Dummy content.
-        $this->setGameStateInitialValue("my_first_global_variable", 0);
 
         // Init game statistics.
         //

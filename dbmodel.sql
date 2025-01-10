@@ -47,13 +47,13 @@ CREATE TABLE IF NOT EXISTS `cards` (
   `card_id` int(10) unsigned NOT NULL,
   `name` varchar(16) NOT NULL,
   `card_type` varchar(16) NOT NULL,
-  `yellow_tokens` int(10) unsigned NOT NULL DEFAULT 0,
-  `blue_tokens` int(10) unsigned NOT NULL DEFAULT 0,
+  `yellow_cubes` int(10) unsigned NOT NULL DEFAULT 0,
+  `blue_cubes` int(10) unsigned NOT NULL DEFAULT 0,
   `merchant` int(10) unsigned NOT NULL DEFAULT 0,
   PRIMARY KEY (`card_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 紀錄玩家的倉庫數量、分數和可用 tokens 數量
+-- 紀錄玩家的倉庫數量、分數和可用 cubes 數量
 CREATE TABLE IF NOT EXISTS `player_info` (
   `player_id` int(10) unsigned NOT NULL,
   `rice` int(10) unsigned NOT NULL DEFAULT 0,
@@ -64,11 +64,11 @@ CREATE TABLE IF NOT EXISTS `player_info` (
   `fabric` int(10) unsigned NOT NULL DEFAULT 0,
   `ginseng` int(10) unsigned NOT NULL DEFAULT 0,
   `scores` int(10) unsigned NOT NULL DEFAULT 0,
-  `available_tokens` int(10) unsigned NOT NULL DEFAULT 20,
+  `available_cubes` int(10) unsigned NOT NULL DEFAULT 20,
   PRIMARY KEY (`player_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 紀錄 token 的位置，token_id 為 1-20，搭配 player_id 共 40 筆
+-- 紀錄 cube 的位置，cube_id 為 1-20，搭配 player_id 共 40 筆
 -- 列出所有 position_type: position_uid
 --         reserve:       0
 --         street:        1-14
@@ -85,10 +85,10 @@ CREATE TABLE IF NOT EXISTS `player_info` (
 --         goals:         merchants3
 --         goals:         warehouse24
 --         goals:         export6
-CREATE TABLE IF NOT EXISTS `tokens` (
+CREATE TABLE IF NOT EXISTS `cubes` (
   `player_id` int(10) unsigned NOT NULL,
-  `token_id` int(10) unsigned NOT NULL,
+  `cube_id` int(10) unsigned NOT NULL,
   `position_type` varchar(16) NOT NULL,
   `position_uid` varchar(16) NOT NULL,
-  PRIMARY KEY (`player_id`, `token_id`)
+  PRIMARY KEY (`player_id`, `cube_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

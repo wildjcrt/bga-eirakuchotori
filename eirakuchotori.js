@@ -503,6 +503,7 @@ function (dojo, declare) {
             //
 
             dojo.subscribe( 'moveCubes', this, "notif_moveCubes" );
+            this.notifqueue.setSynchronous( 'moveCubes', 1000 );
         },
 
         // TODO: from this point and below, you can write your game notifications handling methods
@@ -525,6 +526,19 @@ function (dojo, declare) {
         {
             console.log( notif );
 
+            const cubeId = `${notif.args.player_id}-${notif.args.cube_id}`;
+            const cubeElement = document.getElementById(cubeId);
+
+            if (!cubeElement) {
+                console.error('Cube element not found:', cubeId);
+                return;
+            }
+
+            const targetStreet = document.getElementById(notif.args.after_move);
+            const cubesArea = targetStreet.querySelector('.cubes-area');
+
+            debugger
+            this.slideToObject(cubeElement, cubesArea).play();
         }
    });
 });

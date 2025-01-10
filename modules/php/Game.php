@@ -198,6 +198,7 @@ class Game extends \Table
                 "moveCubes",
                 clienttranslate( '${player_name} move cube ${cube_id} from reserve to ${after_move}.' ),
                 [
+                    'player_id' => $player_id,
                     'player_name' => $player_name,
                     'cube_id' => $cube['cube_id'],
                     'after_move' => 'street-' . $streetId

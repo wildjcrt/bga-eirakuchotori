@@ -236,7 +236,6 @@ function (dojo, declare) {
 
             switch( stateName )
             {
-
             case 'Player1InitialCubes':
             case 'Player2InitialCubes':
                 this.updatePlayerTables(args.args.cubes);
@@ -276,7 +275,10 @@ function (dojo, declare) {
                 }
 
                 break;
+            case 'ChooseAction':
+                this.updatePlayerTables(args.args.cubes);
 
+                break;
             case 'dummy':
                 break;
             }
@@ -484,7 +486,7 @@ function (dojo, declare) {
 
             if( this.isCurrentPlayerActive() )
             {
-                this.bgaPerformAction("actChooseAction", { streetIds: streetIds.join(',') });
+                this.bgaPerformAction("actChooseAction", { actionName: actionName });
             }
         },
 

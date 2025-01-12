@@ -260,7 +260,16 @@ class Game extends \Table
      */
     public function argInitialCubes(): array
     {
+        $sql = "SELECT * FROM cubes";
+        $cubes = self::getObjectListFromDB($sql);
 
+        return [
+            "cubes" => $cubes
+        ];
+    }
+
+    public function argChooseAction(): array
+    {
         $sql = "SELECT * FROM cubes";
         $cubes = self::getObjectListFromDB($sql);
 

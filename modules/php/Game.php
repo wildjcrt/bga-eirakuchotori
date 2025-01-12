@@ -186,8 +186,6 @@ class Game extends \Table
 
         $player_id = (int)$this->getActivePlayerId();
         $player_name = self::getActivePlayerName();
-        $sql = "SELECT player_color FROM player
-                WHERE player_id=$player_id";
 
         foreach ($streetIds as $streetId) {
             $cube = self::getAvailableCube($player_id);
@@ -450,6 +448,34 @@ class Game extends \Table
         $result = self::getObjectFromDB($sql);
         
         return $result;
+    }
+
+    /**
+     * @param $player_id
+     * @param $good: rice, sugar, camphor, tea, groceries, fabric, ginseng
+     * Add a good for recruit action.
+     */
+    function addGoodForRecruit($player_id, $good) 
+    {
+        $sql = "SELECT * FROM cubes 
+                WHERE player_id = $player_id 
+                  AND position_type = '$good'
+                LIMIT 1";
+        $result = self::getObjectFromDB($sql);
+
+        if ($result !== null && $result['position_uid'] < 4) {
+            $next_position = $result['position_uid'] + 1;
+            self::updateCubeRecord($player_id, $result['cube_id'], $good, $next_position);
+        } else {
+            $cube = self::getAvailableCube($player_id);
+            if ($cube === null) {
+                // TODO: 進入選擇場上 cube 的狀態
+                throw new \BgaVisibleSystemException("No available cubes in reserve");
+                return;
+            }
+
+            self::updateCubeRecord($player_id, $cube['cube_id'], $good, 1);
+        }
     }
 
     /**

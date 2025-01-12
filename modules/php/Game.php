@@ -212,10 +212,18 @@ class Game extends \Table
         }
     }
 
-    public function actChooseAction(): void
+    public function actChooseAction(string $actionName): void
     {
         self::checkAction( 'actChooseAction' );
 
+        $player_id = (int)$this->getActivePlayerId();
+        $player_name = self::getActivePlayerName();
+
+        if ($actionName == 'recruit') {
+            self::addGoodForRecruit($player_id, 'rice');
+        }
+
+        $this->gamestate->nextState( $actionName );
     }
 
     public function actSelectEastOrWest(): void

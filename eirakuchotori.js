@@ -324,6 +324,11 @@ function (dojo, declare) {
                     this.addActionButton('confirm-btn', _('Confirm'), () => this.onConfirm(stateName));
                     dojo.addClass('confirm-btn', 'disabled');
                     break;
+
+                case 'ChooseAction':
+                    this.addActionButton('recruit-btn', _('Recruit'), () => this.onChooseAction('recruit'));
+                    this.addActionButton('operate-btn', _('Operate'), () => this.onChooseAction('operate'));
+                    break;
                 }
             }
         },
@@ -473,6 +478,15 @@ function (dojo, declare) {
             });
         },
 
+        onChooseAction: function(actionName)
+        {
+            console.log( 'onChooseAction' );
+
+            if( this.isCurrentPlayerActive() )
+            {
+                this.bgaPerformAction("actChooseAction", { streetIds: streetIds.join(',') });
+            }
+        },
 
         ///////////////////////////////////////////////////
         //// Reaction to cometD notifications

@@ -340,7 +340,19 @@ class Game extends \Table
     }
 
     public function stTurnEnd(): void {
+        // Retrieve the active player ID.
+        $player_id = (int)$this->getActivePlayerId();
 
+        // Give some extra time to the active player when he completed an action
+        $this->giveExtraTime($player_id);
+
+        // End game check
+        if ($this->getRestCount() == 5 || $this->getMerchantCount($player_id) >= 5) {
+            $this->gamestate->nextState( "end" );
+        } else {
+            // TODO: Use $player_id to get score and may trigger event card.
+            $this->gamestate->nextState( "next" );
+        }
     }
 
     public function stHistoryEvent(): void {

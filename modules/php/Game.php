@@ -226,10 +226,45 @@ class Game extends \Table
         $this->gamestate->nextState( $actionName );
     }
 
-    public function actSelectEastOrWest(): void
+    // @param streetIds, array with 3 elements.
+    public function actSelectEastOrWest(#[IntArrayParam(min: 3, max: 3)] array $streetIds): void
     {
         self::checkAction( 'actSelectEastOrWest' );
 
+        $player_id = (int)$this->getActivePlayerId();
+        $player_name = self::getActivePlayerName();
+
+        $riceCube = self::getCube($player_id, 'rice');
+        self::notifyAllPlayers(
+            "moveCubes",
+            clienttranslate( '${player_name} move cube ${cube_id} from ${before_move} to ${after_move}.' ),
+            [
+                'player_id' => $player_id,
+                'player_name' => $player_name,
+                'cube_id' => $riceCube['cube_id'],
+                'before_move' => ($riceCube['position_uid'] == '1') ? 'reserve' : 'rice-' . ($riceCube['position_uid'] - 1),
+                'after_move' => 'rice-' . $riceCube['position_uid']
+            ]
+        );
+
+        foreach ($streetIds as $streetId) {
+            $cube = self::getCube($player_id, 'reserve');
+            self::updateCubeRecord($player_id, $cube['cube_id'], 'street', $streetId);
+            self::updateCardRecord($streetId);
+
+            self::notifyAllPlayers(
+                "moveCubes",
+                clienttranslate( '${player_name} move cube ${cube_id} from reserve to ${after_move}.' ),
+                [
+                    'player_id' => $player_id,
+                    'player_name' => $player_name,
+                    'cube_id' => $cube['cube_id'],
+                    'after_move' => 'street-' . $streetId
+                ]
+            );
+        }
+
+        $this->gamestate->nextState();
     }
 
     public function actSelectStreet(): void

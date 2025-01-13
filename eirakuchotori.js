@@ -246,14 +246,14 @@ function (dojo, declare) {
 
                         // bind click event on all streets
                         dojo.connect(node, 'onclick', function(e) {
-                            let selectedCount = dojo.query('.street.border-red-500.border-4').length;
+                            let selectedCount = dojo.query(`.street.${SELECTED_STREET_CLASS.split(' ').join('.')}`).length;
 
                             if (dojo.hasClass(node, 'available')) {
                                 if (selectedCount < 3) {
                                     dojo.removeClass(node, AVAILABLE_STREET_CLASS);
                                     dojo.addClass(node, SELECTED_STREET_CLASS);
 
-                                    selectedCount = dojo.query('.street.border-red-500.border-4').length;
+                                    selectedCount = dojo.query(`.street.${SELECTED_STREET_CLASS.split(' ').join('.')}`).length;
                                     if (selectedCount === 3) {
                                         dojo.removeClass('confirm-btn', 'disabled');
                                     }
@@ -307,11 +307,15 @@ function (dojo, declare) {
                                         dojo.removeClass(n, AVAILABLE_STREET_CLASS);
                                         dojo.addClass(n, SELECTED_STREET_CLASS);
                                     });
+
+                                    dojo.removeClass('confirm-btn', 'disabled');
                                 } else {
                                     streets.slice(7, 10).forEach(n => {
                                         dojo.removeClass(n, AVAILABLE_STREET_CLASS);
                                         dojo.addClass(n, SELECTED_STREET_CLASS);
                                     });
+
+                                    dojo.removeClass('confirm-btn', 'disabled');
                                 }
                             } else if (dojo.hasClass(node, SELECTED_STREET_CLASS)) {
                                 // Remove all selections when clicking a selected node
@@ -328,6 +332,8 @@ function (dojo, declare) {
                                 setTimeout(() => {
                                     availableNodes.forEach(n => n.classList.add('available'));
                                 }, 1);
+
+                                dojo.addClass('confirm-btn', 'disabled');
                             }
                         });
                     });
@@ -391,6 +397,7 @@ function (dojo, declare) {
                 {
                 case 'Player1InitialCubes':
                 case 'Player2InitialCubes':
+                case 'SelectEastOrWest':
                     this.addActionButton('confirm-btn', _('Confirm'), () => this.onConfirm(stateName));
                     dojo.addClass('confirm-btn', 'disabled');
                     break;
@@ -496,6 +503,30 @@ function (dojo, declare) {
            });
         },
 
+        validateSelectedStreets: function()
+        {
+            const streets = Array.from(document.getElementsByClassName('street'));
+            const selectedNodes = streets.filter(n => n.classList.contains(SELECTED_STREET_CLASS));
+            const selectedIndexes = selectedNodes.map(n => streets.indexOf(n));
+
+            // Must have exactly 3 selected nodes
+            if (selectedIndexes.length !== 3) {
+                return false;
+            }
+
+            // Check if it's east group (4,5,6)
+            const isEastGroup = selectedIndexes.includes(4) &&
+                                selectedIndexes.includes(5) &&
+                                selectedIndexes.includes(6);
+
+            // Check if it's west group (7,8,9)
+            const isWestGroup = selectedIndexes.includes(7) &&
+                                selectedIndexes.includes(8) &&
+                                selectedIndexes.includes(9);
+
+            return isEastGroup || isWestGroup;
+        },
+
         ///////////////////////////////////////////////////
         //// Player's action
 
@@ -523,7 +554,7 @@ function (dojo, declare) {
                 case 'Player1InitialCubes':
                 case 'Player2InitialCubes':
                     try {
-                        const streetIds = dojo.query('.border-red-500.border-4').map(n => n.id.replace('street-', ''));
+                        const streetIds = dojo.query(`.${SELECTED_STREET_CLASS.split(' ').join('.')}`).map(n => n.id.replace('street-', ''));
 
                         if (streetIds.length !== 3) {
                             throw new Error('Please select exactly 3 streets.');
@@ -534,6 +565,22 @@ function (dojo, declare) {
                         this.showMessage(_('Please select exactly 3 streets.') , 'error');
                         console.error(error.message);
                     }
+
+                    break;
+                case 'SelectEastOrWest':
+                    try {
+                        const streetIds = dojo.query(`.${SELECTED_STREET_CLASS.split(' ').join('.')}`).map(n => n.id.replace('street-', ''));
+
+                        if (this.validateSelectedStreets()) {
+                            throw new Error('Please select east way or west way.');
+                        }
+
+                        this.bgaPerformAction("actSelectEastOrWest", { streetIds: streetIds.join(',') });
+                    } catch (error) {
+                        this.showMessage(_('Please select east way or west way.') , 'error');
+                        console.error(error.message);
+                    }
+
                     break;
                 }
             }

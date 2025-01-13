@@ -342,6 +342,11 @@ function (dojo, declare) {
                 this.updatePlayerTables(args.args.cubes);
 
                 break;
+            case 'Player1Event':
+            case 'Player2Event':
+                this.updatePlayerTables(args.args.cubes);
+
+                break;
             case 'dummy':
                 break;
             }
@@ -616,7 +621,6 @@ function (dojo, declare) {
             const targetStreet = document.getElementById(notif.args.after_move);
             const cubesArea = targetStreet.querySelector('.cubes-area');
 
-            debugger
             this.slideToObject(cubeElement, cubesArea).play();
         }
    });

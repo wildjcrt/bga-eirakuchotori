@@ -191,7 +191,7 @@ class Game extends \Table
             $cube = self::getAvailableCube($player_id);
             self::updateCubeRecord($player_id, $cube['cube_id'], 'street', $streetId);
             self::updateCardRecord($streetId);
-        
+
             self::notifyAllPlayers(
                 "moveCubes",
                 clienttranslate( '${player_name} move cube ${cube_id} from reserve to ${after_move}.' ),
@@ -201,7 +201,7 @@ class Game extends \Table
                     'cube_id' => $cube['cube_id'],
                     'after_move' => 'street-' . $streetId
                 ]
-            );  
+            );
         }
 
         $state = $this->gamestate->state();
@@ -258,17 +258,7 @@ class Game extends \Table
      * @return array
      * @see ./states.inc.php
      */
-    public function argInitialCubes(): array
-    {
-        $sql = "SELECT * FROM cubes";
-        $cubes = self::getObjectListFromDB($sql);
-
-        return [
-            "cubes" => $cubes
-        ];
-    }
-
-    public function argChooseAction(): array
+    public function argUpdateTable(): array
     {
         $sql = "SELECT * FROM cubes";
         $cubes = self::getObjectListFromDB($sql);
@@ -385,13 +375,13 @@ class Game extends \Table
      * @param $card_id is in 1-14 and 1908, 1920, 1923, 1931, 1945, 1947
      * @param $merchant should be a player_id
      */
-    function updateCardRecord($card_id, $merchant = 0) 
+    function updateCardRecord($card_id, $merchant = 0)
     {
         $valid_card_ids = [
             1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
             1908, 1920, 1923, 1931, 1945, 1947
         ];
-        
+
         if (!in_array($card_id, $valid_card_ids)) {
             throw new \BgaVisibleSystemException("Invalid param card_id: $card_id in updateCardRecord()");
             return;
@@ -399,7 +389,7 @@ class Game extends \Table
 
         $sql = "SELECT player_id, player_color FROM player";
         $players = self::getObjectListFromDB($sql);
-        
+
         $yellow_player_id = null;
         $blue_player_id = null;
         foreach ($players as $player) {
@@ -410,15 +400,15 @@ class Game extends \Table
                 $blue_player_id = $player['player_id'];
             }
         }
-    
+
         $sql = "UPDATE cards
                 SET yellow_cubes = (
                     SELECT COUNT(cubes.cube_id) FROM cubes
-                    WHERE cubes.position_uid = $card_id 
+                    WHERE cubes.position_uid = $card_id
                       AND cubes.player_id = $yellow_player_id)
                 WHERE cards.card_id = $card_id";
         self::DbQuery($sql);
-    
+
         $sql = "UPDATE cards
                 SET blue_cubes = (
                     SELECT COUNT(cubes.cube_id) FROM cubes
@@ -426,10 +416,10 @@ class Game extends \Table
                       AND cubes.player_id = $blue_player_id)
                 WHERE cards.card_id = $card_id";
         self::DbQuery($sql);
-    
+
         if ($merchant != 0) {
-            $sql = "UPDATE cards 
-                    SET merchant = $merchant 
+            $sql = "UPDATE cards
+                    SET merchant = $merchant
                     WHERE card_id = $card_id";
             self::DbQuery($sql);
         }
@@ -457,13 +447,13 @@ class Game extends \Table
      */
     function getAvailableCube($player_id)
     {
-        $sql = "SELECT * FROM cubes 
-                WHERE player_id = $player_id 
+        $sql = "SELECT * FROM cubes
+                WHERE player_id = $player_id
                   AND position_type = 'reserve'
                 ORDER BY cube_id
                 LIMIT 1";
         $result = self::getObjectFromDB($sql);
-        
+
         return $result;
     }
 
@@ -472,10 +462,10 @@ class Game extends \Table
      * @param $good: rice, sugar, camphor, tea, groceries, fabric, ginseng
      * Add a good for recruit action.
      */
-    function addGoodForRecruit($player_id, $good) 
+    function addGoodForRecruit($player_id, $good)
     {
-        $sql = "SELECT * FROM cubes 
-                WHERE player_id = $player_id 
+        $sql = "SELECT * FROM cubes
+                WHERE player_id = $player_id
                   AND position_type = '$good'
                 LIMIT 1";
         $result = self::getObjectFromDB($sql);

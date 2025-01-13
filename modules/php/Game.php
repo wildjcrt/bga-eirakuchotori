@@ -522,6 +522,35 @@ class Game extends \Table
     }
 
     /**
+     * Get the count of cubes with position_type='rest'
+     * @return int Returns the number of cubes record in rest position
+     */
+    function getRestCount(): int
+    {
+        $sql = "SELECT COUNT(cube_id)
+                FROM cubes
+                WHERE position_type = 'rest'";
+        $result = (int)self::getUniqueValueFromDB($sql);
+
+        return $result;
+    }
+
+    /**
+     * Get the count of cards where the specified player is the merchant
+     * @param int $player_id The player ID to count merchant records for
+     * @return int Returns the number of cards where the player is the merchant
+     */
+    function getMerchantCount(int $player_id): int
+    {
+        $sql = "SELECT COUNT(card_id)
+                FROM cards
+                WHERE merchant = $player_id";
+        $result = (int)self::getUniqueValueFromDB($sql);
+
+        return $result;
+    }
+
+    /**
      * Migrate database.
      *
      * You don't have to care about this until your game has been published on BGA. Once your game is on BGA, this

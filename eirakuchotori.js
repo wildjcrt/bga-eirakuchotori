@@ -454,7 +454,7 @@ function (dojo, declare) {
                         break;
 
                     case 'rest':
-                        const restElement = document.querySelector(`.rest${cube.position_uid}`);
+                        const restElement = document.querySelector(`.rest-${cube.position_uid}`);
                         if (restElement) {
                             cubeElement.classList.add('absolute');
                             restElement.appendChild(cubeElement);
@@ -495,7 +495,7 @@ function (dojo, declare) {
                         const warehouseId = cube.player_id === `${this.player_id}` ? 'warehouse-1' : 'warehouse-2';
                         const warehouse = document.getElementById(warehouseId);
                         if (warehouse) {
-                            cubeElement.classList.add('absolute', `${cube.position_type}${cube.position_uid}`);
+                            cubeElement.classList.add('absolute', `${cube.position_type}-${cube.position_uid}`);
                             warehouse.appendChild(cubeElement);
                         }
                         break;

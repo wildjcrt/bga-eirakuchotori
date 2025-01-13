@@ -279,6 +279,69 @@ function (dojo, declare) {
                 this.updatePlayerTables(args.args.cubes);
 
                 break;
+            case 'SelectEastOrWest':
+                this.updatePlayerTables(args.args.cubes);
+
+                if( this.isCurrentPlayerActive() ) {
+                    const streets = Array.from(document.getElementsByClassName('street'));
+                    const targetStreets = streets.slice(4, 10);
+
+                    targetStreets.forEach(function(node) {
+                        dojo.addClass(node, AVAILABLE_STREET_CLASS);
+
+                        dojo.connect(node, 'onclick', function(e) {
+                            const index = streets.indexOf(node);
+
+                            if (dojo.hasClass(node, 'available')) {
+                                // Remove all previous selections
+                                streets.forEach(n => {
+                                    if (dojo.hasClass(n, SELECTED_STREET_CLASS)) {
+                                        dojo.removeClass(n, SELECTED_STREET_CLASS);
+                                        dojo.addClass(n, AVAILABLE_STREET_CLASS);
+                                    }
+                                });
+
+                                // Add selected class to the appropriate group
+                                if (index >= 4 && index <= 6) {
+                                    streets.slice(4, 7).forEach(n => {
+                                        dojo.removeClass(n, AVAILABLE_STREET_CLASS);
+                                        dojo.addClass(n, SELECTED_STREET_CLASS);
+                                    });
+                                } else {
+                                    streets.slice(7, 10).forEach(n => {
+                                        dojo.removeClass(n, AVAILABLE_STREET_CLASS);
+                                        dojo.addClass(n, SELECTED_STREET_CLASS);
+                                    });
+                                }
+                            } else if (dojo.hasClass(node, SELECTED_STREET_CLASS)) {
+                                // Remove all selections when clicking a selected node
+                                streets.forEach(n => {
+                                    if (dojo.hasClass(n, SELECTED_STREET_CLASS)) {
+                                        dojo.removeClass(n, SELECTED_STREET_CLASS);
+                                        dojo.addClass(n, AVAILABLE_STREET_CLASS);
+                                    }
+                                });
+
+                                // Sync animation
+                                const availableNodes = targetStreets.filter(n => dojo.hasClass(n, 'available'));
+                                availableNodes.forEach(n => n.classList.remove('available'));
+                                setTimeout(() => {
+                                    availableNodes.forEach(n => n.classList.add('available'));
+                                }, 1);
+                            }
+                        });
+                    });
+                }
+
+                break;
+            case 'SelectStreet':
+                this.updatePlayerTables(args.args.cubes);
+
+                break;
+            case 'SowCubes':
+                this.updatePlayerTables(args.args.cubes);
+
+                break;
             case 'dummy':
                 break;
             }

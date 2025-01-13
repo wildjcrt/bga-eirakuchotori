@@ -116,6 +116,7 @@ $machinestates = [
         "description" => clienttranslate('It\'s ${actplayer}\'s turn.'),
         "descriptionmyturn" => clienttranslate('You\'ve get a rice. Select a east/west way to sow 3 cubes.'),
         "type" => "activeplayer",
+        "args" => "argChooseAction",
         "possibleactions" => [ "actSelectEastOrWest" ],
         "transitions" => [ "" => 30 ]
     ],

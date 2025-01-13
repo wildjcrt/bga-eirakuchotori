@@ -188,7 +188,7 @@ class Game extends \Table
         $player_name = self::getActivePlayerName();
 
         foreach ($streetIds as $streetId) {
-            $cube = self::getAvailableCube($player_id);
+            $cube = self::getCube($player_id, 'reserve');
             self::updateCubeRecord($player_id, $cube['cube_id'], 'street', $streetId);
             self::updateCardRecord($streetId);
 
@@ -443,13 +443,14 @@ class Game extends \Table
 
     /**
      * @param $player_id
-     * Return the smallest available cube record
+     * @param $position_type: reserve, street, merchat, event, rice, sugar, camphor, tea, groceries, fabric, ginseng, rest, goals
+     * Return the smallest $position_type cube record
      */
-    function getAvailableCube($player_id)
+    function getCube($player_id, $position_type)
     {
         $sql = "SELECT * FROM cubes
                 WHERE player_id = $player_id
-                  AND position_type = 'reserve'
+                  AND position_type = '$position_type'
                 ORDER BY cube_id
                 LIMIT 1";
         $result = self::getObjectFromDB($sql);
@@ -474,7 +475,7 @@ class Game extends \Table
             $next_position = $result['position_uid'] + 1;
             self::updateCubeRecord($player_id, $result['cube_id'], $good, $next_position);
         } else {
-            $cube = self::getAvailableCube($player_id);
+            $cube = self::getCube($player_id, 'reserve');
             if ($cube === null) {
                 // TODO: 進入選擇場上 cube 的狀態
                 throw new \BgaVisibleSystemException("No available cubes in reserve");

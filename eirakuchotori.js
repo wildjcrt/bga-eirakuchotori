@@ -665,10 +665,22 @@ function (dojo, declare) {
                 return;
             }
 
-            const targetStreet = document.getElementById(notif.args.after_move);
-            const cubesArea = targetStreet.querySelector('.cubes-area');
+            // Create a dummy target element for position calculation
+            const targetPosition = document.createElement('div');
+            targetPosition.className = `cube yellow absolute ${notif.args.after_move}`;
 
-            this.slideToObject(cubeElement, cubesArea).play();
+            // Add the dummy element temporarily to get correct position
+            cubeElement.parentNode.appendChild(targetPosition);
+
+            // Animate to the new position
+            this.slideToObject(cubeElement, targetPosition).play(() => {
+                // After animation completes:
+                // 1. Remove old position class (e.g. rice2)
+                // 2. Add new position class (e.g. rice3)
+                cubeElement.className = targetPosition.className;
+                // Remove the temporary target element
+                targetPosition.remove();
+            });
         }
    });
 });

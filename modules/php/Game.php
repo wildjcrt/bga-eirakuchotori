@@ -212,15 +212,15 @@ class Game extends \Table
         }
     }
 
+    // @param $actionName: recruit or operate.
     public function actChooseAction(string $actionName): void
     {
         self::checkAction( 'actChooseAction' );
 
         $player_id = (int)$this->getActivePlayerId();
-        $player_name = self::getActivePlayerName();
 
         if ($actionName == 'recruit') {
-            self::addGoodForRecruit($player_id, 'rice');
+            self::addGood($player_id, 'rice');
         }
 
         $this->gamestate->nextState( $actionName );
@@ -463,7 +463,7 @@ class Game extends \Table
      * @param $good: rice, sugar, camphor, tea, groceries, fabric, ginseng
      * Add a good for recruit action.
      */
-    function addGoodForRecruit($player_id, $good)
+    function addGood($player_id, $good)
     {
         $sql = "SELECT * FROM cubes
                 WHERE player_id = $player_id

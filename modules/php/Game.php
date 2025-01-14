@@ -219,9 +219,22 @@ class Game extends \Table
         self::checkAction( 'actChooseAction' );
 
         $player_id = (int)$this->getActivePlayerId();
+        $player_name = self::getActivePlayerName();
 
         if ($actionName == 'recruit') {
-            self::addGood($player_id, 'rice');
+            $cube = self::addGood($player_id, 'rice');
+
+            self::notifyAllPlayers(
+                "moveCubes",
+                clienttranslate( '${player_name} move cube ${cube_id} from ${before_move} to ${after_move}.' ),
+                [
+                    'player_id' => $player_id,
+                    'player_name' => $player_name,
+                    'cube_id' => $cube['cube_id'],
+                    'before_move' => ($cube['position_uid'] == '1') ? 'reserve-0' : 'rice-' . ($cube['position_uid'] - 1),
+                    'after_move' => 'rice-' . $cube['position_uid']
+                ]
+            );
         }
 
         $this->gamestate->nextState( $actionName );
@@ -234,19 +247,6 @@ class Game extends \Table
 
         $player_id = (int)$this->getActivePlayerId();
         $player_name = self::getActivePlayerName();
-
-        $riceCube = self::getCube($player_id, 'rice');
-        self::notifyAllPlayers(
-            "moveCubes",
-            clienttranslate( '${player_name} move cube ${cube_id} from ${before_move} to ${after_move}.' ),
-            [
-                'player_id' => $player_id,
-                'player_name' => $player_name,
-                'cube_id' => $riceCube['cube_id'],
-                'before_move' => ($riceCube['position_uid'] == '1') ? 'reserve-0' : 'rice-' . ($riceCube['position_uid'] - 1),
-                'after_move' => 'rice-' . $riceCube['position_uid']
-            ]
-        );
 
         foreach ($streetIds as $streetId) {
             $cube = self::getCube($player_id, 'reserve');
@@ -517,20 +517,34 @@ class Game extends \Table
                 WHERE player_id = $player_id
                   AND position_type = '$good'
                 LIMIT 1";
-        $result = self::getObjectFromDB($sql);
+        $cube = self::getObjectFromDB($sql);
 
-        if ($result !== null && $result['position_uid'] < 4) {
-            $next_position = $result['position_uid'] + 1;
-            self::updateCubeRecord($player_id, $result['cube_id'], $good, $next_position);
+        if ($cube !== null && $cube['position_uid'] < 4) {
+            $next_position = $cube['position_uid'] + 1;
+            self::updateCubeRecord($player_id, $cube['cube_id'], $good, $next_position);
+
+            $sql = "SELECT * FROM cubes
+                    WHERE cube_id = $cube[cube_id]
+                    LIMIT 1";
+            $result = self::getObjectFromDB($sql);
+
+            return $result;
         } else {
-            $cube = self::getCube($player_id, 'reserve');
-            if ($cube === null) {
+            $reserve_cube = self::getCube($player_id, 'reserve');
+            if ($reserve_cube === null) {
                 // TODO: 進入選擇場上 cube 的狀態
                 throw new \BgaVisibleSystemException("No available cubes in reserve");
                 return;
             }
 
-            self::updateCubeRecord($player_id, $cube['cube_id'], $good, 1);
+            self::updateCubeRecord($player_id, $reserve_cube['cube_id'], $good, 1);
+
+            $sql = "SELECT * FROM cubes
+                    WHERE cube_id = $reserve_cube[cube_id]
+                    LIMIT 1";
+            $result = self::getObjectFromDB($sql);
+
+            return $result;
         }
     }
 

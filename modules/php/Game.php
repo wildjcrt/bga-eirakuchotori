@@ -194,11 +194,12 @@ class Game extends \Table
 
             self::notifyAllPlayers(
                 "moveCubes",
-                clienttranslate( '${player_name} move cube ${cube_id} from reserve to ${after_move}.' ),
+                clienttranslate( '${player_name} move cube ${cube_id} from ${before_move} to ${after_move}.' ),
                 [
                     'player_id' => $player_id,
                     'player_name' => $player_name,
                     'cube_id' => $cube['cube_id'],
+                    'before_move' => 'reserve-0',
                     'after_move' => 'street-' . $streetId
                 ]
             );
@@ -242,7 +243,7 @@ class Game extends \Table
                 'player_id' => $player_id,
                 'player_name' => $player_name,
                 'cube_id' => $riceCube['cube_id'],
-                'before_move' => ($riceCube['position_uid'] == '1') ? 'reserve' : 'rice-' . ($riceCube['position_uid'] - 1),
+                'before_move' => ($riceCube['position_uid'] == '1') ? 'reserve-0' : 'rice-' . ($riceCube['position_uid'] - 1),
                 'after_move' => 'rice-' . $riceCube['position_uid']
             ]
         );
@@ -254,7 +255,7 @@ class Game extends \Table
 
             self::notifyAllPlayers(
                 "moveCubes",
-                clienttranslate( '${player_name} move cube ${cube_id} from reserve to ${after_move}.' ),
+                clienttranslate( '${player_name} move cube ${cube_id} from reserve-0 to ${after_move}.' ),
                 [
                     'player_id' => $player_id,
                     'player_name' => $player_name,

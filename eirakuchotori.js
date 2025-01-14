@@ -657,6 +657,7 @@ function (dojo, declare) {
         {
             console.log( notif );
 
+            // Get the cube element using the player_id and cube_id
             const cubeId = `${notif.args.player_id}-${notif.args.cube_id}`;
             const cubeElement = document.getElementById(cubeId);
 
@@ -665,20 +666,82 @@ function (dojo, declare) {
                 return;
             }
 
-            // Create a dummy target element for position calculation
-            const targetPosition = document.createElement('div');
-            targetPosition.className = `cube yellow absolute ${notif.args.after_move}`;
+            // Helper function to create target position element
+            const createTargetPosition = (className, parent) => {
+                const targetPosition = document.createElement('div');
+                targetPosition.className = className;
+                parent.appendChild(targetPosition);
+                return targetPosition;
+            };
 
-            // Add the dummy element temporarily to get correct position
-            cubeElement.parentNode.appendChild(targetPosition);
+            // Determine movement type based on after_move destination
+            const moveType = notif.args.after_move.split('-')[0];
+            let targetPosition;
+            let newParentElement;
 
-            // Animate to the new position
+            switch (moveType) {
+                case 'rice':
+                case 'sugar':
+                case 'camphor':
+                case 'tea':
+                case 'groceries':
+                case 'fabric':
+                case 'ginseng':
+                    // Warehouse resource movements
+                    targetPosition = createTargetPosition(
+                        `cube yellow absolute ${notif.args.after_move}`,
+                        cubeElement.parentNode
+                    );
+                    break;
+
+                case 'street':
+                    // Street movements
+                    newParentElement = document.getElementById(notif.args.after_move).querySelector('.cubes-area');
+                    targetPosition = createTargetPosition(
+                        'cube yellow float-left',
+                        newParentElement
+                    );
+                    break;
+
+                case 'merchant':
+                    // Merchant movements
+                    newParentElement = document.getElementById(notif.args.after_move);
+                    targetPosition = createTargetPosition(
+                        'cube yellow float-left',
+                        newParentElement
+                    );
+                    break;
+
+                case 'event':
+                    // Event card movements
+                    newParentElement = document.getElementById(notif.args.after_move);
+                    targetPosition = createTargetPosition(
+                        'cube yellow float-left',
+                        newParentElement
+                    );
+                    break;
+
+                case 'rest':
+                case 'goals':
+                    // Rest area and goals movements
+                    newParentElement = document.getElementById(notif.args.after_move);
+                    targetPosition = createTargetPosition(
+                        'cube yellow absolute',
+                        newParentElement
+                    );
+                    break;
+
+                default:
+                    console.error('Unknown movement type:', moveType);
+                    return;
+            }
+
+            // Perform the animation
             this.slideToObject(cubeElement, targetPosition).play(() => {
-                // After animation completes:
-                // 1. Remove old position class (e.g. rice2)
-                // 2. Add new position class (e.g. rice3)
                 cubeElement.className = targetPosition.className;
-                // Remove the temporary target element
+                if (newParentElement) {
+                    newParentElement.appendChild(cubeElement);
+                }
                 targetPosition.remove();
             });
         }

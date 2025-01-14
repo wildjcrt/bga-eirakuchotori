@@ -19,6 +19,10 @@ const AVAILABLE_STREET_CLASS = 'available border-4 border-amber-300';
 const SELECTED_STREET_CLASS = 'border-4 border-red-500';
 const DISABLED_STREET_CLASS = 'opacity-40';
 const CLEAR_STREET_CLASS = 'street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col';
+const ON_CLICK_HANDLERS = {
+    'streets': []
+};
+
 
 define([
     "dojo","dojo/_base/declare",
@@ -33,7 +37,6 @@ function (dojo, declare) {
             // Here, you can init the global variables of your user interface
             // Example:
             // this.myGlobalValue = 0;
-
         },
 
         /*
@@ -245,32 +248,34 @@ function (dojo, declare) {
                         dojo.addClass(node, AVAILABLE_STREET_CLASS);
 
                         // bind click event on all streets
-                        dojo.connect(node, 'onclick', function(e) {
-                            let selectedCount = dojo.query(`.street.${SELECTED_STREET_CLASS.split(' ').join('.')}`).length;
+                        ON_CLICK_HANDLERS['streets'].push(
+                            dojo.connect(node, 'onclick', function(e) {
+                                let selectedCount = dojo.query(`.street.${SELECTED_STREET_CLASS.split(' ').join('.')}`).length;
 
-                            if (dojo.hasClass(node, 'available')) {
-                                if (selectedCount < 3) {
-                                    dojo.removeClass(node, AVAILABLE_STREET_CLASS);
-                                    dojo.addClass(node, SELECTED_STREET_CLASS);
+                                if (dojo.hasClass(node, 'available')) {
+                                    if (selectedCount < 3) {
+                                        dojo.removeClass(node, AVAILABLE_STREET_CLASS);
+                                        dojo.addClass(node, SELECTED_STREET_CLASS);
 
-                                    selectedCount = dojo.query(`.street.${SELECTED_STREET_CLASS.split(' ').join('.')}`).length;
-                                    if (selectedCount === 3) {
-                                        dojo.removeClass('confirm-btn', 'disabled');
+                                        selectedCount = dojo.query(`.street.${SELECTED_STREET_CLASS.split(' ').join('.')}`).length;
+                                        if (selectedCount === 3) {
+                                            dojo.removeClass('confirm-btn', 'disabled');
+                                        }
                                     }
-                                }
-                            } else {
-                                const availableNodes = dojo.query('.street.available').map(n => n);
-                                dojo.removeClass(node, SELECTED_STREET_CLASS);
-                                dojo.addClass(node, AVAILABLE_STREET_CLASS);
+                                } else {
+                                    const availableNodes = dojo.query('.street.available').map(n => n);
+                                    dojo.removeClass(node, SELECTED_STREET_CLASS);
+                                    dojo.addClass(node, AVAILABLE_STREET_CLASS);
 
-                                // Here is for syncing css keyframes animation.
-                                availableNodes.forEach(n => n.classList.remove('available'));
-                                availableNodes.push(node);
-                                setTimeout(() => {
-                                    availableNodes.forEach(n => n.classList.add('available'));
-                                }, 1);
-                            }
-                        });
+                                    // Here is for syncing css keyframes animation.
+                                    availableNodes.forEach(n => n.classList.remove('available'));
+                                    availableNodes.push(node);
+                                    setTimeout(() => {
+                                        availableNodes.forEach(n => n.classList.add('available'));
+                                    }, 1);
+                                }
+                            })
+                        );
                     });
                 }
 
@@ -289,53 +294,55 @@ function (dojo, declare) {
                     targetStreets.forEach(function(node) {
                         dojo.addClass(node, AVAILABLE_STREET_CLASS);
 
-                        dojo.connect(node, 'onclick', function(e) {
-                            const index = streets.indexOf(node);
+                        ON_CLICK_HANDLERS['streets'].push(
+                            dojo.connect(node, 'onclick', function(e) {
+                                const index = streets.indexOf(node);
 
-                            if (dojo.hasClass(node, 'available')) {
-                                // Remove all previous selections
-                                streets.forEach(n => {
-                                    if (dojo.hasClass(n, SELECTED_STREET_CLASS)) {
-                                        dojo.removeClass(n, SELECTED_STREET_CLASS);
-                                        dojo.addClass(n, AVAILABLE_STREET_CLASS);
+                                if (dojo.hasClass(node, 'available')) {
+                                    // Remove all previous selections
+                                    streets.forEach(n => {
+                                        if (dojo.hasClass(n, SELECTED_STREET_CLASS)) {
+                                            dojo.removeClass(n, SELECTED_STREET_CLASS);
+                                            dojo.addClass(n, AVAILABLE_STREET_CLASS);
+                                        }
+                                    });
+
+                                    // Add selected class to the appropriate group
+                                    if (index >= 4 && index <= 6) {
+                                        streets.slice(4, 7).forEach(n => {
+                                            dojo.removeClass(n, AVAILABLE_STREET_CLASS);
+                                            dojo.addClass(n, SELECTED_STREET_CLASS);
+                                        });
+
+                                        dojo.removeClass('confirm-btn', 'disabled');
+                                    } else {
+                                        streets.slice(7, 10).forEach(n => {
+                                            dojo.removeClass(n, AVAILABLE_STREET_CLASS);
+                                            dojo.addClass(n, SELECTED_STREET_CLASS);
+                                        });
+
+                                        dojo.removeClass('confirm-btn', 'disabled');
                                     }
-                                });
-
-                                // Add selected class to the appropriate group
-                                if (index >= 4 && index <= 6) {
-                                    streets.slice(4, 7).forEach(n => {
-                                        dojo.removeClass(n, AVAILABLE_STREET_CLASS);
-                                        dojo.addClass(n, SELECTED_STREET_CLASS);
+                                } else if (dojo.hasClass(node, SELECTED_STREET_CLASS)) {
+                                    // Remove all selections when clicking a selected node
+                                    streets.forEach(n => {
+                                        if (dojo.hasClass(n, SELECTED_STREET_CLASS)) {
+                                            dojo.removeClass(n, SELECTED_STREET_CLASS);
+                                            dojo.addClass(n, AVAILABLE_STREET_CLASS);
+                                        }
                                     });
 
-                                    dojo.removeClass('confirm-btn', 'disabled');
-                                } else {
-                                    streets.slice(7, 10).forEach(n => {
-                                        dojo.removeClass(n, AVAILABLE_STREET_CLASS);
-                                        dojo.addClass(n, SELECTED_STREET_CLASS);
-                                    });
+                                    // Sync animation
+                                    const availableNodes = targetStreets.filter(n => dojo.hasClass(n, 'available'));
+                                    availableNodes.forEach(n => n.classList.remove('available'));
+                                    setTimeout(() => {
+                                        availableNodes.forEach(n => n.classList.add('available'));
+                                    }, 1);
 
-                                    dojo.removeClass('confirm-btn', 'disabled');
+                                    dojo.addClass('confirm-btn', 'disabled');
                                 }
-                            } else if (dojo.hasClass(node, SELECTED_STREET_CLASS)) {
-                                // Remove all selections when clicking a selected node
-                                streets.forEach(n => {
-                                    if (dojo.hasClass(n, SELECTED_STREET_CLASS)) {
-                                        dojo.removeClass(n, SELECTED_STREET_CLASS);
-                                        dojo.addClass(n, AVAILABLE_STREET_CLASS);
-                                    }
-                                });
-
-                                // Sync animation
-                                const availableNodes = targetStreets.filter(n => dojo.hasClass(n, 'available'));
-                                availableNodes.forEach(n => n.classList.remove('available'));
-                                setTimeout(() => {
-                                    availableNodes.forEach(n => n.classList.add('available'));
-                                }, 1);
-
-                                dojo.addClass('confirm-btn', 'disabled');
-                            }
-                        });
+                            })
+                        );
                     });
                 }
 
@@ -553,6 +560,10 @@ function (dojo, declare) {
                 {
                 case 'Player1InitialCubes':
                 case 'Player2InitialCubes':
+                    // Disconnect all streets dom onclick event
+                    dojo.forEach(ON_CLICK_HANDLERS['streets'], dojo.disconnect);
+                    ON_CLICK_HANDLERS['streets'] = [];
+
                     try {
                         const streetIds = dojo.query(`.${SELECTED_STREET_CLASS.split(' ').join('.')}`).map(n => n.id.replace('street-', ''));
 
@@ -568,6 +579,10 @@ function (dojo, declare) {
 
                     break;
                 case 'SelectEastOrWest':
+                    // Disconnect all streets dom onclick event
+                    dojo.forEach(ON_CLICK_HANDLERS['streets'], dojo.disconnect);
+                    ON_CLICK_HANDLERS['streets'] = [];
+
                     try {
                         const streetIds = dojo.query(`.${SELECTED_STREET_CLASS.split(' ').join('.')}`).map(n => n.id.replace('street-', ''));
 

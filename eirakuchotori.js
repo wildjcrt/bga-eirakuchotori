@@ -19,6 +19,10 @@ const AVAILABLE_STREET_CLASS = 'available border-4 border-amber-300';
 const SELECTED_STREET_CLASS = 'border-4 border-red-500';
 const DISABLED_STREET_CLASS = 'opacity-40';
 const CLEAR_STREET_CLASS = 'street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col';
+const ON_CLICK_HANDLERS = {
+    'streets': []
+};
+
 
 define([
     "dojo","dojo/_base/declare",
@@ -33,7 +37,6 @@ function (dojo, declare) {
             // Here, you can init the global variables of your user interface
             // Example:
             // this.myGlobalValue = 0;
-
         },
 
         /*
@@ -108,39 +111,39 @@ function (dojo, declare) {
                   <!-- 3rd Row -->
                   <div class="grid grid-cols-7 gap-2">
                     <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
-                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="merchant pt-1 pl-1 rotate-180"></div>
                       <div class="flex-grow"></div>
-                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start rotate-180"></div>
                     </div>
                     <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
-                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="merchant pt-1 pl-1 rotate-180"></div>
                       <div class="flex-grow"></div>
-                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start rotate-180"></div>
                     </div>
                     <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
-                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="merchant pt-1 pl-1 rotate-180"></div>
                       <div class="flex-grow"></div>
-                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start rotate-180"></div>
                     </div>
                     <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
-                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="merchant pt-1 pl-1 rotate-180"></div>
                       <div class="flex-grow"></div>
-                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start rotate-180"></div>
                     </div>
                     <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
-                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="merchant pt-1 pl-1 rotate-180"></div>
                       <div class="flex-grow"></div>
-                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start rotate-180"></div>
                     </div>
                     <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
-                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="merchant pt-1 pl-1 rotate-180"></div>
                       <div class="flex-grow"></div>
-                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start rotate-180"></div>
                     </div>
                     <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
-                      <div class="merchant pt-1 pl-1"></div>
+                      <div class="merchant pt-1 pl-1 rotate-180"></div>
                       <div class="flex-grow"></div>
-                      <div class="cubes-area flex flex-wrap-reverse content-start"></div>
+                      <div class="cubes-area flex flex-wrap-reverse content-start rotate-180"></div>
                     </div>
                   </div>
                 </div>
@@ -236,7 +239,6 @@ function (dojo, declare) {
 
             switch( stateName )
             {
-
             case 'Player1InitialCubes':
             case 'Player2InitialCubes':
                 this.updatePlayerTables(args.args.cubes);
@@ -246,37 +248,118 @@ function (dojo, declare) {
                         dojo.addClass(node, AVAILABLE_STREET_CLASS);
 
                         // bind click event on all streets
-                        dojo.connect(node, 'onclick', function(e) {
-                            let selectedCount = dojo.query('.street.border-red-500.border-4').length;
+                        ON_CLICK_HANDLERS['streets'].push(
+                            dojo.connect(node, 'onclick', function(e) {
+                                let selectedCount = dojo.query(`.street.${SELECTED_STREET_CLASS.split(' ').join('.')}`).length;
 
-                            if (dojo.hasClass(node, 'available')) {
-                                if (selectedCount < 3) {
-                                    dojo.removeClass(node, AVAILABLE_STREET_CLASS);
-                                    dojo.addClass(node, SELECTED_STREET_CLASS);
+                                if (dojo.hasClass(node, 'available')) {
+                                    if (selectedCount < 3) {
+                                        dojo.removeClass(node, AVAILABLE_STREET_CLASS);
+                                        dojo.addClass(node, SELECTED_STREET_CLASS);
 
-                                    selectedCount = dojo.query('.street.border-red-500.border-4').length;
-                                    if (selectedCount === 3) {
-                                        dojo.removeClass('confirm-btn', 'disabled');
+                                        selectedCount = dojo.query(`.street.${SELECTED_STREET_CLASS.split(' ').join('.')}`).length;
+                                        if (selectedCount === 3) {
+                                            dojo.removeClass('confirm-btn', 'disabled');
+                                        }
                                     }
-                                }
-                            } else {
-                                const availableNodes = dojo.query('.street.available').map(n => n);
-                                dojo.removeClass(node, SELECTED_STREET_CLASS);
-                                dojo.addClass(node, AVAILABLE_STREET_CLASS);
+                                } else {
+                                    const availableNodes = dojo.query('.street.available').map(n => n);
+                                    dojo.removeClass(node, SELECTED_STREET_CLASS);
+                                    dojo.addClass(node, AVAILABLE_STREET_CLASS);
 
-                                // Here is for syncing css keyframes animation.
-                                availableNodes.forEach(n => n.classList.remove('available'));
-                                availableNodes.push(node);
-                                setTimeout(() => {
-                                    availableNodes.forEach(n => n.classList.add('available'));
-                                }, 1);
-                            }
-                        });
+                                    // Here is for syncing css keyframes animation.
+                                    availableNodes.forEach(n => n.classList.remove('available'));
+                                    availableNodes.push(node);
+                                    setTimeout(() => {
+                                        availableNodes.forEach(n => n.classList.add('available'));
+                                    }, 1);
+                                }
+                            })
+                        );
                     });
                 }
 
                 break;
+            case 'ChooseAction':
+                this.updatePlayerTables(args.args.cubes);
 
+                break;
+            case 'SelectEastOrWest':
+                this.updatePlayerTables(args.args.cubes);
+
+                if( this.isCurrentPlayerActive() ) {
+                    const streets = Array.from(document.getElementsByClassName('street'));
+                    const targetStreets = streets.slice(4, 10);
+
+                    targetStreets.forEach(function(node) {
+                        dojo.addClass(node, AVAILABLE_STREET_CLASS);
+
+                        ON_CLICK_HANDLERS['streets'].push(
+                            dojo.connect(node, 'onclick', function(e) {
+                                const index = streets.indexOf(node);
+
+                                if (dojo.hasClass(node, 'available')) {
+                                    // Remove all previous selections
+                                    streets.forEach(n => {
+                                        if (dojo.hasClass(n, SELECTED_STREET_CLASS)) {
+                                            dojo.removeClass(n, SELECTED_STREET_CLASS);
+                                            dojo.addClass(n, AVAILABLE_STREET_CLASS);
+                                        }
+                                    });
+
+                                    // Add selected class to the appropriate group
+                                    if (index >= 4 && index <= 6) {
+                                        streets.slice(4, 7).forEach(n => {
+                                            dojo.removeClass(n, AVAILABLE_STREET_CLASS);
+                                            dojo.addClass(n, SELECTED_STREET_CLASS);
+                                        });
+
+                                        dojo.removeClass('confirm-btn', 'disabled');
+                                    } else {
+                                        streets.slice(7, 10).forEach(n => {
+                                            dojo.removeClass(n, AVAILABLE_STREET_CLASS);
+                                            dojo.addClass(n, SELECTED_STREET_CLASS);
+                                        });
+
+                                        dojo.removeClass('confirm-btn', 'disabled');
+                                    }
+                                } else if (dojo.hasClass(node, SELECTED_STREET_CLASS)) {
+                                    // Remove all selections when clicking a selected node
+                                    streets.forEach(n => {
+                                        if (dojo.hasClass(n, SELECTED_STREET_CLASS)) {
+                                            dojo.removeClass(n, SELECTED_STREET_CLASS);
+                                            dojo.addClass(n, AVAILABLE_STREET_CLASS);
+                                        }
+                                    });
+
+                                    // Sync animation
+                                    const availableNodes = targetStreets.filter(n => dojo.hasClass(n, 'available'));
+                                    availableNodes.forEach(n => n.classList.remove('available'));
+                                    setTimeout(() => {
+                                        availableNodes.forEach(n => n.classList.add('available'));
+                                    }, 1);
+
+                                    dojo.addClass('confirm-btn', 'disabled');
+                                }
+                            })
+                        );
+                    });
+                }
+
+                break;
+            case 'SelectStreet':
+                this.updatePlayerTables(args.args.cubes);
+
+                break;
+            case 'SowCubes':
+                this.updatePlayerTables(args.args.cubes);
+
+                break;
+            case 'Player1Event':
+            case 'Player2Event':
+                this.updatePlayerTables(args.args.cubes);
+
+                break;
             case 'dummy':
                 break;
             }
@@ -321,8 +404,14 @@ function (dojo, declare) {
                 {
                 case 'Player1InitialCubes':
                 case 'Player2InitialCubes':
+                case 'SelectEastOrWest':
                     this.addActionButton('confirm-btn', _('Confirm'), () => this.onConfirm(stateName));
                     dojo.addClass('confirm-btn', 'disabled');
+                    break;
+
+                case 'ChooseAction':
+                    this.addActionButton('recruit-btn', _('Recruit'), () => this.onChooseAction('recruit'));
+                    this.addActionButton('operate-btn', _('Operate'), () => this.onChooseAction('operate'));
                     break;
                 }
             }
@@ -372,7 +461,7 @@ function (dojo, declare) {
                         break;
 
                     case 'rest':
-                        const restElement = document.querySelector(`.rest${cube.position_uid}`);
+                        const restElement = document.querySelector(`.rest-${cube.position_uid}`);
                         if (restElement) {
                             cubeElement.classList.add('absolute');
                             restElement.appendChild(cubeElement);
@@ -413,12 +502,36 @@ function (dojo, declare) {
                         const warehouseId = cube.player_id === `${this.player_id}` ? 'warehouse-1' : 'warehouse-2';
                         const warehouse = document.getElementById(warehouseId);
                         if (warehouse) {
-                            cubeElement.classList.add('absolute', `${cube.position_type}${cube.position_uid}`);
+                            cubeElement.classList.add('absolute', `${cube.position_type}-${cube.position_uid}`);
                             warehouse.appendChild(cubeElement);
                         }
                         break;
                 }
            });
+        },
+
+        validateSelectedStreets: function()
+        {
+            const streets = Array.from(document.getElementsByClassName('street'));
+            const selectedNodes = streets.filter(n => n.classList.contains(SELECTED_STREET_CLASS));
+            const selectedIndexes = selectedNodes.map(n => streets.indexOf(n));
+
+            // Must have exactly 3 selected nodes
+            if (selectedIndexes.length !== 3) {
+                return false;
+            }
+
+            // Check if it's east group (4,5,6)
+            const isEastGroup = selectedIndexes.includes(4) &&
+                                selectedIndexes.includes(5) &&
+                                selectedIndexes.includes(6);
+
+            // Check if it's west group (7,8,9)
+            const isWestGroup = selectedIndexes.includes(7) &&
+                                selectedIndexes.includes(8) &&
+                                selectedIndexes.includes(9);
+
+            return isEastGroup || isWestGroup;
         },
 
         ///////////////////////////////////////////////////
@@ -447,8 +560,12 @@ function (dojo, declare) {
                 {
                 case 'Player1InitialCubes':
                 case 'Player2InitialCubes':
+                    // Disconnect all streets dom onclick event
+                    dojo.forEach(ON_CLICK_HANDLERS['streets'], dojo.disconnect);
+                    ON_CLICK_HANDLERS['streets'] = [];
+
                     try {
-                        const streetIds = dojo.query('.border-red-500.border-4').map(n => n.id.replace('street-', ''));
+                        const streetIds = dojo.query(`.${SELECTED_STREET_CLASS.split(' ').join('.')}`).map(n => n.id.replace('street-', ''));
 
                         if (streetIds.length !== 3) {
                             throw new Error('Please select exactly 3 streets.');
@@ -459,6 +576,26 @@ function (dojo, declare) {
                         this.showMessage(_('Please select exactly 3 streets.') , 'error');
                         console.error(error.message);
                     }
+
+                    break;
+                case 'SelectEastOrWest':
+                    // Disconnect all streets dom onclick event
+                    dojo.forEach(ON_CLICK_HANDLERS['streets'], dojo.disconnect);
+                    ON_CLICK_HANDLERS['streets'] = [];
+
+                    try {
+                        const streetIds = dojo.query(`.${SELECTED_STREET_CLASS.split(' ').join('.')}`).map(n => n.id.replace('street-', ''));
+
+                        if (this.validateSelectedStreets()) {
+                            throw new Error('Please select east way or west way.');
+                        }
+
+                        this.bgaPerformAction("actSelectEastOrWest", { streetIds: streetIds.join(',') });
+                    } catch (error) {
+                        this.showMessage(_('Please select east way or west way.') , 'error');
+                        console.error(error.message);
+                    }
+
                     break;
                 }
             }
@@ -473,6 +610,15 @@ function (dojo, declare) {
             });
         },
 
+        onChooseAction: function(actionName)
+        {
+            console.log( 'onChooseAction' );
+
+            if( this.isCurrentPlayerActive() )
+            {
+                this.bgaPerformAction("actChooseAction", { actionName: actionName });
+            }
+        },
 
         ///////////////////////////////////////////////////
         //// Reaction to cometD notifications
@@ -526,6 +672,7 @@ function (dojo, declare) {
         {
             console.log( notif );
 
+            // Get the cube element using the player_id and cube_id
             const cubeId = `${notif.args.player_id}-${notif.args.cube_id}`;
             const cubeElement = document.getElementById(cubeId);
 
@@ -534,11 +681,84 @@ function (dojo, declare) {
                 return;
             }
 
-            const targetStreet = document.getElementById(notif.args.after_move);
-            const cubesArea = targetStreet.querySelector('.cubes-area');
+            // Helper function to create target position element
+            const createTargetPosition = (className, parent) => {
+                const targetPosition = document.createElement('div');
+                targetPosition.className = className;
+                parent.appendChild(targetPosition);
+                return targetPosition;
+            };
 
-            debugger
-            this.slideToObject(cubeElement, cubesArea).play();
+            // Determine movement type based on after_move destination
+            const moveType = notif.args.after_move.split('-')[0];
+            let targetPosition;
+            let newParentElement;
+
+            switch (moveType) {
+                case 'rice':
+                case 'sugar':
+                case 'camphor':
+                case 'tea':
+                case 'groceries':
+                case 'fabric':
+                case 'ginseng':
+                    // Warehouse resource movements
+                    targetPosition = createTargetPosition(
+                        `cube yellow absolute ${notif.args.after_move}`,
+                        cubeElement.parentNode
+                    );
+                    break;
+
+                case 'street':
+                    // Street movements
+                    newParentElement = document.getElementById(notif.args.after_move).querySelector('.cubes-area');
+                    targetPosition = createTargetPosition(
+                        'cube yellow float-left',
+                        newParentElement
+                    );
+                    break;
+
+                case 'merchant':
+                    // Merchant movements
+                    newParentElement = document.getElementById(notif.args.after_move);
+                    targetPosition = createTargetPosition(
+                        'cube yellow float-left',
+                        newParentElement
+                    );
+                    break;
+
+                case 'event':
+                    // Event card movements
+                    newParentElement = document.getElementById(notif.args.after_move);
+                    targetPosition = createTargetPosition(
+                        'cube yellow float-left',
+                        newParentElement
+                    );
+                    break;
+
+                case 'rest':
+                case 'goals':
+                    // Rest area and goals movements
+                    newParentElement = document.getElementById(notif.args.after_move);
+                    targetPosition = createTargetPosition(
+                        'cube yellow absolute',
+                        newParentElement
+                    );
+                    break;
+
+                default:
+                    console.error('Unknown movement type:', moveType);
+                    return;
+            }
+
+            // Perform the animation
+            this.slideToObject(cubeElement, targetPosition).play(() => {
+                cubeElement.className = targetPosition.className;
+                if (newParentElement) {
+                    newParentElement.appendChild(cubeElement);
+                }
+                targetPosition.remove();
+            });
         }
    });
 });

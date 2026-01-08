@@ -186,24 +186,23 @@ class Game extends \Table
 
         $player_id = (int)$this->getActivePlayerId();
         $player_name = self::getActivePlayerName();
-        $sql = "SELECT player_color FROM player
-                WHERE player_id=$player_id";
 
         foreach ($streetIds as $streetId) {
-            $cube = self::getAvailableCube($player_id);
+            $cube = self::getCube($player_id, 'reserve');
             self::updateCubeRecord($player_id, $cube['cube_id'], 'street', $streetId);
             self::updateCardRecord($streetId);
-        
+
             self::notifyAllPlayers(
                 "moveCubes",
-                clienttranslate( '${player_name} move cube ${cube_id} from reserve to ${after_move}.' ),
+                clienttranslate( '${player_name} move cube ${cube_id} from ${before_move} to ${after_move}.' ),
                 [
                     'player_id' => $player_id,
                     'player_name' => $player_name,
                     'cube_id' => $cube['cube_id'],
+                    'before_move' => 'reserve-0',
                     'after_move' => 'street-' . $streetId
                 ]
-            );  
+            );
         }
 
         $state = $this->gamestate->state();
@@ -214,16 +213,59 @@ class Game extends \Table
         }
     }
 
-    public function actChooseAction(): void
+    // @param $actionName: recruit or operate.
+    public function actChooseAction(string $actionName): void
     {
         self::checkAction( 'actChooseAction' );
 
+        $player_id = (int)$this->getActivePlayerId();
+        $player_name = self::getActivePlayerName();
+
+        if ($actionName == 'recruit') {
+            $cube = self::addGood($player_id, 'rice');
+
+            self::notifyAllPlayers(
+                "moveCubes",
+                clienttranslate( '${player_name} move cube ${cube_id} from ${before_move} to ${after_move}.' ),
+                [
+                    'player_id' => $player_id,
+                    'player_name' => $player_name,
+                    'cube_id' => $cube['cube_id'],
+                    'before_move' => ($cube['position_uid'] == '1') ? 'reserve-0' : 'rice-' . ($cube['position_uid'] - 1),
+                    'after_move' => 'rice-' . $cube['position_uid']
+                ]
+            );
+        }
+
+        $this->gamestate->nextState( $actionName );
     }
 
-    public function actSelectEastOrWest(): void
+    // @param streetIds, array with 3 elements.
+    public function actSelectEastOrWest(#[IntArrayParam(min: 3, max: 3)] array $streetIds): void
     {
         self::checkAction( 'actSelectEastOrWest' );
 
+        $player_id = (int)$this->getActivePlayerId();
+        $player_name = self::getActivePlayerName();
+
+        foreach ($streetIds as $streetId) {
+            $cube = self::getCube($player_id, 'reserve');
+            self::updateCubeRecord($player_id, $cube['cube_id'], 'street', $streetId);
+            self::updateCardRecord($streetId);
+
+            self::notifyAllPlayers(
+                "moveCubes",
+                clienttranslate( '${player_name} move cube ${cube_id} from reserve-0 to ${after_move}.' ),
+                [
+                    'player_id' => $player_id,
+                    'player_name' => $player_name,
+                    'cube_id' => $cube['cube_id'],
+                    'after_move' => 'street-' . $streetId
+                ]
+            );
+        }
+
+        $this->gamestate->nextState();
     }
 
     public function actSelectStreet(): void
@@ -252,9 +294,8 @@ class Game extends \Table
      * @return array
      * @see ./states.inc.php
      */
-    public function argInitialCubes(): array
+    public function argUpdateTable(): array
     {
-
         $sql = "SELECT * FROM cubes";
         $cubes = self::getObjectListFromDB($sql);
 
@@ -300,7 +341,19 @@ class Game extends \Table
     }
 
     public function stTurnEnd(): void {
+        // Retrieve the active player ID.
+        $player_id = (int)$this->getActivePlayerId();
 
+        // Give some extra time to the active player when he completed an action
+        $this->giveExtraTime($player_id);
+
+        // End game check
+        if ($this->getRestCount() == 5 || $this->getMerchantCount($player_id) >= 5) {
+            $this->gamestate->nextState( "end" );
+        } else {
+            // TODO: Use $player_id to get score and may trigger event card.
+            $this->gamestate->nextState( "next" );
+        }
     }
 
     public function stHistoryEvent(): void {
@@ -370,13 +423,13 @@ class Game extends \Table
      * @param $card_id is in 1-14 and 1908, 1920, 1923, 1931, 1945, 1947
      * @param $merchant should be a player_id
      */
-    function updateCardRecord($card_id, $merchant = 0) 
+    function updateCardRecord($card_id, $merchant = 0)
     {
         $valid_card_ids = [
             1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
             1908, 1920, 1923, 1931, 1945, 1947
         ];
-        
+
         if (!in_array($card_id, $valid_card_ids)) {
             throw new \BgaVisibleSystemException("Invalid param card_id: $card_id in updateCardRecord()");
             return;
@@ -384,7 +437,7 @@ class Game extends \Table
 
         $sql = "SELECT player_id, player_color FROM player";
         $players = self::getObjectListFromDB($sql);
-        
+
         $yellow_player_id = null;
         $blue_player_id = null;
         foreach ($players as $player) {
@@ -395,15 +448,15 @@ class Game extends \Table
                 $blue_player_id = $player['player_id'];
             }
         }
-    
+
         $sql = "UPDATE cards
                 SET yellow_cubes = (
                     SELECT COUNT(cubes.cube_id) FROM cubes
-                    WHERE cubes.position_uid = $card_id 
+                    WHERE cubes.position_uid = $card_id
                       AND cubes.player_id = $yellow_player_id)
                 WHERE cards.card_id = $card_id";
         self::DbQuery($sql);
-    
+
         $sql = "UPDATE cards
                 SET blue_cubes = (
                     SELECT COUNT(cubes.cube_id) FROM cubes
@@ -411,10 +464,10 @@ class Game extends \Table
                       AND cubes.player_id = $blue_player_id)
                 WHERE cards.card_id = $card_id";
         self::DbQuery($sql);
-    
+
         if ($merchant != 0) {
-            $sql = "UPDATE cards 
-                    SET merchant = $merchant 
+            $sql = "UPDATE cards
+                    SET merchant = $merchant
                     WHERE card_id = $card_id";
             self::DbQuery($sql);
         }
@@ -438,17 +491,89 @@ class Game extends \Table
 
     /**
      * @param $player_id
-     * Return the smallest available cube record
+     * @param $position_type: reserve, street, merchat, event, rice, sugar, camphor, tea, groceries, fabric, ginseng, rest, goals
+     * Return the smallest $position_type cube record
      */
-    function getAvailableCube($player_id)
+    function getCube($player_id, $position_type)
     {
-        $sql = "SELECT * FROM cubes 
-                WHERE player_id = $player_id 
-                  AND position_type = 'reserve'
+        $sql = "SELECT * FROM cubes
+                WHERE player_id = $player_id
+                  AND position_type = '$position_type'
                 ORDER BY cube_id
                 LIMIT 1";
         $result = self::getObjectFromDB($sql);
-        
+
+        return $result;
+    }
+
+    /**
+     * @param $player_id
+     * @param $good: rice, sugar, camphor, tea, groceries, fabric, ginseng
+     * Add a good for recruit action.
+     */
+    function addGood($player_id, $good)
+    {
+        $sql = "SELECT * FROM cubes
+                WHERE player_id = $player_id
+                  AND position_type = '$good'
+                LIMIT 1";
+        $cube = self::getObjectFromDB($sql);
+
+        if ($cube !== null && $cube['position_uid'] < 4) {
+            $next_position = $cube['position_uid'] + 1;
+            self::updateCubeRecord($player_id, $cube['cube_id'], $good, $next_position);
+
+            $sql = "SELECT * FROM cubes
+                    WHERE cube_id = $cube[cube_id]
+                    LIMIT 1";
+            $result = self::getObjectFromDB($sql);
+
+            return $result;
+        } else {
+            $reserve_cube = self::getCube($player_id, 'reserve');
+            if ($reserve_cube === null) {
+                // TODO: 進入選擇場上 cube 的狀態
+                throw new \BgaVisibleSystemException("No available cubes in reserve");
+                return;
+            }
+
+            self::updateCubeRecord($player_id, $reserve_cube['cube_id'], $good, 1);
+
+            $sql = "SELECT * FROM cubes
+                    WHERE cube_id = $reserve_cube[cube_id]
+                    LIMIT 1";
+            $result = self::getObjectFromDB($sql);
+
+            return $result;
+        }
+    }
+
+    /**
+     * Get the count of cubes with position_type='rest'
+     * @return int Returns the number of cubes record in rest position
+     */
+    function getRestCount(): int
+    {
+        $sql = "SELECT COUNT(cube_id)
+                FROM cubes
+                WHERE position_type = 'rest'";
+        $result = (int)self::getUniqueValueFromDB($sql);
+
+        return $result;
+    }
+
+    /**
+     * Get the count of cards where the specified player is the merchant
+     * @param int $player_id The player ID to count merchant records for
+     * @return int Returns the number of cards where the player is the merchant
+     */
+    function getMerchantCount(int $player_id): int
+    {
+        $sql = "SELECT COUNT(card_id)
+                FROM cards
+                WHERE merchant = $player_id";
+        $result = (int)self::getUniqueValueFromDB($sql);
+
         return $result;
     }
 

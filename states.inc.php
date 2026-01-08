@@ -67,7 +67,7 @@ $machinestates = [
       "description" => clienttranslate('${actplayer} puts 3 initial cubes.'),
       "descriptionmyturn" => clienttranslate('Your turn. Click 3 different streets to put your cubes.'),
       "type" => "activeplayer",
-      "args" => "argInitialCubes",
+      "args" => "argUpdateTable",
       "possibleactions" => [ "actInitialCubes" ],
       "transitions" => [ "setupNext" => 3 ]
     ],
@@ -86,7 +86,7 @@ $machinestates = [
       "description" => clienttranslate('${actplayer} puts 3 initial cubes.'),
       "descriptionmyturn" => clienttranslate('Your turn. Click 3 different streets to put your cubes.'),
       "type" => "activeplayer",
-      "args" => "argInitialCubes",
+      "args" => "argUpdateTable",
       "possibleactions" => [ "actInitialCubes" ],
       "transitions" => [ "setupComplete" => 10 ]
     ],
@@ -106,6 +106,7 @@ $machinestates = [
         "description" => clienttranslate('It\'s ${actplayer}\'s turn.'),
         "descriptionmyturn" => clienttranslate('Choose to recruit or operate.'),
         "type" => "activeplayer",
+        "args" => "argUpdateTable",
         "possibleactions" => [ "actChooseAction" ],
         "transitions" => [ "recruit" => 21, "operate" => 22 ]
     ],
@@ -115,6 +116,7 @@ $machinestates = [
         "description" => clienttranslate('It\'s ${actplayer}\'s turn.'),
         "descriptionmyturn" => clienttranslate('You\'ve get a rice. Select a east/west way to sow 3 cubes.'),
         "type" => "activeplayer",
+        "args" => "argUpdateTable",
         "possibleactions" => [ "actSelectEastOrWest" ],
         "transitions" => [ "" => 30 ]
     ],
@@ -124,6 +126,7 @@ $machinestates = [
         "description" => clienttranslate('It\'s ${actplayer}\'s turn.'),
         "descriptionmyturn" => clienttranslate('Select a street.'),
         "type" => "activeplayer",
+        "args" => "argUpdateTable",
         "possibleactions" => [ "actSelectStreet" ],
         "transitions" => [ "" => 23 ]
     ],
@@ -133,6 +136,7 @@ $machinestates = [
         "description" => clienttranslate('It\'s ${actplayer}\'s turn.'),
         "descriptionmyturn" => clienttranslate('Sow cubes.'),
         "type" => "activeplayer",
+        "args" => "argUpdateTable",
         "possibleactions" => [ "actSowCubes" ],
         "transitions" => [ "" => 30 ]
     ],
@@ -168,6 +172,7 @@ $machinestates = [
         "description" => clienttranslate('It\'s ${actplayer}\'s event turn.'),
         "descriptionmyturn" => clienttranslate('Event phase.'),
         "type" => "activeplayer",
+        "args" => "argUpdateTable",
         "possibleactions" => [ "actPlayerEvent" ],
         "transitions" => [
           "next" => 10,
@@ -180,6 +185,7 @@ $machinestates = [
         "description" => clienttranslate('It\'s ${actplayer}\'s event turn.'),
         "descriptionmyturn" => clienttranslate('Event phase.'),
         "type" => "activeplayer",
+        "args" => "argUpdateTable",
         "possibleactions" => [ "actPlayerEvent" ],
         "transitions" => [ "" => 10 ]
     ],

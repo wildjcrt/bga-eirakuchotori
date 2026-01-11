@@ -730,117 +730,154 @@
   background-size: 0px;
 }
 
-/* street and event START */
-#street-1 {
-  background-size: 1680px;
-  background-position: -0px 0px;
+.street {
+  background-size: cover;
 }
 
-#street-2 {
-  background-size: 1680px;
-  background-position: -120px 0px;
-}
-
-#street-3 {
-  background-size: 1680px;
-  background-position: -240px 0px;
-}
-
-#street-4 {
-  background-size: 1680px;
-  background-position: -360px 0px;
-}
-
-#street-5 {
-  background-size: 1680px;
-  background-position: -480px 0px;
-}
-
-#street-6 {
-  background-size: 1680px;
-  background-position: -600px 0px;
-}
-
-#street-7 {
-  background-size: 1680px;
-  background-position: -720px 0px;
-}
-
-#street-8 {
-  background-size: 1680px;
-  background-position: -840px 0px;
-}
-
-#street-9 {
-  background-size: 1680px;
-  background-position: -960px 0px;
-}
-
-#street-10 {
-  background-size: 1680px;
-  background-position: -1080px 0px;
-}
-
-#street-11 {
-  background-size: 1680px;
-  background-position: -1200px 0px;
-}
-
-#street-12 {
-  background-size: 1680px;
-  background-position: -1320px 0px;
-}
-
-#street-13 {
-  background-size: 1680px;
-  background-position: -1440px 0px;
-}
-
-#street-14 {
-  background-size: 1680px;
-  background-position: -1560px 0px;
-}
-
-#event-1908 {
-  background: no-repeat url("img/eirakuchotori-resources.jpg");
-  background-size: 1680px;
-  background-position: -0px -182px;
+.event {
   height: 182px;
+  width: 120px;
+  background-size: cover;
+}
+
+/* street and event START */
+/* line-art 系列 (101-114) */
+#street-1.line-art {
+  background-image: url("img/cards-101-rice.png");
+}
+
+#street-2.line-art {
+  background-image: url("img/cards-102-sugar.png");
+}
+
+#street-3.line-art {
+  background-image: url("img/cards-103-camphor.png");
+}
+
+#street-4.line-art {
+  background-image: url("img/cards-104-tea.png");
+}
+
+#street-5.line-art {
+  background-image: url("img/cards-105-groceries.png");
+}
+
+#street-6.line-art {
+  background-image: url("img/cards-106-fabric.png");
+}
+
+#street-7.line-art {
+  background-image: url("img/cards-107-ginseng.png");
+}
+
+#street-8.line-art {
+  background-image: url("img/cards-108-export.png");
+}
+
+#street-9.line-art {
+  background-image: url("img/cards-109-retail.png");
+}
+
+#street-10.line-art {
+  background-image: url("img/cards-110-wholesale.png");
+}
+
+#street-11.line-art {
+  background-image: url("img/cards-111-exchange.png");
+}
+
+#street-12.line-art {
+  background-image: url("img/cards-112-stroll.png");
+}
+
+#street-13.line-art {
+  background-image: url("img/cards-113-dispatch.png");
+}
+
+#street-14.line-art {
+  background-image: url("img/cards-114-wish.png");
+}
+
+/* new-art 系列 (201-214) */
+#street-1.new-art {
+  background-image: url("img/cards-201-rice.png");
+}
+
+#street-2.new-art {
+  background-image: url("img/cards-202-sugar.png");
+}
+
+#street-3.new-art {
+  background-image: url("img/cards-203-camphor.png");
+}
+
+#street-4.new-art {
+  background-image: url("img/cards-204-tea.png");
+}
+
+#street-5.new-art {
+  background-image: url("img/cards-205-groceries.png");
+}
+
+#street-6.new-art {
+  background-image: url("img/cards-206-fabric.png");
+}
+
+#street-7.new-art {
+  background-image: url("img/cards-207-ginseng.png");
+}
+
+#street-8.new-art {
+  background-image: url("img/cards-208-export.png");
+}
+
+#street-9.new-art {
+  background-image: url("img/cards-209-retail.png");
+}
+
+#street-10.new-art {
+  background-image: url("img/cards-210-wholesale.png");
+}
+
+#street-11.new-art {
+  background-image: url("img/cards-211-exchange.png");
+}
+
+#street-12.new-art {
+  background-image: url("img/cards-212-stroll.png");
+}
+
+#street-13.new-art {
+  background-image: url("img/cards-213-dispatch.png");
+}
+
+#street-14.new-art {
+  background-image: url("img/cards-214-wish.png");
+}
+
+/* event cards */
+#event-1908 {
+  background-image: url("img/events-1908.png");
 }
 
 #event-1920 {
-  background: no-repeat url("img/eirakuchotori-resources.jpg");
-  background-size: 1680px;
-  background-position: -120px -182px;
-  height: 182px;
+  background-image: url("img/events-1920.png");
 }
 
 #event-1923 {
-  background: no-repeat url("img/eirakuchotori-resources.jpg");
-  background-size: 1680px;
-  background-position: -240px -182px;
-  height: 182px;
+  background-image: url("img/events-1923.png");
 }
 
 #event-1931 {
-  background: no-repeat url("img/eirakuchotori-resources.jpg");
-  background-size: 1680px;
-  background-position: -360px -182px;
-  height: 182px;
+  background-image: url("img/events-1931.png");
 }
 
 #event-1945 {
-  background: no-repeat url("img/eirakuchotori-resources.jpg");
-  background-size: 1680px;
-  background-position: -480px -182px;
-  height: 182px;
+  background-image: url("img/events-1945.png");
 }
 
 #event-1947 {
-  background: no-repeat url("img/eirakuchotori-resources.jpg");
-  background-size: 1680px;
-  background-position: -600px -182px;
-  height: 182px;
+  background-image: url("img/events-1947.png");
 }
 /* street and event END */
 

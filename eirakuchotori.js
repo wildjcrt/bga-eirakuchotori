@@ -18,7 +18,7 @@
 const AVAILABLE_STREET_CLASS = 'available border-4 border-amber-300';
 const SELECTED_STREET_CLASS = 'border-4 border-red-500';
 const DISABLED_STREET_CLASS = 'opacity-40';
-const CLEAR_STREET_CLASS = 'street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col';
+const CLEAR_STREET_CLASS = 'street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col';
 const ON_CLICK_HANDLERS = {
     'streets': []
 };
@@ -71,37 +71,37 @@ function (dojo, declare) {
                 <div class="bg-white p-2 mb-5">
                   <!-- 2nd Row -->
                   <div class="grid grid-cols-7 gap-2 mb-2">
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
                       <div class="merchant pt-1 pl-1"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
                       <div class="merchant pt-1 pl-1"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
                       <div class="merchant pt-1 pl-1"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
                       <div class="merchant pt-1 pl-1"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
                       <div class="merchant pt-1 pl-1"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
                       <div class="merchant pt-1 pl-1"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
                       <div class="merchant pt-1 pl-1"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start"></div>
@@ -110,37 +110,37 @@ function (dojo, declare) {
 
                   <!-- 3rd Row -->
                   <div class="grid grid-cols-7 gap-2">
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
                       <div class="merchant pt-1 pl-1 rotate-180"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start rotate-180"></div>
                     </div>
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
                       <div class="merchant pt-1 pl-1 rotate-180"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start rotate-180"></div>
                     </div>
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
                       <div class="merchant pt-1 pl-1 rotate-180"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start rotate-180"></div>
                     </div>
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
                       <div class="merchant pt-1 pl-1 rotate-180"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start rotate-180"></div>
                     </div>
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
                       <div class="merchant pt-1 pl-1 rotate-180"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start rotate-180"></div>
                     </div>
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
                       <div class="merchant pt-1 pl-1 rotate-180"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start rotate-180"></div>
                     </div>
-                    <div class="street resource w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
                       <div class="merchant pt-1 pl-1 rotate-180"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start rotate-180"></div>

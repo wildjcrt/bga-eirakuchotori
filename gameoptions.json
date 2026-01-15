@@ -12,5 +12,19 @@
       }
     },
     "default": 0
+  },
+  "101": {
+    "name": "Art style",
+    "values": {
+      "0": {
+        "name": "New art",
+        "description": "New art style"
+      },
+      "1": {
+        "name": "Line art",
+        "description": "Original art style"
+      }
+    },
+    "default": 0
   }
 }

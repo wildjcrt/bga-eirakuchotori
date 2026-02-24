@@ -675,6 +675,7 @@ function (dojo, declare) {
             // Get the cube element using the player_id and cube_id
             const cubeId = `${notif.args.player_id}-${notif.args.cube_id}`;
             const cubeElement = document.getElementById(cubeId);
+            const colorName = this.gamedatas.players[notif.args.player_id].color_name;
 
             if (!cubeElement) {
                 console.error('Cube element not found:', cubeId);
@@ -685,6 +686,7 @@ function (dojo, declare) {
             const createTargetPosition = (className, parent) => {
                 const targetPosition = document.createElement('div');
                 targetPosition.className = className;
+                targetPosition.style.visibility = 'hidden';
                 parent.appendChild(targetPosition);
                 return targetPosition;
             };
@@ -693,6 +695,7 @@ function (dojo, declare) {
             const moveType = notif.args.after_move.split('-')[0];
             let targetPosition;
             let newParentElement;
+            let finalClassName;
 
             switch (moveType) {
                 case 'rice':
@@ -703,35 +706,39 @@ function (dojo, declare) {
                 case 'fabric':
                 case 'ginseng':
                     // Warehouse resource movements
+                    finalClassName = `cube ${colorName} absolute ${notif.args.after_move}`;
                     targetPosition = createTargetPosition(
-                        `cube yellow absolute ${notif.args.after_move}`,
+                        finalClassName,
                         cubeElement.parentNode
                     );
                     break;
 
                 case 'street':
                     // Street movements
+                    finalClassName = `cube ${colorName} float-left`;
                     newParentElement = document.getElementById(notif.args.after_move).querySelector('.cubes-area');
                     targetPosition = createTargetPosition(
-                        'cube yellow float-left',
+                        finalClassName,
                         newParentElement
                     );
                     break;
 
                 case 'merchant':
                     // Merchant movements
+                    finalClassName = `cube ${colorName} float-left`;
                     newParentElement = document.getElementById(notif.args.after_move);
                     targetPosition = createTargetPosition(
-                        'cube yellow float-left',
+                        finalClassName,
                         newParentElement
                     );
                     break;
 
                 case 'event':
                     // Event card movements
+                    finalClassName = `cube ${colorName} float-left`;
                     newParentElement = document.getElementById(notif.args.after_move);
                     targetPosition = createTargetPosition(
-                        'cube yellow float-left',
+                        finalClassName,
                         newParentElement
                     );
                     break;
@@ -739,9 +746,10 @@ function (dojo, declare) {
                 case 'rest':
                 case 'goals':
                     // Rest area and goals movements
+                    finalClassName = `cube ${colorName} absolute`;
                     newParentElement = document.getElementById(notif.args.after_move);
                     targetPosition = createTargetPosition(
-                        'cube yellow absolute',
+                        finalClassName,
                         newParentElement
                     );
                     break;
@@ -751,14 +759,26 @@ function (dojo, declare) {
                     return;
             }
 
-            // Perform the animation
-            this.slideToObject(cubeElement, targetPosition).play(() => {
-                cubeElement.className = targetPosition.className;
+            // Cubes with float-left are statically positioned — force relative.
+            cubeElement.style.position = 'relative';
+            cubeElement.style.zIndex = '10';
+
+            var anim = this.slideToObject(cubeElement, targetPosition);
+            dojo.connect(anim, 'onEnd', dojo.hitch(this, function() {
+                // Clear temporary animation styles
+                cubeElement.style.position = '';
+                cubeElement.style.zIndex = '';
+                cubeElement.style.top = '';
+                cubeElement.style.left = '';
+
+                // Apply the final class and move to new parent
+                cubeElement.className = finalClassName;
                 if (newParentElement) {
                     newParentElement.appendChild(cubeElement);
                 }
                 targetPosition.remove();
-            });
+            }));
+            anim.play();
         }
    });
 });

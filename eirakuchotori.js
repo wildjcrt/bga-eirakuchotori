@@ -58,7 +58,7 @@ function (dojo, declare) {
 
             // Example to add a div on the game area
             document.getElementById('game_play_area').insertAdjacentHTML('beforeend', `
-              <div id="player-tables" class="mx-auto w-[900px]">
+              <div id="player-tables" class="mx-auto w-[900px] relative">
                 <!-- 1st Row -->
                 <div class="grid grid-cols-7 gap-2 mb-5">
                   <div class="w-[120px] items-center justify-center"></div>

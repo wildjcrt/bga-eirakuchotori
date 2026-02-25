@@ -552,30 +552,6 @@ function (dojo, declare) {
            });
         },
 
-        validateSelectedStreets: function()
-        {
-            const streets = Array.from(document.getElementsByClassName('street'));
-            const selectedNodes = streets.filter(n => n.classList.contains(SELECTED_STREET_CLASS));
-            const selectedIndexes = selectedNodes.map(n => streets.indexOf(n));
-
-            // Must have exactly 3 selected nodes
-            if (selectedIndexes.length !== 3) {
-                return false;
-            }
-
-            // Check if it's east group (4,5,6)
-            const isEastGroup = selectedIndexes.includes(4) &&
-                                selectedIndexes.includes(5) &&
-                                selectedIndexes.includes(6);
-
-            // Check if it's west group (7,8,9)
-            const isWestGroup = selectedIndexes.includes(7) &&
-                                selectedIndexes.includes(8) &&
-                                selectedIndexes.includes(9);
-
-            return isEastGroup || isWestGroup;
-        },
-
         ///////////////////////////////////////////////////
         //// Player's action
 
@@ -626,13 +602,26 @@ function (dojo, declare) {
                     ON_CLICK_HANDLERS['streets'] = [];
 
                     try {
-                        const streetIds = dojo.query(`.${SELECTED_STREET_CLASS.split(' ').join('.')}`).map(n => n.id.replace('street-', ''));
+                        const streets = Array.from(document.getElementsByClassName('street'));
+                        const selectedNodes = streets.filter(n =>
+                            SELECTED_STREET_CLASS.split(' ').every(cls => n.classList.contains(cls))
+                        );
 
-                        if (this.validateSelectedStreets()) {
+                        if (selectedNodes.length !== 3) {
                             throw new Error('Please select east way or west way.');
                         }
 
-                        this.bgaPerformAction("actSelectEastOrWest", { streetIds: streetIds.join(',') });
+                        const selectedIndices = selectedNodes.map(n => streets.indexOf(n));
+                        const isEast = selectedIndices.includes(4) && selectedIndices.includes(5) && selectedIndices.includes(6);
+                        const isWest = selectedIndices.includes(7) && selectedIndices.includes(8) && selectedIndices.includes(9);
+
+                        if (!isEast && !isWest) {
+                            throw new Error('Please select east way or west way.');
+                        }
+
+                        this.bgaPerformAction("actSelectEastOrWest", {
+                            direction: isEast ? 'east' : 'west'
+                        });
                     } catch (error) {
                         this.showMessage(_('Please select east way or west way.') , 'error');
                         console.error(error.message);

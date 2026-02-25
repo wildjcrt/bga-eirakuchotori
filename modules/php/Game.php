@@ -243,13 +243,25 @@ class Game extends \Table
         $this->gamestate->nextState( $actionName );
     }
 
-    // @param streetIds, array with 3 elements.
-    public function actSelectEastOrWest(#[IntArrayParam(min: 3, max: 3)] array $streetIds): void
-    {
+    // @param $direction: east or west
+    public function actSelectEastOrWest(
+        #[StringParam(alphanum: true)] string $direction
+    ): void {
         self::checkAction( 'actSelectEastOrWest' );
+
+        if ($direction !== 'east' && $direction !== 'west') {
+            throw new \BgaUserException('Invalid direction');
+        }
 
         $player_id = (int)$this->getActivePlayerId();
         $player_name = self::getActivePlayerName();
+
+        // East = grid 5,6,7; West = grid 8,9,10
+        $gridIds = ($direction === 'east') ? [5, 6, 7] : [8, 9, 10];
+        $gridIdList = implode(',', $gridIds);
+
+        $sql = "SELECT card_id FROM board WHERE grid_id IN ($gridIdList)";
+        $streetIds = self::getObjectListFromDB($sql, true);
 
         foreach ($streetIds as $streetId) {
             $cube = self::getCube($player_id, 'reserve');

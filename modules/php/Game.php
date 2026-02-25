@@ -35,6 +35,8 @@ function print_msg($txt, $color = 'black')
 }
 
 use \Bga\GameFramework\Actions\Types\IntArrayParam;
+use \Bga\GameFramework\Actions\CheckAction;
+use \Bga\GameFramework\Actions\Types\StringParam;
 
 class Game extends \Table
 {
@@ -55,7 +57,8 @@ class Game extends \Table
         parent::__construct();
 
         $this->initGameStateLabels([
-            "expansion" => 100
+            "expansion" => 100,
+            "art_style" => 101
         ]);
 
         self::$CARD_TYPES = [
@@ -291,9 +294,36 @@ class Game extends \Table
      *
      * This method returns some additional information that is very specific to the `playerTurn` game state.
      *
+     * Change art style for the current player.
+     * Uses #[CheckAction(false)] so it can be called at any time,
+     * regardless of whose turn it is or what state the game is in.
+     *
      * @return array
      * @see ./states.inc.php
      */
+    #[CheckAction(false)]
+    public function actChangeArtStyle(
+        #[StringParam(alphanum_dash: true)] string $artStyle
+    ): void {
+        // Validate input
+        if ($artStyle !== 'line-art' && $artStyle !== 'new-art') {
+            throw new \BgaUserException('Invalid art style');
+        }
+
+        $player_id = (int)$this->getCurrentPlayerId();
+
+        $sql = "UPDATE player_info
+                SET art_style = '$artStyle'
+                WHERE player_id = $player_id";
+        self::DbQuery($sql);
+
+        // Notify only this player (art style is a personal preference)
+        self::notifyPlayer($player_id, "artStyleChanged", '', [
+            'player_id' => $player_id,
+            'art_style' => $artStyle
+        ]);
+    }
+
     public function argUpdateTable(): array
     {
         $sql = "SELECT * FROM cubes";
@@ -663,6 +693,12 @@ class Game extends \Table
         $gameinfos = $this->getGameinfos();
         $default_colors = $gameinfos['player_colors'];
 
+        // Read art_style from gameoption 101:
+        //   value 0 = "New art"  → 'new-art'
+        //   value 1 = "Line art" → 'line-art'
+        $art_style_option = $this->getGameStateValue('art_style');
+        $art_style = ($art_style_option == 1) ? 'line-art' : 'new-art';
+
         foreach ($players as $player_id => $player) {
             // Now you can access both $player_id and $player array
             $query_values[] = vsprintf("('%s', '%s', '%s', '%s', '%s')", [
@@ -674,8 +710,8 @@ class Game extends \Table
             ]);
 
             // Create player_info table records
-            $sql = "INSERT INTO player_info (player_id)
-                    VALUES ($player_id);";
+            $sql = "INSERT INTO player_info (player_id, art_style)
+                    VALUES ($player_id, '$art_style');";
             self::DbQuery($sql);
 
             // Create 20 cubes records for player in cubes table

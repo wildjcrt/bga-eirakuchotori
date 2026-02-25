@@ -65,6 +65,7 @@ CREATE TABLE IF NOT EXISTS `player_info` (
   `ginseng` int(10) unsigned NOT NULL DEFAULT 0,
   `scores` int(10) unsigned NOT NULL DEFAULT 0,
   `available_cubes` int(10) unsigned NOT NULL DEFAULT 20,
+  `art_style` varchar(8) NOT NULL,
   PRIMARY KEY (`player_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

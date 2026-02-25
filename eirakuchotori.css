@@ -943,3 +943,56 @@
   50% { opacity: 0.3; }
   75% { opacity: 0.8; }
 }
+
+/* ======== art style switcher styles ======== */
+
+#art-style-switcher {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 0;
+  margin-top: 8px;
+}
+
+#art-style-label {
+  font-weight: bold;
+  font-size: 14px;
+  color: #555;
+}
+
+#art-style-options {
+  display: flex;
+  gap: 8px;
+}
+
+.art-style-option {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 4px 12px;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.art-style-option:hover {
+  border-color: #888;
+  background-color: #f5f5f5;
+}
+
+.art-style-option:has(input:checked) {
+  border-color: #4a90d9;
+  background-color: #e8f0fe;
+}
+
+.art-style-option input[type="radio"] {
+  margin: 0;
+  cursor: pointer;
+}
+
+.art-style-option span {
+  cursor: pointer;
+}

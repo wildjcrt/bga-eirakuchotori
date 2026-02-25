@@ -18,7 +18,7 @@
 const AVAILABLE_STREET_CLASS = 'available border-4 border-amber-300';
 const SELECTED_STREET_CLASS = 'border-4 border-red-500';
 const DISABLED_STREET_CLASS = 'opacity-40';
-const CLEAR_STREET_CLASS = 'street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col';
+const CLEAR_STREET_CLASS = 'street w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col';
 const ON_CLICK_HANDLERS = {
     'streets': []
 };
@@ -56,7 +56,13 @@ function (dojo, declare) {
         {
             console.log( "Starting game setup" );
 
-            // Example to add a div on the game area
+            const currentPlayerInfo = Object.values(gamedatas.player_info).find(
+                info => info.player_id == this.player_id
+            );
+            // Default to 'new-art' if not found (e.g. spectator)
+            this.artStyle = (currentPlayerInfo && currentPlayerInfo.art_style) ? currentPlayerInfo.art_style : 'new-art';
+            console.log('Art style:', this.artStyle);
+
             document.getElementById('game_play_area').insertAdjacentHTML('beforeend', `
               <div id="player-tables" class="mx-auto w-[900px] relative">
                 <!-- 1st Row -->
@@ -71,37 +77,37 @@ function (dojo, declare) {
                 <div class="bg-white p-2 mb-5">
                   <!-- 2nd Row -->
                   <div class="grid grid-cols-7 gap-2 mb-2">
-                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                    <div class="street ${this.artStyle} w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
                       <div class="merchant pt-1 pl-1"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
-                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                    <div class="street ${this.artStyle} w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
                       <div class="merchant pt-1 pl-1"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
-                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                    <div class="street ${this.artStyle} w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
                       <div class="merchant pt-1 pl-1"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
-                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                    <div class="street ${this.artStyle} w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
                       <div class="merchant pt-1 pl-1"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
-                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                    <div class="street ${this.artStyle} w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
                       <div class="merchant pt-1 pl-1"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
-                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                    <div class="street ${this.artStyle} w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
                       <div class="merchant pt-1 pl-1"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start"></div>
                     </div>
-                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
+                    <div class="street ${this.artStyle} w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col">
                       <div class="merchant pt-1 pl-1"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start"></div>
@@ -110,37 +116,37 @@ function (dojo, declare) {
 
                   <!-- 3rd Row -->
                   <div class="grid grid-cols-7 gap-2">
-                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                    <div class="street ${this.artStyle} w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
                       <div class="merchant pt-1 pl-1 rotate-180"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start rotate-180"></div>
                     </div>
-                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                    <div class="street ${this.artStyle} w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
                       <div class="merchant pt-1 pl-1 rotate-180"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start rotate-180"></div>
                     </div>
-                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                    <div class="street ${this.artStyle} w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
                       <div class="merchant pt-1 pl-1 rotate-180"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start rotate-180"></div>
                     </div>
-                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                    <div class="street ${this.artStyle} w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
                       <div class="merchant pt-1 pl-1 rotate-180"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start rotate-180"></div>
                     </div>
-                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                    <div class="street ${this.artStyle} w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
                       <div class="merchant pt-1 pl-1 rotate-180"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start rotate-180"></div>
                     </div>
-                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                    <div class="street ${this.artStyle} w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
                       <div class="merchant pt-1 pl-1 rotate-180"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start rotate-180"></div>
                     </div>
-                    <div class="street line-art w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
+                    <div class="street ${this.artStyle} w-[120px] h-[182px] bg-gray-200 justify-center flex flex-col rotate-180">
                       <div class="merchant pt-1 pl-1 rotate-180"></div>
                       <div class="flex-grow"></div>
                       <div class="cubes-area flex flex-wrap-reverse content-start rotate-180"></div>
@@ -204,12 +210,10 @@ function (dojo, declare) {
             Object.values(gamedatas.players).forEach(player => {
                 player.color_name = player.color === 'ffff00' ? 'yellow' : 'blue';
 
-                // example of setting up players boards
                 this.getPlayerPanelElement(player.id).insertAdjacentHTML('beforeend', `
                     <div id="player-counter-${player.id}">A player counter</div>
                 `);
 
-                // example of adding a div for each player
                 document.getElementById('player-tables').insertAdjacentHTML('beforeend', `
                     <div id="player-table-${player.id}">
                         <strong>${player.name}</strong>
@@ -218,7 +222,33 @@ function (dojo, declare) {
                 `);
             });
 
-            // Setup game notifications to handle (see "setupNotifications" method below)
+
+            document.getElementById('game_play_area').insertAdjacentHTML('beforeend', `
+              <div id="art-style-switcher">
+                <span id="art-style-label">Art Style:</span>
+                <div id="art-style-options">
+                  <label class="art-style-option">
+                    <input type="radio" name="art_style" value="new-art"
+                      ${this.artStyle === 'new-art' ? 'checked' : ''}>
+                    <span>New Art</span>
+                  </label>
+                  <label class="art-style-option">
+                    <input type="radio" name="art_style" value="line-art"
+                      ${this.artStyle === 'line-art' ? 'checked' : ''}>
+                    <span>Line Art</span>
+                  </label>
+                </div>
+              </div>
+            `);
+
+            // Bind art style switcher change event
+            document.querySelectorAll('input[name="art_style"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    const newStyle = e.target.value;
+                    this.onChangeArtStyle(newStyle);
+                });
+            });
+
             this.setupNotifications();
 
             console.log( "Ending game setup" );
@@ -426,6 +456,18 @@ function (dojo, declare) {
             script.
 
         */
+
+        getClearStreetClass: function() {
+            return CLEAR_STREET_CLASS + ' ' + this.artStyle;
+        },
+
+        applyArtStyle: function() {
+            document.querySelectorAll('.street').forEach(function(el) {
+                el.classList.remove('line-art', 'new-art');
+                el.classList.add(this.artStyle);
+            }.bind(this));
+        },
+
         updatePlayerTables: function(cubes) {
             document.querySelectorAll('.cube').forEach(element => element.remove());
 
@@ -600,9 +642,10 @@ function (dojo, declare) {
                 }
             }
 
-            document.querySelectorAll('.street').forEach(streetElement => {
+            var self = this;
+            document.querySelectorAll('.street').forEach(function(streetElement) {
                 streetElement.className = '';
-                streetElement.className = CLEAR_STREET_CLASS;
+                streetElement.className = self.getClearStreetClass();
 
                 if (streetElement.closest('.grid-cols-7:last-child')) {
                     streetElement.classList.add('rotate-180');
@@ -618,6 +661,20 @@ function (dojo, declare) {
             {
                 this.bgaPerformAction("actChooseAction", { actionName: actionName });
             }
+        },
+
+        onChangeArtStyle: function(newStyle)
+        {
+            console.log('onChangeArtStyle:', newStyle);
+
+            this.artStyle = newStyle;
+            this.applyArtStyle();
+
+            this.bgaPerformAction("actChangeArtStyle", {
+                artStyle: newStyle
+            }, {
+                checkAction: false
+            });
         },
 
         ///////////////////////////////////////////////////
@@ -650,6 +707,8 @@ function (dojo, declare) {
 
             dojo.subscribe( 'moveCubes', this, "notif_moveCubes" );
             this.notifqueue.setSynchronous( 'moveCubes', 1000 );
+
+            dojo.subscribe( 'artStyleChanged', this, "notif_artStyleChanged" );
         },
 
         // TODO: from this point and below, you can write your game notifications handling methods
@@ -668,6 +727,20 @@ function (dojo, declare) {
         },
 
         */
+
+        notif_artStyleChanged: function( notif )
+        {
+            console.log('notif_artStyleChanged', notif);
+
+            this.artStyle = notif.args.art_style;
+            this.applyArtStyle();
+
+            var radio = document.querySelector('input[name="art_style"][value="' + notif.args.art_style + '"]');
+            if (radio) {
+                radio.checked = true;
+            }
+        },
+
         notif_moveCubes: function( notif )
         {
             console.log( notif );

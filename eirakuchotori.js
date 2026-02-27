@@ -211,7 +211,50 @@ function (dojo, declare) {
                 player.color_name = player.color === 'ffff00' ? 'yellow' : 'blue';
 
                 this.getPlayerPanelElement(player.id).insertAdjacentHTML('beforeend', `
-                    <div id="player-counter-${player.id}">A player counter</div>
+                    <div id="player-panel-${player.id}" class="ekt-player-panel">
+                        <div class="ekt-panel-row">
+                            <div class="ekt-panel-item">
+                                <img src="${g_gamethemeurl}img/user-info-sugar.jpg" class="ekt-panel-icon" />
+                                <span id="panel-sugar-${player.id}" class="ekt-panel-count">0</span>
+                            </div>
+                            <div class="ekt-panel-item">
+                                <img src="${g_gamethemeurl}img/user-info-rice.jpg" class="ekt-panel-icon" />
+                                <span id="panel-rice-${player.id}" class="ekt-panel-count">0</span>
+                            </div>
+                            <div class="ekt-panel-item">
+                                <img src="${g_gamethemeurl}img/user-info-tea.jpg" class="ekt-panel-icon" />
+                                <span id="panel-tea-${player.id}" class="ekt-panel-count">0</span>
+                            </div>
+                            <div class="ekt-panel-item">
+                                <img src="${g_gamethemeurl}img/user-info-groceries.jpg" class="ekt-panel-icon" />
+                                <span id="panel-groceries-${player.id}" class="ekt-panel-count">0</span>
+                            </div>
+                        </div>
+                        <div class="ekt-panel-row">
+                            <div class="ekt-panel-item">
+                                <img src="${g_gamethemeurl}img/user-info-camphor.jpg" class="ekt-panel-icon" />
+                                <span id="panel-camphor-${player.id}" class="ekt-panel-count">0</span>
+                            </div>
+                            <div class="ekt-panel-item">
+                                <img src="${g_gamethemeurl}img/user-info-fabric.jpg" class="ekt-panel-icon" />
+                                <span id="panel-fabric-${player.id}" class="ekt-panel-count">0</span>
+                            </div>
+                            <div class="ekt-panel-item">
+                                <img src="${g_gamethemeurl}img/user-info-ginseng.jpg" class="ekt-panel-icon" />
+                                <span id="panel-ginseng-${player.id}" class="ekt-panel-count">0</span>
+                            </div>
+                        </div>
+                        <div class="ekt-panel-row">
+                            <div class="ekt-panel-item ekt-panel-item-wide">
+                                <img src="${g_gamethemeurl}img/user-info-home.jpg" class="ekt-panel-icon" />
+                                <span id="panel-home-${player.id}" class="ekt-panel-count">0/5</span>
+                            </div>
+                            <div class="ekt-panel-item ekt-panel-item-wide">
+                                <img src="${g_gamethemeurl}img/user-info-dispatch.jpg" class="ekt-panel-icon" />
+                                <span id="panel-dispatch-${player.id}" class="ekt-panel-count">0/3</span>
+                            </div>
+                        </div>
+                    </div>
                 `);
 
                 document.getElementById('player-tables').insertAdjacentHTML('beforeend', `
@@ -240,6 +283,8 @@ function (dojo, declare) {
                 </div>
               </div>
             `);
+
+            this.updatePlayerPanelsSetup(gamedatas);
 
             // Bind art style switcher change event
             document.querySelectorAll('input[name="art_style"]').forEach(radio => {
@@ -272,6 +317,7 @@ function (dojo, declare) {
             case 'Player1InitialCubes':
             case 'Player2InitialCubes':
                 this.updatePlayerTables(args.args.cubes);
+                this.updatePlayerPanelsFromCubes(args.args.cubes);
 
                 if( this.isCurrentPlayerActive() ) {
                     dojo.query('.street').forEach(function(node) {
@@ -312,10 +358,12 @@ function (dojo, declare) {
                 break;
             case 'ChooseAction':
                 this.updatePlayerTables(args.args.cubes);
+                this.updatePlayerPanelsFromCubes(args.args.cubes);
 
                 break;
             case 'SelectEastOrWest':
                 this.updatePlayerTables(args.args.cubes);
+                this.updatePlayerPanelsFromCubes(args.args.cubes);
 
                 if( this.isCurrentPlayerActive() ) {
                     const streets = Array.from(document.getElementsByClassName('street'));
@@ -379,15 +427,18 @@ function (dojo, declare) {
                 break;
             case 'SelectStreet':
                 this.updatePlayerTables(args.args.cubes);
+                this.updatePlayerPanelsFromCubes(args.args.cubes);
 
                 break;
             case 'SowCubes':
                 this.updatePlayerTables(args.args.cubes);
+                this.updatePlayerPanelsFromCubes(args.args.cubes);
 
                 break;
             case 'Player1Event':
             case 'Player2Event':
                 this.updatePlayerTables(args.args.cubes);
+                this.updatePlayerPanelsFromCubes(args.args.cubes);
 
                 break;
             case 'dummy':
@@ -550,6 +601,62 @@ function (dojo, declare) {
                         break;
                 }
            });
+        },
+
+        /**
+         * Update all player panel counters from gamedatas.
+         * Call this in setup() and whenever cubes/cards change.
+         */
+        updatePlayerPanelsSetup: function(gamedatas) {
+            const cubes = gamedatas.cubes || [];
+
+            Object.values(gamedatas.players).forEach(player => {
+                const pid = player.id;
+                const playerCubes = cubes.filter(c => c.player_id == pid);
+
+                const goodTypes = ['sugar', 'rice', 'tea', 'groceries', 'camphor', 'fabric', 'ginseng'];
+                goodTypes.forEach(good => {
+                    const goodCube = playerCubes.filter(c => c.position_type === good)[0];
+                    const count = goodCube ? goodCube.position_uid : 0;
+                    const el = document.getElementById(`panel-${good}-${pid}`);
+                    if (el) el.textContent = count;
+                });
+
+                const restCount = playerCubes.filter(c => c.position_type === 'rest').length;
+                const homeEl = document.getElementById(`panel-home-${pid}`);
+                if (homeEl) homeEl.textContent = `${restCount}/5`;
+
+                const merchantCount = playerCubes.filter(c => c.position_type === 'merchat').length;
+                const dispatchEl = document.getElementById(`panel-dispatch-${pid}`);
+                if (dispatchEl) dispatchEl.textContent = `${merchantCount}/3`;
+            });
+        },
+
+        /**
+         * Convenience method: update panels from cubes array only.
+         * Call from onEnteringState or notification handlers.
+         */
+        updatePlayerPanelsFromCubes: function(cubes) {
+            Object.values(this.gamedatas.players).forEach(player => {
+                const pid = player.id;
+                const playerCubes = cubes.filter(c => c.player_id == pid);
+
+                const goodTypes = ['sugar', 'rice', 'tea', 'groceries', 'camphor', 'fabric', 'ginseng'];
+                goodTypes.forEach(good => {
+                    const goodCube = playerCubes.filter(c => c.position_type === good)[0];
+                    const count = goodCube ? goodCube.position_uid : 0;
+                    const el = document.getElementById(`panel-${good}-${pid}`);
+                    if (el) el.textContent = count;
+                });
+
+                const merchantCount = playerCubes.filter(c => c.position_type === 'rest').length;
+                const homeEl = document.getElementById(`panel-home-${pid}`);
+                if (homeEl) homeEl.textContent = `${merchantCount}/5`;
+
+                const dispatchCount = playerCubes.filter(c => c.position_type === 'merchant').length;;
+                const dispatchEl = document.getElementById(`panel-dispatch-${pid}`);
+                if (dispatchEl) dispatchEl.textContent = `${dispatchCount}/3`;
+            });
         },
 
         ///////////////////////////////////////////////////

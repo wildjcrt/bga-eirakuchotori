@@ -996,3 +996,44 @@
 .art-style-option span {
   cursor: pointer;
 }
+
+/* ======== Player Panel Icons ======== */
+
+.ekt-player-panel {
+  padding: 8px 4px 4px 4px;
+}
+
+.ekt-panel-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.ekt-panel-item {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+
+.ekt-panel-item-wide {
+  padding: 2px 8px;
+}
+
+.ekt-panel-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.ekt-panel-count {
+  font-size: 14px;
+  font-weight: bold;
+  min-width: 16px;
+  text-align: center;
+  color: #333;
+}

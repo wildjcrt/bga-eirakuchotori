@@ -679,7 +679,8 @@ class Game extends \Table
         $sql = "SELECT * FROM player_info";
         $result['player_info'] = self::getObjectListFromDB($sql);
 
-        // TODO: Gather all information about current game situation (visible by player $current_player_id).
+        $sql = "SELECT * FROM cubes";
+        $result['cubes'] = self::getObjectListFromDB($sql);
 
         return $result;
     }

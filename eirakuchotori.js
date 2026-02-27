@@ -162,16 +162,16 @@ function (dojo, declare) {
                     <div class="score0 yellow marker absolute"></div>
                     <div class="score0 blue marker absolute"></div>
                     <div class="rest-area">
-                      <div class="rest1 absolute"></div>
-                      <div class="rest2 absolute"></div>
-                      <div class="rest3 absolute"></div>
-                      <div class="rest4 absolute"></div>
-                      <div class="rest5 absolute"></div>
+                      <div id="rest-1" class="rest absolute"></div>
+                      <div id="rest-2" class="rest absolute"></div>
+                      <div id="rest-3" class="rest absolute"></div>
+                      <div id="rest-4" class="rest absolute"></div>
+                      <div id="rest-5" class="rest absolute"></div>
                     </div>
                     <div class="goal-area">
-                      <div class="merchants3 absolute"></div>
-                      <div class="warehouse24 absolute"></div>
-                      <div class="export6 absolute"></div>
+                      <div id="merchants3" class="goal absolute"></div>
+                      <div id="warehouse24" class="goal absolute"></div>
+                      <div id="export6" class="goal absolute"></div>
                     </div>
                   </div>
                 </div>

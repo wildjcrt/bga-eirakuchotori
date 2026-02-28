@@ -590,6 +590,7 @@ class Game extends \Table
 
             $sql = "SELECT * FROM cubes
                     WHERE cube_id = $cube[cube_id]
+                      AND player_id = $player_id
                     LIMIT 1";
             $result = self::getObjectFromDB($sql);
 
@@ -606,6 +607,7 @@ class Game extends \Table
 
             $sql = "SELECT * FROM cubes
                     WHERE cube_id = $reserve_cube[cube_id]
+                      AND player_id = $player_id
                     LIMIT 1";
             $result = self::getObjectFromDB($sql);
 

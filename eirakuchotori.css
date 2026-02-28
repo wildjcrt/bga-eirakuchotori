@@ -892,37 +892,37 @@
 }
 
 /* rest and goal START */
-.rest-1 {
+#rest-1 {
   top: 611px;
   left: 562px;
 }
 
-.rest-2 {
+#rest-2 {
   top: 611px;
   left: 594px;
 }
 
-.rest-3 {
+#rest-3 {
   top: 611px;
   left: 626px;
 }
 
-.rest-4 {
+#rest-4 {
   top: 611px;
   left: 658px;
 }
 
-.rest-5 {
+#rest-5 {
   top: 611px;
   left: 690px;
 }
 
-.merchants3 {
+#merchants3 {
   top: 691px;
   left: 576px;
 }
 
-.warehouse24 {
+#warehouse24 {
   top: 691px;
   left: 624px;
 }
@@ -995,4 +995,45 @@
 
 .art-style-option span {
   cursor: pointer;
+}
+
+/* ======== Player Panel Icons ======== */
+
+.ekt-player-panel {
+  padding: 8px 4px 4px 4px;
+}
+
+.ekt-panel-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.ekt-panel-item {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+
+.ekt-panel-item-wide {
+  padding: 2px 8px;
+}
+
+.ekt-panel-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.ekt-panel-count {
+  font-size: 14px;
+  font-weight: bold;
+  min-width: 16px;
+  text-align: center;
+  color: #333;
 }

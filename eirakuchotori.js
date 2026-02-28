@@ -875,10 +875,12 @@ function (dojo, declare) {
                 case 'fabric':
                 case 'ginseng':
                     // Warehouse resource movements
+                    const warehouseId = notif.args.player_id == this.player_id ? 'warehouse-1' : 'warehouse-2';
+                    const warehouseElement = document.getElementById(warehouseId);
                     finalClassName = `cube ${colorName} absolute ${notif.args.after_move}`;
                     targetPosition = createTargetPosition(
                         finalClassName,
-                        cubeElement.parentNode
+                        warehouseElement
                     );
                     break;
 
@@ -912,6 +914,19 @@ function (dojo, declare) {
                     );
                     break;
 
+                case 'reserve': {
+                    // Reserve movements (e.g. rice-2 → reserve-0)
+                    const reserveId = notif.args.player_id == this.player_id ? 'reserve-1' : 'reserve-2';
+                    const reserveElement = document.getElementById(reserveId);
+                    finalClassName = `cube ${colorName} float-left`;
+                    newParentElement = reserveElement;
+                    targetPosition = createTargetPosition(
+                        finalClassName,
+                        reserveElement
+                    );
+                    break;
+                }
+
                 case 'rest':
                 case 'goals':
                     // Rest area and goals movements
@@ -928,15 +943,20 @@ function (dojo, declare) {
                     return;
             }
 
-            // Cubes with float-left are statically positioned — force relative.
-            cubeElement.style.position = 'relative';
-            cubeElement.style.zIndex = '10';
+            // 只有目前是 float-left 的方塊需要強制 relative
+            // 才能讓 slideToObject 正確計算起點位置
+            const isFloatLeft = cubeElement.classList.contains('float-left');
+            if (isFloatLeft) {
+                cubeElement.style.position = 'relative';
+                cubeElement.style.zIndex = '10';
+            }
 
             var anim = this.slideToObject(cubeElement, targetPosition);
             dojo.connect(anim, 'onEnd', dojo.hitch(this, function() {
-                // Clear temporary animation styles
-                cubeElement.style.position = '';
-                cubeElement.style.zIndex = '';
+                if (isFloatLeft) {
+                    cubeElement.style.position = '';
+                    cubeElement.style.zIndex = '';
+                }
                 cubeElement.style.top = '';
                 cubeElement.style.left = '';
 

@@ -69,7 +69,7 @@ function (dojo, declare) {
                 <div class="grid grid-cols-7 gap-2 mb-5">
                   <div class="w-[120px] items-center justify-center"></div>
                   <div class="w-[120px] items-center justify-center"></div>
-                  <div id="warehouse-1" class="resource w-[248px] h-[163px] bg-gray-200 col-span-2 items-center justify-center"></div>
+                  <div id="warehouse-1" class="resource w-[248px] h-[163px] bg-gray-200 col-span-2 items-center justify-center relative"></div>
                   <div id="reserve-1" class="w-[150px] items-center justify-center pt-2"></div>
                   <div class="w-[120px] items-center justify-center"></div>
                 </div>
@@ -180,7 +180,7 @@ function (dojo, declare) {
                 <div class="grid grid-cols-7 gap-2 mb-5">
                   <div class="w-[120px] items-center justify-center"></div>
                   <div class="w-[120px] items-center justify-center"></div>
-                  <div id="warehouse-2" class="resource w-[248px] h-[163px] bg-gray-200 col-span-2 items-center justify-center"></div>
+                  <div id="warehouse-2" class="resource w-[248px] h-[163px] bg-gray-200 col-span-2 items-center justify-center relative"></div>
                   <div id="reserve-2" class="w-[150px] items-center justify-center pt-2"></div>
                   <div class="w-[120px] items-center justify-center"></div>
                 </div>
@@ -962,28 +962,29 @@ function (dojo, declare) {
                     return;
             }
 
-            // 只有目前是 float-left 的方塊需要強制 relative
-            // 才能讓 slideToObject 正確計算起點位置
-            const isFloatLeft = cubeElement.classList.contains('float-left');
-            if (isFloatLeft) {
-                cubeElement.style.position = 'relative';
-                cubeElement.style.zIndex = '10';
-            }
+            // 統一用 player-tables 作為動畫過渡容器，
+            // 保證起點和終點都在同一座標系，slideToObject 計算才會正確。
+            const stagingArea = document.getElementById('player-tables');
+            const srcRect = cubeElement.getBoundingClientRect();
+            const areaRect = stagingArea.getBoundingClientRect();
+
+            cubeElement.style.position = 'absolute';
+            cubeElement.style.zIndex = '100';
+            cubeElement.style.top = (srcRect.top - areaRect.top + stagingArea.scrollTop) + 'px';
+            cubeElement.style.left = (srcRect.left - areaRect.left + stagingArea.scrollLeft) + 'px';
+            stagingArea.appendChild(cubeElement);
 
             var anim = this.slideToObject(cubeElement, targetPosition);
             dojo.connect(anim, 'onEnd', dojo.hitch(this, function() {
-                if (isFloatLeft) {
-                    cubeElement.style.position = '';
-                    cubeElement.style.zIndex = '';
-                }
+                cubeElement.style.position = '';
+                cubeElement.style.zIndex = '';
                 cubeElement.style.top = '';
                 cubeElement.style.left = '';
 
                 // Apply the final class and move to new parent
                 cubeElement.className = finalClassName;
-                if (newParentElement) {
-                    newParentElement.appendChild(cubeElement);
-                }
+                const dest = newParentElement || targetPosition.parentNode;
+                dest.appendChild(cubeElement);
                 targetPosition.remove();
             }));
             anim.play();

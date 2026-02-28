@@ -495,6 +495,12 @@ function (dojo, declare) {
                     this.addActionButton('operate-btn', _('Operate'), () => this.onChooseAction('operate'));
                     break;
                 }
+
+                // 在 ChooseAction 之後的狀態都顯示 Undo 按鈕
+                var undoStates = ['SelectEastOrWest', 'SelectStreet', 'SowCubes'];
+                if (undoStates.indexOf(stateName) !== -1) {
+                    this.addActionButton('button_undo', _('Undo'), () => this.onUndo(), null, false, 'red');
+                }
             }
         },
 
@@ -769,6 +775,19 @@ function (dojo, declare) {
             this.bgaPerformAction("actChangeArtStyle", {
                 artStyle: newStyle
             }, {
+                checkAction: false
+            });
+        },
+
+        onUndo: function()
+        {
+            console.log('onUndo');
+
+            if (!this.isCurrentPlayerActive()) {
+                return;
+            }
+
+            this.bgaPerformAction("actUndo", {}, {
                 checkAction: false
             });
         },

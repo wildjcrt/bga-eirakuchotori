@@ -336,6 +336,25 @@ class Game extends \Table
         ]);
     }
 
+    /**
+     * Undo action: restore the game to the last savepoint.
+     * Uses #[CheckAction(false)] so it can be called from any state
+     * without adding "actUndo" to every state's possibleactions.
+     */
+    #[CheckAction(false)]
+    public function actUndo(): void
+    {
+        // 只允許目前的 active player 進行 undo
+        $player_id = (int)$this->getCurrentPlayerId();
+        $active_id = (int)$this->getActivePlayerId();
+
+        if ($player_id !== $active_id) {
+            throw new \BgaUserException($this->_('Only the active player can undo'));
+        }
+
+        $this->undoRestorePoint();
+    }
+
     public function argUpdateTable(): array
     {
         $sql = "SELECT * FROM cubes";
@@ -380,6 +399,10 @@ class Game extends \Table
         // Go to another gamestate
         // Here, we would detect if the game is over, and in this case use "endGame" transition instead
         $this->gamestate->nextState();
+    }
+
+    public function stChooseAction(): void {
+        $this->undoSavepoint();
     }
 
     public function stTurnEnd(): void {

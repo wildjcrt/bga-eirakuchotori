@@ -1037,3 +1037,8 @@
   text-align: center;
   color: #333;
 }
+
+/* Undo button styling */
+#button_undo {
+    float: right !important;
+}

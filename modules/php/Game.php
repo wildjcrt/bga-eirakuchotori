@@ -35,6 +35,7 @@ function print_msg($txt, $color = 'black')
 }
 
 use \Bga\GameFramework\Actions\Types\IntArrayParam;
+use \Bga\GameFramework\Actions\Types\IntParam;
 use \Bga\GameFramework\Actions\CheckAction;
 use \Bga\GameFramework\Actions\Types\StringParam;
 
@@ -283,10 +284,60 @@ class Game extends \Table
         $this->gamestate->nextState();
     }
 
-    public function actSelectStreet(): void
+    /**
+     * Operate action: select a street card with player's cubes and execute its function.
+     * Streets 1-7 are restocking type: add the corresponding good.
+     * @param int $streetId The selected street card ID (1-14)
+     */
+    public function actSelectStreet(#[IntParam(min: 1, max: 14)] int $streetId): void
     {
         self::checkAction( 'actSelectStreet' );
 
+        $player_id = (int)$this->getActivePlayerId();
+        $player_name = self::getActivePlayerName();
+
+        // Validate player has cubes on this street
+        $sql = "SELECT COUNT(*) FROM cubes
+                WHERE player_id = $player_id
+                  AND position_type = 'street'
+                  AND position_uid = '$streetId'";
+        $count = (int)self::getUniqueValueFromDB($sql);
+
+        if ($count === 0) {
+            throw new \BgaUserException($this->_('You have no cubes on this street'));
+        }
+
+        // Restocking: streets 1-7 map to goods
+        $goodMap = [
+            1 => 'rice',
+            2 => 'sugar',
+            3 => 'camphor',
+            4 => 'tea',
+            5 => 'groceries',
+            6 => 'fabric',
+            7 => 'ginseng',
+        ];
+
+        if (isset($goodMap[$streetId])) {
+            $good = $goodMap[$streetId];
+            $cube = self::addGood($player_id, $good);
+
+            self::notifyAllPlayers(
+                "moveCubes",
+                clienttranslate( '${player_name} restocks ${good_name}.' ),
+                [
+                    'player_id' => $player_id,
+                    'player_name' => $player_name,
+                    'cube_id' => $cube['cube_id'],
+                    'good_name' => $good,
+                    'before_move' => ($cube['position_uid'] == '1') ? 'reserve-0' : $good . '-' . ((int)$cube['position_uid'] - 1),
+                    'after_move' => $good . '-' . $cube['position_uid'],
+                    'i18n' => ['good_name'],
+                ]
+            );
+        }
+
+        $this->gamestate->nextState();
     }
 
     public function actSowCubes(): void
@@ -360,9 +411,20 @@ class Game extends \Table
         $sql = "SELECT * FROM cubes";
         $cubes = self::getObjectListFromDB($sql);
 
-        return [
+        $result = [
             "cubes" => $cubes
         ];
+
+        // In SelectStreet state, return which streets the active player can operate
+        $state = $this->gamestate->state();
+        if ($state['name'] === 'SelectStreet') {
+            $player_id = (int)$this->getActivePlayerId();
+            $sql = "SELECT DISTINCT position_uid FROM cubes
+                    WHERE player_id = $player_id AND position_type = 'street'";
+            $result['availableStreets'] = self::getObjectListFromDB($sql, true);
+        }
+
+        return $result;
     }
 
     /**

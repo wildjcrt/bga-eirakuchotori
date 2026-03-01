@@ -320,6 +320,14 @@ class Game extends \Table
 
         if (isset($goodMap[$streetId])) {
             $good = $goodMap[$streetId];
+
+            $sql = "SELECT * FROM cubes
+                    WHERE player_id = $player_id
+                      AND position_type = '$good'
+                    LIMIT 1";
+            $currentGood = self::getObjectFromDB($sql);
+            $beforeLevel = ($currentGood !== null) ? (int)$currentGood['position_uid'] : 0;
+
             $cube = self::addGood($player_id, $good, $count);
 
             self::notifyAllPlayers(
@@ -330,7 +338,7 @@ class Game extends \Table
                     'player_name' => $player_name,
                     'cube_id' => $cube['cube_id'],
                     'good_name' => $good,
-                    'before_move' => ($cube['position_uid'] == '1') ? 'reserve-0' : $good . '-' . ((int)$cube['position_uid'] - $count),
+                    'before_move' => ($beforeLevel === 0) ? 'reserve-0' : $good . '-' . $beforeLevel,
                     'after_move' => $good . '-' . $cube['position_uid'],
                     'i18n' => ['good_name'],
                 ]

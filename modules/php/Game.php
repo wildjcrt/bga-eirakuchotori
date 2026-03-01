@@ -320,7 +320,7 @@ class Game extends \Table
 
         if (isset($goodMap[$streetId])) {
             $good = $goodMap[$streetId];
-            $cube = self::addGood($player_id, $good);
+            $cube = self::addGood($player_id, $good, $count);
 
             self::notifyAllPlayers(
                 "moveCubes",
@@ -330,7 +330,7 @@ class Game extends \Table
                     'player_name' => $player_name,
                     'cube_id' => $cube['cube_id'],
                     'good_name' => $good,
-                    'before_move' => ($cube['position_uid'] == '1') ? 'reserve-0' : $good . '-' . ((int)$cube['position_uid'] - 1),
+                    'before_move' => ($cube['position_uid'] == '1') ? 'reserve-0' : $good . '-' . ((int)$cube['position_uid'] - $count),
                     'after_move' => $good . '-' . $cube['position_uid'],
                     'i18n' => ['good_name'],
                 ]

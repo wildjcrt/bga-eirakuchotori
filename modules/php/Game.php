@@ -682,9 +682,10 @@ class Game extends \Table
     /**
      * @param $player_id
      * @param $good: rice, sugar, camphor, tea, groceries, fabric, ginseng
-     * Add a good for recruit action.
+     * @param $quantity: amount to add (default 1)
+     * Add a good for recruit/restocking action.
      */
-    function addGood($player_id, $good)
+    function addGood($player_id, $good, $quantity = 1)
     {
         $sql = "SELECT * FROM cubes
                 WHERE player_id = $player_id
@@ -693,7 +694,7 @@ class Game extends \Table
         $cube = self::getObjectFromDB($sql);
 
         if ($cube !== null && (int)$cube['position_uid'] < 4) {
-            $next_position = (int)$cube['position_uid'] + 1;
+            $next_position = (int)$cube['position_uid'] + $quantity;
             self::updateCubeRecord($player_id, $cube['cube_id'], $good, $next_position);
 
             $sql = "SELECT * FROM cubes
@@ -711,7 +712,7 @@ class Game extends \Table
                 return;
             }
 
-            self::updateCubeRecord($player_id, $reserve_cube['cube_id'], $good, 1);
+            self::updateCubeRecord($player_id, $reserve_cube['cube_id'], $good, $quantity);
 
             $sql = "SELECT * FROM cubes
                     WHERE cube_id = $reserve_cube[cube_id]

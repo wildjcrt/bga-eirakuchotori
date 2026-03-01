@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `player_info` (
 --         groceries:     1-4
 --         fabric:        1-4
 --         ginseng:       1-4
---         rest:          1-3
+--         rest:          1-5
 --         goals:         merchants3
 --         goals:         warehouse24
 --         goals:         export6

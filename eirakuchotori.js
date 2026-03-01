@@ -429,6 +429,43 @@ function (dojo, declare) {
                 this.updatePlayerTables(args.args.cubes);
                 this.updatePlayerPanelsFromCubes(args.args.cubes);
 
+                if( this.isCurrentPlayerActive() ) {
+                    const availableStreets = args.args.availableStreets || [];
+
+                    availableStreets.forEach(streetId => {
+                        const streetElement = document.getElementById(`street-${streetId}`);
+                        if (streetElement) {
+                            dojo.addClass(streetElement, AVAILABLE_STREET_CLASS);
+
+                            ON_CLICK_HANDLERS['streets'].push(
+                                dojo.connect(streetElement, 'onclick', function(e) {
+                                    // Deselect previously selected street
+                                    const selectedSelector = `.street.${SELECTED_STREET_CLASS.split(' ').join('.')}`;
+                                    document.querySelectorAll(selectedSelector).forEach(n => {
+                                        dojo.removeClass(n, SELECTED_STREET_CLASS);
+                                        dojo.addClass(n, AVAILABLE_STREET_CLASS);
+                                    });
+
+                                    if (dojo.hasClass(streetElement, 'available')) {
+                                        // Select this street
+                                        dojo.removeClass(streetElement, AVAILABLE_STREET_CLASS);
+                                        dojo.addClass(streetElement, SELECTED_STREET_CLASS);
+                                        dojo.removeClass('confirm-btn', 'disabled');
+                                    }
+                                })
+                            );
+                        }
+                    });
+
+                    // Dim non-available streets so the player can see which ones are selectable
+                    document.querySelectorAll('.street').forEach(el => {
+                        const id = el.id;
+                        if (id && !availableStreets.includes(id.replace('street-', ''))) {
+                            dojo.addClass(el, DISABLED_STREET_CLASS);
+                        }
+                    });
+                }
+
                 break;
             case 'SowCubes':
                 this.updatePlayerTables(args.args.cubes);
@@ -456,17 +493,20 @@ function (dojo, declare) {
             switch( stateName )
             {
 
-            /* Example:
+            case 'SelectStreet':
+                // Disconnect click handlers
+                dojo.forEach(ON_CLICK_HANDLERS['streets'], dojo.disconnect);
+                ON_CLICK_HANDLERS['streets'] = [];
 
-            case 'myGameState':
-
-                // Hide the HTML block we are displaying only during this game state
-                dojo.style( 'my_html_block_id', 'display', 'none' );
+                // Reset all street classes
+                var self = this;
+                document.querySelectorAll('.street').forEach(function(streetElement) {
+                    dojo.removeClass(streetElement, AVAILABLE_STREET_CLASS);
+                    dojo.removeClass(streetElement, SELECTED_STREET_CLASS);
+                    dojo.removeClass(streetElement, DISABLED_STREET_CLASS);
+                });
 
                 break;
-           */
-
-
             case 'dummy':
                 break;
             }
@@ -486,13 +526,15 @@ function (dojo, declare) {
                 case 'Player1InitialCubes':
                 case 'Player2InitialCubes':
                 case 'SelectEastOrWest':
+                case 'SelectStreet':
                     this.addActionButton('confirm-btn', _('Confirm'), () => this.onConfirm(stateName));
                     dojo.addClass('confirm-btn', 'disabled');
-                    break;
 
+                    break;
                 case 'ChooseAction':
                     this.addActionButton('recruit-btn', _('Recruit'), () => this.onChooseAction('recruit'));
                     this.addActionButton('operate-btn', _('Operate'), () => this.onChooseAction('operate'));
+
                     break;
                 }
 
@@ -737,6 +779,27 @@ function (dojo, declare) {
                         });
                     } catch (error) {
                         this.showMessage(_('Please select east way or west way.') , 'error');
+                        console.error(error.message);
+                    }
+
+                    break;
+
+                case 'SelectStreet':
+                    // Disconnect all streets dom onclick event
+                    dojo.forEach(ON_CLICK_HANDLERS['streets'], dojo.disconnect);
+                    ON_CLICK_HANDLERS['streets'] = [];
+
+                    try {
+                        const selectedStreets = dojo.query(`.street.${SELECTED_STREET_CLASS.split(' ').join('.')}`);
+
+                        if (selectedStreets.length !== 1) {
+                            throw new Error('Please select exactly 1 street.');
+                        }
+
+                        const streetId = parseInt(selectedStreets[0].id.replace('street-', ''));
+                        this.bgaPerformAction("actSelectStreet", { streetId: streetId });
+                    } catch (error) {
+                        this.showMessage(_('Please select a street.'), 'error');
                         console.error(error.message);
                     }
 

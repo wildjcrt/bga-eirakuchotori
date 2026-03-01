@@ -35,6 +35,7 @@ function print_msg($txt, $color = 'black')
 }
 
 use \Bga\GameFramework\Actions\Types\IntArrayParam;
+use \Bga\GameFramework\Actions\Types\IntParam;
 use \Bga\GameFramework\Actions\CheckAction;
 use \Bga\GameFramework\Actions\Types\StringParam;
 
@@ -283,10 +284,68 @@ class Game extends \Table
         $this->gamestate->nextState();
     }
 
-    public function actSelectStreet(): void
+    /**
+     * Operate action: select a street card with player's cubes and execute its function.
+     * Streets 1-7 are restocking type: add the corresponding good.
+     * @param int $streetId The selected street card ID (1-14)
+     */
+    public function actSelectStreet(#[IntParam(min: 1, max: 14)] int $streetId): void
     {
         self::checkAction( 'actSelectStreet' );
 
+        $player_id = (int)$this->getActivePlayerId();
+        $player_name = self::getActivePlayerName();
+
+        // Validate player has cubes on this street
+        $sql = "SELECT COUNT(*) FROM cubes
+                WHERE player_id = $player_id
+                  AND position_type = 'street'
+                  AND position_uid = '$streetId'";
+        $count = (int)self::getUniqueValueFromDB($sql);
+
+        if ($count === 0) {
+            throw new \BgaUserException($this->_('You have no cubes on this street'));
+        }
+
+        // Restocking: streets 1-7 map to goods
+        $goodMap = [
+            1 => 'rice',
+            2 => 'sugar',
+            3 => 'camphor',
+            4 => 'tea',
+            5 => 'groceries',
+            6 => 'fabric',
+            7 => 'ginseng',
+        ];
+
+        if (isset($goodMap[$streetId])) {
+            $good = $goodMap[$streetId];
+
+            $sql = "SELECT * FROM cubes
+                    WHERE player_id = $player_id
+                      AND position_type = '$good'
+                    LIMIT 1";
+            $currentGood = self::getObjectFromDB($sql);
+            $beforeLevel = ($currentGood !== null) ? (int)$currentGood['position_uid'] : 0;
+
+            $cube = self::addGood($player_id, $good, $count);
+
+            self::notifyAllPlayers(
+                "moveCubes",
+                clienttranslate( '${player_name} restocks ${good_name}.' ),
+                [
+                    'player_id' => $player_id,
+                    'player_name' => $player_name,
+                    'cube_id' => $cube['cube_id'],
+                    'good_name' => $good,
+                    'before_move' => ($beforeLevel === 0) ? 'reserve-0' : $good . '-' . $beforeLevel,
+                    'after_move' => $good . '-' . $cube['position_uid'],
+                    'i18n' => ['good_name'],
+                ]
+            );
+        }
+
+        $this->gamestate->nextState();
     }
 
     public function actSowCubes(): void
@@ -360,9 +419,20 @@ class Game extends \Table
         $sql = "SELECT * FROM cubes";
         $cubes = self::getObjectListFromDB($sql);
 
-        return [
+        $result = [
             "cubes" => $cubes
         ];
+
+        // In SelectStreet state, return which streets the active player can operate
+        $state = $this->gamestate->state();
+        if ($state['name'] === 'SelectStreet') {
+            $player_id = (int)$this->getActivePlayerId();
+            $sql = "SELECT DISTINCT position_uid FROM cubes
+                    WHERE player_id = $player_id AND position_type = 'street'";
+            $result['availableStreets'] = self::getObjectListFromDB($sql, true);
+        }
+
+        return $result;
     }
 
     /**
@@ -546,6 +616,52 @@ class Game extends \Table
      */
     function updateCubeRecord($player_id, $cube_id, $position_type, $position_uid)
     {
+        // 列出所有 position_type: position_uid
+        //         reserve:       0
+        //         street:        1-14
+        //         merchat:       1-14
+        //         event:         1945
+        //         rice:          1-4
+        //         sugar:         1-4
+        //         camphor:       1-4
+        //         tea:           1-4
+        //         groceries:     1-4
+        //         fabric:        1-4
+        //         ginseng:       1-4
+        //         rest:          1-5
+        //         goals:         merchants3
+        //         goals:         warehouse24
+        //         goals:         export6
+        $uid = $position_uid;
+        switch ($position_type) {
+            case 'reserve':
+                $uid = 0;
+                break;
+            case 'street':
+            case 'merchant':
+                $uid = max(1, min(14, (int)$uid));
+                break;
+            case 'rice':
+            case 'sugar':
+            case 'camphor':
+            case 'tea':
+            case 'groceries':
+            case 'fabric':
+            case 'ginseng':
+                $uid = max(1, min(4, (int)$uid));
+                break;
+            case 'rest':
+                $uid = max(1, min(5, (int)$uid));
+                break;
+            case 'event':
+                // keep as-is (e.g. 1945)
+                break;
+            case 'goals':
+                // keep as-is (e.g. merchants3, warehouse24, export6)
+                break;
+        }
+        $position_uid = $uid;
+
         $sql = "UPDATE cubes
                 SET position_type = '$position_type',
                     position_uid = '$position_uid'
@@ -574,9 +690,10 @@ class Game extends \Table
     /**
      * @param $player_id
      * @param $good: rice, sugar, camphor, tea, groceries, fabric, ginseng
-     * Add a good for recruit action.
+     * @param $quantity: amount to add (default 1)
+     * Add a good for recruit/restocking action.
      */
-    function addGood($player_id, $good)
+    function addGood($player_id, $good, $quantity = 1)
     {
         $sql = "SELECT * FROM cubes
                 WHERE player_id = $player_id
@@ -585,7 +702,7 @@ class Game extends \Table
         $cube = self::getObjectFromDB($sql);
 
         if ($cube !== null && (int)$cube['position_uid'] < 4) {
-            $next_position = (int)$cube['position_uid'] + 1;
+            $next_position = (int)$cube['position_uid'] + $quantity;
             self::updateCubeRecord($player_id, $cube['cube_id'], $good, $next_position);
 
             $sql = "SELECT * FROM cubes
@@ -603,7 +720,7 @@ class Game extends \Table
                 return;
             }
 
-            self::updateCubeRecord($player_id, $reserve_cube['cube_id'], $good, 1);
+            self::updateCubeRecord($player_id, $reserve_cube['cube_id'], $good, $quantity);
 
             $sql = "SELECT * FROM cubes
                     WHERE cube_id = $reserve_cube[cube_id]

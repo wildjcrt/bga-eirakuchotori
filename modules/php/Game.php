@@ -608,6 +608,52 @@ class Game extends \Table
      */
     function updateCubeRecord($player_id, $cube_id, $position_type, $position_uid)
     {
+        // 列出所有 position_type: position_uid
+        //         reserve:       0
+        //         street:        1-14
+        //         merchat:       1-14
+        //         event:         1945
+        //         rice:          1-4
+        //         sugar:         1-4
+        //         camphor:       1-4
+        //         tea:           1-4
+        //         groceries:     1-4
+        //         fabric:        1-4
+        //         ginseng:       1-4
+        //         rest:          1-5
+        //         goals:         merchants3
+        //         goals:         warehouse24
+        //         goals:         export6
+        $uid = $position_uid;
+        switch ($position_type) {
+            case 'reserve':
+                $uid = 0;
+                break;
+            case 'street':
+            case 'merchant':
+                $uid = max(1, min(14, (int)$uid));
+                break;
+            case 'rice':
+            case 'sugar':
+            case 'camphor':
+            case 'tea':
+            case 'groceries':
+            case 'fabric':
+            case 'ginseng':
+                $uid = max(1, min(4, (int)$uid));
+                break;
+            case 'rest':
+                $uid = max(1, min(5, (int)$uid));
+                break;
+            case 'event':
+                // keep as-is (e.g. 1945)
+                break;
+            case 'goals':
+                // keep as-is (e.g. merchants3, warehouse24, export6)
+                break;
+        }
+        $position_uid = $uid;
+
         $sql = "UPDATE cubes
                 SET position_type = '$position_type',
                     position_uid = '$position_uid'
